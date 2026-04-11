@@ -1,0 +1,420 @@
+<html>
+<head>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+<meta name="description" content="" />
+<meta name="keywords" content="" />
+<title>DPCRADIAL</title>
+<style>
+	a:link, a:visited {
+	  color: blue;
+	  text-align: center;
+	  text-decoration: none;
+	  display: inline-block;
+	}      
+	a:hover, a:active {
+	  color: red;
+	}
+	h2 {
+	  text-align: center;
+	  font-size: 20px;
+	  line-height: 1; 
+	  margin:1px;
+	}
+	table, th, td {
+	  border: 1px solid black;
+	  border-collapse: collapse;
+	}
+	th, td {
+	  padding: 5px;
+	}
+	select{
+		background-color: DodgerBlue;
+		width: 100%;
+		color: #ffffff;
+		padding: 5px;
+		font-size: 16px;
+		line-height: 1;
+		border: 0;
+		border-radius: 0;
+	}
+	.content {
+		display: inline-block;
+		padding: 8px 1px 3px 2px;
+		width: 100%;
+	}
+	.reg {
+		display: inline;
+	}
+	p {
+	  color: navy;
+	}
+	#BTP {
+		width: 55%;
+	}
+	#myseach {
+		width: 40%;
+		font-size: 16px;
+		padding: 5px 20px 5px 20px;
+		border: 1px solid #ddd;
+		margin-left: 7px;
+	}
+</style>
+</head>
+<body>
+<h2>ĐƠN PHA CHẾ RADIAL</h2>
+<div class="content">
+	<div class="reg" id="btp"></div>
+	<div class="reg" id="sch"></div>
+</div>
+<div id="info"></div>
+<div class="content" id="dcgd1"></div>
+<div class="content" id="dcgdc"></div>
+<div id="cont"></div>
+<div id="update"></div>
+<script>
+//*#var DATA = '{"gd1":[{"GROUP":"C","BTP":"SL02","MÃ ĐƠN":"01-04 (24/10/2022)","DÂY CHUYỀN":"370L","KL CAO SU GĐ1 (kg)":"266.4","KL TỔNG GĐ1 (kg)":"266.40","NĐ NLM ROTOR GĐ1(˚C)":"50 ± 5","NĐ NLM RAM-CỮA XÃ GĐ1 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ1 MAX (˚C)":"160"},{"DÂY CHUYỀN":"270L","KL CAO SU GĐ1 (kg)":"165.5","KL TỔNG GĐ1 (kg)":"165.50","NĐ NLM ROTOR GĐ1(˚C)":"35 ± 3","NĐ NLM RAM-CỮA XÃ GĐ1 (˚C)":"35 ± 3"},{"GROUP":"C","BTP":"SL04","MÃ ĐƠN":"01-04 (28/06/2023)","DÂY CHUYỀN":"370L","KL CAO SU GĐ1 (kg)":"266.4","KL TỔNG GĐ1 (kg)":"266.40","NĐ NLM ROTOR GĐ1(˚C)":"50 ± 5","NĐ NLM RAM-CỮA XÃ GĐ1 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ1 MAX (˚C)":"160"},{"DÂY CHUYỀN":"270L","KL CAO SU GĐ1 (kg)":"165.6","KL TỔNG GĐ1 (kg)":"165.60"},{"GROUP":"C","BTP":"SL09","MÃ ĐƠN":"01-04 (28/06/2023)","DÂY CHUYỀN":"370L","KL CAO SU GĐ1 (kg)":"266.5","KL TỔNG GĐ1 (kg)":"266.50","NĐ NLM ROTOR GĐ1(˚C)":"50 ± 5","NĐ NLM RAM-CỮA XÃ GĐ1 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ1 MAX (˚C)":"160"},{"GROUP":"S","BTP":"Q112","MÃ ĐƠN":"01-03 (24/12/2023) ","DÂY CHUYỀN":"370L","KL CAO SU GĐ1 (kg)":"210.1","KL HÓA CHẤT GĐ1 (kg)":"22.05","KL TỔNG GĐ1 (kg)":"304.14","NĐ NLM ROTOR GĐ1(˚C)":"50 ± 5","NĐ NLM RAM-CỮA XÃ GĐ1 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ1 MAX (˚C)":"170","KL CAO SU GĐ2 (kg)":"261.00","KL HÓA CHẤT GĐ2 (kg)":"8.12","KL TỔNG GĐ2 (kg)":"304.32","NĐ NLM ROTOR GĐ2 (˚C)":"50 ± 5","NĐ NLM RAM- CỮA XÃ GĐ2 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ2 MAX (˚C)":"160"},{"GROUP":"S","BTP":"Q112HL","MÃ ĐƠN":"01-03 (24/12/2023) ","DÂY CHUYỀN":"NO"},{"GROUP":"S","BTP":"Q112-S","MÃ ĐƠN":"01-03 (24/12/2023) ","DÂY CHUYỀN":"NO","KL TỔNG GĐ1 (kg)":"0.00"},{"GROUP":"S","BTP":"Q115","MÃ ĐƠN":"01-04 (24/12/2023)","DÂY CHUYỀN":"270L","KL CAO SU GĐ2 (kg)":"169.00","KL HÓA CHẤT GĐ2 (kg)":"5.86","KL TỔNG GĐ2 (kg)":"197.06","NĐ NLM ROTOR GĐ2 (˚C)":"35 ± 3","NĐ NLM RAM- CỮA XÃ GĐ2 (˚C)":"35 ± 3"},{"DÂY CHUYỀN":"370L","KL CAO SU GĐ1 (kg)":"204.2","KL HÓA CHẤT GĐ1 (kg)":"21.44","KL TỔNG GĐ1 (kg)":"295.43","NĐ NLM ROTOR GĐ1(˚C)":"40 ± 5","NĐ NLM RAM-CỮA XÃ GĐ1 (˚C)":"45 ± 5","NHIỆT ĐỘ GĐ1 MAX (˚C)":"145","KL CAO SU GĐ2 (kg)":"265.00","KL HÓA CHẤT GĐ2 (kg)":"9.14","KL TỔNG GĐ2 (kg)":"308.94","NĐ NLM ROTOR GĐ2 (˚C)":"40 ± 5","NĐ NLM RAM- CỮA XÃ GĐ2 (˚C)":"45 ± 5","NHIỆT ĐỘ GĐ2 MAX (˚C)":"145"},{"GROUP":"S","BTP":"Q115HL","MÃ ĐƠN":"01-04 (24/12/2023)","DÂY CHUYỀN":"NO"},{"GROUP":"S","BTP":"Q115-S","MÃ ĐƠN":"TN 02-25","DÂY CHUYỀN":"370L-01,02","KL TỔNG GĐ1 (kg)":"0.00"},{"MÃ ĐƠN":"TN 02-25 SSM","DÂY CHUYỀN":"370L-03"},{"GROUP":"S","BTP":"Q117","MÃ ĐƠN":"01-01 (8/5/24)","DÂY CHUYỀN":"370L","KL CAO SU GĐ1 (kg)":"209.6","KL HÓA CHẤT GĐ1 (kg)":"23.06","KL TỔNG GĐ1 (kg)":"303.91","NĐ NLM ROTOR GĐ1(˚C)":"40 ± 5","NĐ NLM RAM-CỮA XÃ GĐ1 (˚C)":"45 ± 5","NHIỆT ĐỘ GĐ1 MAX (˚C)":"160","KL CAO SU GĐ2 (kg)":"260.00","KL HÓA CHẤT GĐ2 (kg)":"8.97","KL TỔNG GĐ2 (kg)":"303.97","NĐ NLM ROTOR GĐ2 (˚C)":"40 ± 5","NĐ NLM RAM- CỮA XÃ GĐ2 (˚C)":"45 ± 5","NHIỆT ĐỘ GĐ2 MAX (˚C)":"160"},{"GROUP":"S","BTP":"Q117HL","MÃ ĐƠN":"01-01 (8/5/24)","DÂY CHUYỀN":"NO"},{"GROUP":"C","BTP":"Q126","MÃ ĐƠN":"01-08 (14/03/2025)","DÂY CHUYỀN":"370L","KL CAO SU GĐ1 (kg)":"246.2","KL TỔNG GĐ1 (kg)":"278.53","NĐ NLM ROTOR GĐ1(˚C)":"50 ± 5","NĐ NLM RAM-CỮA XÃ GĐ1 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ1 MAX (˚C)":"160","KL CAO SU GĐ2 (kg)":"163.00","KL HÓA CHẤT GĐ2 (kg)":"24.8","KL TỔNG GĐ2 (kg)":"302.60","NĐ NLM ROTOR GĐ2 (˚C)":"50 ± 5","NĐ NLM RAM- CỮA XÃ GĐ2 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ2 MAX (˚C)":"160","KL CAO SU GĐ3 (kg)":"290.00","KL HÓA CHẤT GĐ3 (kg)":"6.19","KL TỔNG GĐ3 (kg)":"313.89","NĐ NLM ROTOR GĐ3 (˚C)":"50 ± 5","NĐ NLM RAM-CỮA XÃ GĐ3 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ3 MAX (˚C)":"160"},{"DÂY CHUYỀN":"270L","KL CAO SU GĐ1 (kg)":"155 ± 5.2","KL TỔNG GĐ1 (kg)":"175.56","KL CAO SU GĐ3 (kg)":"185.00","KL HÓA CHẤT GĐ3 (kg)":"3.97","KL TỔNG GĐ3 (kg)":"200.27","NĐ NLM ROTOR GĐ3 (˚C)":"35 ± 3","NĐ NLM RAM-CỮA XÃ GĐ3 (˚C)":"35 ± 3","NHIỆT ĐỘ GĐ3 MAX (˚C)":"160"},{"GROUP":"C","BTP":"Q126HL","MÃ ĐƠN":"01-08 (14/03/2025)","DÂY CHUYỀN":"NO"},{"GROUP":"S","BTP":"Q128","MÃ ĐƠN":"01-07 (24/12/23)","DÂY CHUYỀN":"370L","KL CAO SU GĐ1 (kg)":"148.6","KL HÓA CHẤT GĐ1 (kg)":"9.55","KL TỔNG GĐ1 (kg)":"286.10","NĐ NLM ROTOR GĐ1(˚C)":"40 ± 5","NĐ NLM RAM-CỮA XÃ GĐ1 (˚C)":"45 ± 5","NHIỆT ĐỘ GĐ1 MAX (˚C)":"145","KL CAO SU GĐ2 (kg)":"244.00","KL HÓA CHẤT GĐ2 (kg)":"18.06","KL TỔNG GĐ2 (kg)":"309.06","NĐ NLM ROTOR GĐ2 (˚C)":"40 ± 5","NĐ NLM RAM- CỮA XÃ GĐ2 (˚C)":"45 ± 5","NHIỆT ĐỘ GĐ2 MAX (˚C)":"145","KL CAO SU GĐ3 (kg)":"308","KL TỔNG GĐ3 (kg)":"308","NĐ NLM ROTOR GĐ3 (˚C)":"40 ± 5","NĐ NLM RAM-CỮA XÃ GĐ3 (˚C)":"45 ± 5","NHIỆT ĐỘ GĐ3 MAX (˚C)":"145"},{"DÂY CHUYỀN":"270L","KL CAO SU GĐ3 (kg)":"192","KL TỔNG GĐ3 (kg)":"192","NĐ NLM ROTOR GĐ3 (˚C)":"35 ± 3","NĐ NLM RAM-CỮA XÃ GĐ3 (˚C)":"35 ± 3","NHIỆT ĐỘ GĐ3 MAX (˚C)":"145"},{"GROUP":"S","BTP":"Q128HL","MÃ ĐƠN":"01-07 (24/12/23)","DÂY CHUYỀN":"NO"},{"GROUP":"C","BTP":"Q210","MÃ ĐƠN":"01-05 (31/12/25)","DÂY CHUYỀN":"370L","KL CAO SU GĐ1 (kg)":"191.8","KL HÓA CHẤT GĐ1 (kg)":"31.67","KL TỔNG GĐ1 (kg)":"320.42","NĐ NLM ROTOR GĐ1(˚C)":"50 ± 5","NĐ NLM RAM-CỮA XÃ GĐ1 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ1 MAX (˚C)":"170"},{"GROUP":"C","BTP":"Q210HL","MÃ ĐƠN":"01-05 (31/12/25)","DÂY CHUYỀN":"NO"},{"GROUP":"C","BTP":"Q310","MÃ ĐƠN":"01-07 (31/12/25)","DÂY CHUYỀN":"370L","KL CAO SU GĐ1 (kg)":"176.6","KL HÓA CHẤT GĐ1 (kg)":"30.02","KL TỔNG GĐ1 (kg)":"319.96","NĐ NLM ROTOR GĐ1(˚C)":"50 ± 5","NĐ NLM RAM-CỮA XÃ GĐ1 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ1 MAX (˚C)":"165","KL CAO SU GĐ2 (kg)":"284.00","KL HÓA CHẤT GĐ2 (kg)":"3.14","KL TỔNG GĐ2 (kg)":"318.54","NĐ NLM ROTOR GĐ2 (˚C)":"50 ± 5","NĐ NLM RAM- CỮA XÃ GĐ2 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ2 MAX (˚C)":"160"},{"GROUP":"S","BTP":"Q410","MÃ ĐƠN":"01-07 (28/1/26)","DÂY CHUYỀN":"370L","KL CAO SU GĐ1 (kg)":"186.9","KL HÓA CHẤT GĐ1 (kg)":"33.66","KL TỔNG GĐ1 (kg)":"320.38","NĐ NLM ROTOR GĐ1(˚C)":"50 ± 5","NĐ NLM RAM-CỮA XÃ GĐ1 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ1 MAX (˚C)":"170","KL CAO SU GĐ2 (kg)":"288.00","KL HÓA CHẤT GĐ2 (kg)":"5.88","KL TỔNG GĐ2 (kg)":"320.68","NĐ NLM ROTOR GĐ2 (˚C)":"50 ± 5","NĐ NLM RAM- CỮA XÃ GĐ2 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ2 MAX (˚C)":"160","KL CAO SU GĐ3 (kg)":"320.00","KL TỔNG GĐ3 (kg)":"320","NĐ NLM ROTOR GĐ3 (˚C)":"50 ± 5","NĐ NLM RAM-CỮA XÃ GĐ3 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ3 MAX (˚C)":"160"},{"DÂY CHUYỀN":"270L","KL CAO SU GĐ3 (kg)":"190.00","KL TỔNG GĐ3 (kg)":"190","NĐ NLM ROTOR GĐ3 (˚C)":"35 ± 3","NĐ NLM RAM-CỮA XÃ GĐ3 (˚C)":"35 ± 3","NHIỆT ĐỘ GĐ3 MAX (˚C)":"160"},{"GROUP":"S","BTP":"Q410HL","MÃ ĐƠN":"01-07 (28/1/26)","DÂY CHUYỀN":"NO"},{"GROUP":"C","BTP":"Q420","MÃ ĐƠN":"01-05 (31/12/25)","DÂY CHUYỀN":"370L","KL CAO SU GĐ1 (kg)":"201.5","KL HÓA CHẤT GĐ1 (kg)":"19.13","KL TỔNG GĐ1 (kg)":"320.35","NĐ NLM ROTOR GĐ1(˚C)":"50 ± 5","NĐ NLM RAM-CỮA XÃ GĐ1 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ1 MAX (˚C)":"170"},{"GROUP":"C","BTP":"Q420HL","MÃ ĐƠN":"01-05 (31/12/25)","DÂY CHUYỀN":"NO"},{"GROUP":"S","BTP":"Q430","MÃ ĐƠN":"01-09 (31/12/25)","DÂY CHUYỀN":"370L","KL CAO SU GĐ1 (kg)":"191","KL HÓA CHẤT GĐ1 (kg)":"22.94","KL TỔNG GĐ1 (kg)":"321.18","NĐ NLM ROTOR GĐ1(˚C)":"50 ± 5","NĐ NLM RAM-CỮA XÃ GĐ1 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ1 MAX (˚C)":"170","KL CAO SU GĐ2 (kg)":"319.00","KL TỔNG GĐ2 (kg)":"319.00","NĐ NLM ROTOR GĐ2 (˚C)":"50 ± 5","NĐ NLM RAM- CỮA XÃ GĐ2 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ2 MAX (˚C)":"160"},{"DÂY CHUYỀN":"270L-01","KL CAO SU GĐ2 (kg)":"208.00","KL TỔNG GĐ2 (kg)":"208.00","NĐ NLM ROTOR GĐ2 (˚C)":"35 ± 3","NĐ NLM RAM- CỮA XÃ GĐ2 (˚C)":"35 ± 3","NHIỆT ĐỘ GĐ2 MAX (˚C)":"152"},{"DÂY CHUYỀN":"270L-02","KL CAO SU GĐ2 (kg)":"189.00","KL TỔNG GĐ2 (kg)":"189.00","NĐ NLM ROTOR GĐ2 (˚C)":"35 ± 3","NĐ NLM RAM- CỮA XÃ GĐ2 (˚C)":"35 ± 3","NHIỆT ĐỘ GĐ2 MAX (˚C)":"152"},{"DÂY CHUYỀN":"270L-4,5,6","KL CAO SU GĐ2 (kg)":"191.00","KL TỔNG GĐ2 (kg)":"191.00","NĐ NLM ROTOR GĐ2 (˚C)":"35 ± 3","NĐ NLM RAM- CỮA XÃ GĐ2 (˚C)":"35 ± 3","NHIỆT ĐỘ GĐ2 MAX (˚C)":"152"},{"GROUP":"C","BTP":"Q510","MÃ ĐƠN":"01-08 (2/2/26)","DÂY CHUYỀN":"370L","KL CAO SU GĐ1 (kg)":"200","KL HÓA CHẤT GĐ1 (kg)":"23.4","KL TỔNG GĐ1 (kg)":"322.00","NĐ NLM ROTOR GĐ1(˚C)":"50 ± 5","NĐ NLM RAM-CỮA XÃ GĐ1 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ1 MAX (˚C)":"170","KL CAO SU GĐ2 (kg)":"320.00","KL TỔNG GĐ2 (kg)":"320.00","NĐ NLM ROTOR GĐ2 (˚C)":"50 ± 5","NĐ NLM RAM- CỮA XÃ GĐ2 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ2 MAX (˚C)":"160"},{"DÂY CHUYỀN":"270L-01","KL CAO SU GĐ2 (kg)":"209.00","KL TỔNG GĐ2 (kg)":"209.00","NĐ NLM ROTOR GĐ2 (˚C)":"35 ± 3","NĐ NLM RAM- CỮA XÃ GĐ2 (˚C)":"35 ± 3","NHIỆT ĐỘ GĐ2 MAX (˚C)":"150"},{"DÂY CHUYỀN":"270L-02","KL CAO SU GĐ2 (kg)":"190.00","KL TỔNG GĐ2 (kg)":"190.00","NĐ NLM ROTOR GĐ2 (˚C)":"35 ± 3","NĐ NLM RAM- CỮA XÃ GĐ2 (˚C)":"35 ± 3","NHIỆT ĐỘ GĐ2 MAX (˚C)":"150"},{"DÂY CHUYỀN":"270L-05","KL CAO SU GĐ1 (kg)":"121.8","KL HÓA CHẤT GĐ1 (kg)":"14.24","KL TỔNG GĐ1 (kg)":"196.05","NĐ NLM ROTOR GĐ1(˚C)":"35 ± 3","NĐ NLM RAM-CỮA XÃ GĐ1 (˚C)":"35 ± 3","NHIỆT ĐỘ GĐ1 MAX (˚C)":"170","KL CAO SU GĐ2 (kg)":"193.00","KL TỔNG GĐ2 (kg)":"193.00","NĐ NLM ROTOR GĐ2 (˚C)":"35 ± 3","NĐ NLM RAM- CỮA XÃ GĐ2 (˚C)":"35 ± 3","NHIỆT ĐỘ GĐ2 MAX (˚C)":"150"},{"GROUP":"S","BTP":"Q610","MÃ ĐƠN":"01-05 (28/1/26)","DÂY CHUYỀN":"370L","KL CAO SU GĐ1 (kg)":"192.8","KL HÓA CHẤT GĐ1 (kg)":"18.35","KL TỔNG GĐ1 (kg)":"320.32","NĐ NLM ROTOR GĐ1(˚C)":"50 ± 5","NĐ NLM RAM-CỮA XÃ GĐ1 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ1 MAX (˚C)":"170","KL CAO SU GĐ2 (kg)":"314.00","KL HÓA CHẤT GĐ2 (kg)":"2.38","KL TỔNG GĐ2 (kg)":"316.38","NĐ NLM ROTOR GĐ2 (˚C)":"50 ± 5","NĐ NLM RAM- CỮA XÃ GĐ2 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ2 MAX (˚C)":"150"},{"GROUP":"S","BTP":"Q710","MÃ ĐƠN":"01-03 (31/12/25)","DÂY CHUYỀN":"370L","KL CAO SU GĐ1 (kg)":"194","KL HÓA CHẤT GĐ1 (kg)":"22.41","KL TỔNG GĐ1 (kg)":"320.97","NĐ NLM ROTOR GĐ1(˚C)":"50 ± 5","NĐ NLM RAM-CỮA XÃ GĐ1 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ1 MAX (˚C)":"170","KL CAO SU GĐ2 (kg)":"298.00","KL HÓA CHẤT GĐ2 (kg)":"2.71","KL TỔNG GĐ2 (kg)":"318.81","NĐ NLM ROTOR GĐ2 (˚C)":"50 ± 5","NĐ NLM RAM- CỮA XÃ GĐ2 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ2 MAX (˚C)":"150"},{"GROUP":"C","BTP":"Q720","MÃ ĐƠN":"01-05 (31/12/25)","DÂY CHUYỀN":"370L","KL CAO SU GĐ1 (kg)":"164.6","KL HÓA CHẤT GĐ1 (kg)":"19.78","KL TỔNG GĐ1 (kg)":"320.18","NĐ NLM ROTOR GĐ1(˚C)":"50 ± 5","NĐ NLM RAM-CỮA XÃ GĐ1 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ1 MAX (˚C)":"170","KL CAO SU GĐ2 (kg)":"272.00","KL TỔNG GĐ2 (kg)":"321.97","NĐ NLM ROTOR GĐ2 (˚C)":"50 ± 5","NĐ NLM RAM- CỮA XÃ GĐ2 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ2 MAX (˚C)":"160"},{"GROUP":"S","BTP":"Q810","MÃ ĐƠN":"01-04 (31/12/25)","DÂY CHUYỀN":"370L","KL CAO SU GĐ1 (kg)":"243.5","KL TỔNG GĐ1 (kg)":"293.00","NĐ NLM ROTOR GĐ1(˚C)":"50 ± 5","NĐ NLM RAM-CỮA XÃ GĐ1 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ1 MAX (˚C)":"160","KL CAO SU GĐ2 (kg)":"249.00","KL HÓA CHẤT GĐ2 (kg)":"26.94","KL TỔNG GĐ2 (kg)":"320.44","NĐ NLM ROTOR GĐ2 (˚C)":"50 ± 5","NĐ NLM RAM- CỮA XÃ GĐ2 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ2 MAX (˚C)":"160","KL CAO SU GĐ3 (kg)":"289","KL HÓA CHẤT GĐ3 (kg)":"3.08","KL TỔNG GĐ3 (kg)":"320.08","NĐ NLM ROTOR GĐ3 (˚C)":"50 ± 5","NĐ NLM RAM-CỮA XÃ GĐ3 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ3 MAX (˚C)":"150"},{"GROUP":"C","BTP":"Q830","MÃ ĐƠN":"01-04 (31/12/25)","DÂY CHUYỀN":"370L","KL CAO SU GĐ1 (kg)":"268.6","KL TỔNG GĐ1 (kg)":"295.82","NĐ NLM ROTOR GĐ1(˚C)":"50 ± 5","NĐ NLM RAM-CỮA XÃ GĐ1 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ1 MAX (˚C)":"160","KL CAO SU GĐ2 (kg)":"215.00","KL HÓA CHẤT GĐ2 (kg)":"22.54","KL TỔNG GĐ2 (kg)":"319.74","NĐ NLM ROTOR GĐ2 (˚C)":"50 ± 5","NĐ NLM RAM- CỮA XÃ GĐ2 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ2 MAX (˚C)":"170","KL CAO SU GĐ3 (kg)":"301.00","KL HÓA CHẤT GĐ3 (kg)":"4.97","KL TỔNG GĐ3 (kg)":"305.97","NĐ NLM ROTOR GĐ3 (˚C)":"50 ± 5","NĐ NLM RAM-CỮA XÃ GĐ3 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ3 MAX (˚C)":"150"},{"DÂY CHUYỀN":"270L","KL CAO SU GĐ3 (kg)":"190.00","KL HÓA CHẤT GĐ3 (kg)":"3.14","KL TỔNG GĐ3 (kg)":"193.14","NĐ NLM ROTOR GĐ3 (˚C)":"35 ± 3","NĐ NLM RAM-CỮA XÃ GĐ3 (˚C)":"35 ± 3","NHIỆT ĐỘ GĐ3 MAX (˚C)":"150"},{"GROUP":"S","BTP":"Q850","MÃ ĐƠN":"01-03 (12/11/25)","DÂY CHUYỀN":"370L","KL CAO SU GĐ1 (kg)":"227.5","KL TỔNG GĐ1 (kg)":"285.20","NĐ NLM ROTOR GĐ1(˚C)":"50 ± 5","NĐ NLM RAM-CỮA XÃ GĐ1 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ1 MAX (˚C)":"160","KL CAO SU GĐ2 (kg)":"254.00","KL HÓA CHẤT GĐ2 (kg)":"21.26","KL TỔNG GĐ2 (kg)":"319.81","NĐ NLM ROTOR GĐ2 (˚C)":"50 ± 5","NĐ NLM RAM- CỮA XÃ GĐ2 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ2 MAX (˚C)":"170","KL CAO SU GĐ3 (kg)":"276.00","KL HÓA CHẤT GĐ3 (kg)":"4.03","KL TỔNG GĐ3 (kg)":"306.33","NĐ NLM ROTOR GĐ3 (˚C)":"50 ± 5","NĐ NLM RAM-CỮA XÃ GĐ3 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ3 MAX (˚C)":"150"},{"GROUP":"S","BTP":"Q870","MÃ ĐƠN":"01-03 (31/12/25)","DÂY CHUYỀN":"370L","KL CAO SU GĐ1 (kg)":"194.4","KL HÓA CHẤT GĐ1 (kg)":"19.49","KL TỔNG GĐ1 (kg)":"321.04","NĐ NLM ROTOR GĐ1(˚C)":"50 ± 5","NĐ NLM RAM-CỮA XÃ GĐ1 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ1 MAX (˚C)":"170","KL CAO SU GĐ2 (kg)":"318.00","KL HÓA CHẤT GĐ2 (kg)":"3.56","KL TỔNG GĐ2 (kg)":"321.56","NĐ NLM ROTOR GĐ2 (˚C)":"50 ± 5","NĐ NLM RAM- CỮA XÃ GĐ2 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ2 MAX (˚C)":"150"},{"DÂY CHUYỀN":"270L","KL CAO SU GĐ2 (kg)":"192.00","KL HÓA CHẤT GĐ2 (kg)":"2.15","KL TỔNG GĐ2 (kg)":"194.15","NĐ NLM ROTOR GĐ2 (˚C)":"35 ± 3","NĐ NLM RAM- CỮA XÃ GĐ2 (˚C)":"35 ± 3","NHIỆT ĐỘ GĐ2 MAX (˚C)":"150"},{"GROUP":"C","BTP":"Q910","MÃ ĐƠN":"01-12 (28/1/26)","DÂY CHUYỀN":"370L","KL CAO SU GĐ1 (kg)":"180.1","KL HÓA CHẤT GĐ1 (kg)":"20.35","KL TỔNG GĐ1 (kg)":"330.25","NĐ NLM ROTOR GĐ1(˚C)":"50 ± 5","NĐ NLM RAM-CỮA XÃ GĐ1 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ1 MAX (˚C)":"140"},{"GROUP":"S","BTP":"Q950","MÃ ĐƠN":"01-07 (28/1/26)","DÂY CHUYỀN":"370L","KL CAO SU GĐ1 (kg)":"162.3","KL HÓA CHẤT GĐ1 (kg)":"28.38","KL TỔNG GĐ1 (kg)":"333.11","NĐ NLM ROTOR GĐ1(˚C)":"50 ± 5","NĐ NLM RAM-CỮA XÃ GĐ1 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ1 MAX (˚C)":"150"},{"GROUP":"S","BTP":"Q950HL","MÃ ĐƠN":"01-07 (28/1/26)","DÂY CHUYỀN":"NO"},{"GROUP":"S","BTP":"SGF21","MÃ ĐƠN":"01-02 (21/01/2022)","DÂY CHUYỀN":"370L","KL CAO SU GĐ1 (kg)":"200.4","KL HÓA CHẤT GĐ1 (kg)":"12.03","KL TỔNG GĐ1 (kg)":"306.63","NĐ NLM ROTOR GĐ1(˚C)":"50 ± 5","NĐ NLM RAM-CỮA XÃ GĐ1 (˚C)":"55 ± 5","NHIỆT ĐỘ GĐ1 MAX (˚C)":"170"},{"GROUP":"1"},{"GROUP":"2"},{"GROUP":"3"},{"GROUP":"4"},{"GROUP":"5"},{"GROUP":"6"},{"BTP":"END","MÃ ĐƠN":"END"}],"gdc":[{"GROUP":"R","BTP":"SL02","MÃ ĐƠN":"01-04 (24/10/2022)","DÂY CHUYỀN":"NO"},{"BTP":"SL04","MÃ ĐƠN":"01-04 (28/06/2023)","DÂY CHUYỀN":"NO"},{"BTP":"SL09","MÃ ĐƠN":"01-04 (28/06/2023)","DÂY CHUYỀN":"NO"},{"BTP":"Q112","MÃ ĐƠN":"01-03 (24/12/2023) ","DÂY CHUYỀN":"270L","KL CAO SU (kg)":"184","KL HÓA CHẤT (kg)":"3.19","Tổng KL (kg)":"187.19","NĐ NLM ROTOR (˚C)":"32 ± 3","NĐ NLM RAM-CỮA XÃ (˚C)":"32 ± 3","NHIỆT ĐỘ  XẢ MAX (˚C)":"115"},{"BTP":"Q112HL","MÃ ĐƠN":"01-03 (24/12/2023) ","DÂY CHUYỀN":"270L","KL CAO SU (kg)":"171","KL HÓA CHẤT (kg)":"2.96","KL HL (kg)":"13","Tổng KL (kg)":"186.96","NĐ NLM ROTOR (˚C)":"32 ± 3","NĐ NLM RAM-CỮA XÃ (˚C)":"32 ± 3","NHIỆT ĐỘ  XẢ MAX (˚C)":"115"},{"BTP":"Q115","MÃ ĐƠN":"01-04 (24/12/2023)","DÂY CHUYỀN":"270L","KL CAO SU (kg)":"189","KL HÓA CHẤT (kg)":"3.52","Tổng KL (kg)":"192.52","NĐ NLM ROTOR (˚C)":"32 ± 3","NĐ NLM RAM-CỮA XÃ (˚C)":"32 ± 3","NHIỆT ĐỘ  XẢ MAX (˚C)":"115"},{"BTP":"Q115HL","MÃ ĐƠN":"01-04 (24/12/2023)","DÂY CHUYỀN":"270L","KL CAO SU (kg)":"176","KL HÓA CHẤT (kg)":"3.27","KL HL (kg)":"13","Tổng KL (kg)":"192.27","NĐ NLM ROTOR (˚C)":"32 ± 3","NĐ NLM RAM-CỮA XÃ (˚C)":"32 ± 3","NHIỆT ĐỘ  XẢ MAX (˚C)":"115"},{"BTP":"Q117","MÃ ĐƠN":"01-01 (8/5/24)","DÂY CHUYỀN":"270L","KL CAO SU (kg)":"184","KL HÓA CHẤT (kg)":"3.22","Tổng KL (kg)":"187.22","NĐ NLM ROTOR (˚C)":"33 ± 3","NĐ NLM RAM-CỮA XÃ (˚C)":"33 ± 3","NHIỆT ĐỘ  XẢ MAX (˚C)":"115"},{"BTP":"Q117HL","MÃ ĐƠN":"01-01 (8/5/24)","DÂY CHUYỀN":"270L","KL CAO SU (kg)":"171","KL HÓA CHẤT (kg)":"3","KL HL (kg)":"13","Tổng KL (kg)":"187","NĐ NLM ROTOR (˚C)":"34 ± 3","NĐ NLM RAM-CỮA XÃ (˚C)":"34 ± 3","NHIỆT ĐỘ  XẢ MAX (˚C)":"115"},{"BTP":"Q126","MÃ ĐƠN":"01-08 (14/03/2025)","DÂY CHUYỀN":"270L","KL CAO SU (kg)":"186","KL HÓA CHẤT (kg)":"3.64","Tổng KL (kg)":"189.64","NĐ NLM ROTOR (˚C)":"32 ± 3","NĐ NLM RAM-CỮA XÃ (˚C)":"32 ± 3","NHIỆT ĐỘ  XẢ MAX (˚C)":"115"},{"BTP":"Q126HL","MÃ ĐƠN":"01-08 (14/03/2025)","DÂY CHUYỀN":"270L","KL CAO SU (kg)":"177","KL HÓA CHẤT (kg)":"3.44","KL HL (kg)":"9","Tổng KL (kg)":"189.44","NĐ NLM ROTOR (˚C)":"32 ± 3","NĐ NLM RAM-CỮA XÃ (˚C)":"32 ± 3","NHIỆT ĐỘ  XẢ MAX (˚C)":"115"},{"BTP":"Q128","MÃ ĐƠN":"01-07 (24/12/23)","DÂY CHUYỀN":"270L","KL CAO SU (kg)":"189","KL HÓA CHẤT (kg)":"3.6","Tổng KL (kg)":"192.6","NĐ NLM ROTOR (˚C)":"32 ± 3","NĐ NLM RAM-CỮA XÃ (˚C)":"32 ± 3","NHIỆT ĐỘ  XẢ MAX (˚C)":"115"},{"BTP":"Q128HL","MÃ ĐƠN":"01-07 (24/12/23)","DÂY CHUYỀN":"270L","KL CAO SU (kg)":"180","KL HÓA CHẤT (kg)":"3.43","KL HL (kg)":"9","Tổng KL (kg)":"192.43","NĐ NLM ROTOR (˚C)":"32 ± 3","NĐ NLM RAM-CỮA XÃ (˚C)":"32 ± 3","NHIỆT ĐỘ  XẢ MAX (˚C)":"115"},{"BTP":"Q210","MÃ ĐƠN":"01-05 (31/12/25)","DÂY CHUYỀN":"270L","KL CAO SU (kg)":"197","KL HÓA CHẤT (kg)":"3.22","Tổng KL (kg)":"200.22","NĐ NLM ROTOR (˚C)":"32 ± 3","NĐ NLM RAM-CỮA XÃ (˚C)":"32 ± 3","NHIỆT ĐỘ  XẢ MAX (˚C)":"115"},{"BTP":"Q210HL","MÃ ĐƠN":"01-05 (31/12/25)","DÂY CHUYỀN":"270L","KL CAO SU (kg)":"183","KL HÓA CHẤT (kg)":"2.99","KL HL (kg)":"14","Tổng KL (kg)":"199.99","NĐ NLM ROTOR (˚C)":"32 ± 3","NĐ NLM RAM-CỮA XÃ (˚C)":"32 ± 3","NHIỆT ĐỘ  XẢ MAX (˚C)":"115"},{"BTP":"Q310","MÃ ĐƠN":"01-07 (31/12/25)","DÂY CHUYỀN":"270L","KL CAO SU (kg)":"185","KL HÓA CHẤT (kg)":"3.47","Tổng KL (kg)":"188.47","NĐ NLM ROTOR (˚C)":"32 ± 3","NĐ NLM RAM-CỮA XÃ (˚C)":"32 ± 3","NHIỆT ĐỘ  XẢ MAX (˚C)":"115"},{"BTP":"Q410","MÃ ĐƠN":"01-07 (28/1/26)","DÂY CHUYỀN":"270L","KL CAO SU (kg)":"184","KL HÓA CHẤT (kg)":"7.58","Tổng KL (kg)":"191.58","NĐ NLM ROTOR (˚C)":"32 ± 3","NĐ NLM RAM-CỮA XÃ (˚C)":"32 ± 3","NHIỆT ĐỘ  XẢ MAX (˚C)":"105"},{"BTP":"Q410HL","MÃ ĐƠN":"01-07 (28/1/26)","DÂY CHUYỀN":"270L","KL CAO SU (kg)":"164","KL HÓA CHẤT (kg)":"6.78","KL HL (kg)":"20","Tổng KL (kg)":"190.78","NĐ NLM ROTOR (˚C)":"32 ± 3","NĐ NLM RAM-CỮA XÃ (˚C)":"32 ± 3","NHIỆT ĐỘ  XẢ MAX (˚C)":"105"},{"BTP":"Q420","MÃ ĐƠN":"01-05 (31/12/25)","DÂY CHUYỀN":"270L","KL CAO SU (kg)":"194","KL HÓA CHẤT (kg)":"4.82","Tổng KL (kg)":"198.82","NĐ NLM ROTOR (˚C)":"32 ± 3","NĐ NLM RAM-CỮA XÃ (˚C)":"32 ± 3","NHIỆT ĐỘ  XẢ MAX (˚C)":"105"},{"BTP":"Q420HL","MÃ ĐƠN":"01-05 (31/12/25)","DÂY CHUYỀN":"270L","KL CAO SU (kg)":"174","KL HL (kg)":"20","Tổng KL (kg)":"198.32","NĐ NLM ROTOR (˚C)":"32 ± 3","NĐ NLM RAM-CỮA XÃ (˚C)":"32 ± 3","NHIỆT ĐỘ  XẢ MAX (˚C)":"105"},{"BTP":"Q430","MÃ ĐƠN":"01-09 (31/12/25)","DÂY CHUYỀN":"270L","KL CAO SU (kg)":"195","KL HÓA CHẤT (kg)":"3.76","Tổng KL (kg)":"198.76","NĐ NLM ROTOR (˚C)":"32 ± 3","NĐ NLM RAM-CỮA XÃ (˚C)":"32 ± 3","NHIỆT ĐỘ  XẢ MAX (˚C)":"105"},{"BTP":"Q510","MÃ ĐƠN":"01-08 (2/2/26)","DÂY CHUYỀN":"270L","KL CAO SU (kg)":"196","KL HÓA CHẤT (kg)":"3.94","Tổng KL (kg)":"199.94","NĐ NLM ROTOR (˚C)":"32 ± 3","NĐ NLM RAM-CỮA XÃ (˚C)":"32 ± 3","NHIỆT ĐỘ  XẢ MAX (˚C)":"105"},{"BTP":"Q610","MÃ ĐƠN":"01-05 (28/1/26)","DÂY CHUYỀN":"270L","KL CAO SU (kg)":"187","KL HÓA CHẤT (kg)":"9.11","Tổng KL (kg)":"196.11","NĐ NLM ROTOR (˚C)":"32 ± 3","NĐ NLM RAM-CỮA XÃ (˚C)":"32 ± 3","NHIỆT ĐỘ  XẢ MAX (˚C)":"105"},{"BTP":"Q710","MÃ ĐƠN":"01-03 (31/12/25)","DÂY CHUYỀN":"270L","KL CAO SU (kg)":"189","KL HÓA CHẤT (kg)":"11.67","Tổng KL (kg)":"200.67","NĐ NLM ROTOR (˚C)":"32 ± 3","NĐ NLM RAM-CỮA XÃ (˚C)":"32 ± 3","NHIỆT ĐỘ  XẢ MAX (˚C)":"105"},{"BTP":"Q720","MÃ ĐƠN":"01-05 (31/12/25)","DÂY CHUYỀN":"270L","KL CAO SU (kg)":"181","KL HÓA CHẤT (kg)":"16.85","Tổng KL (kg)":"197.85","NĐ NLM ROTOR (˚C)":"32 ± 3","NĐ NLM RAM-CỮA XÃ (˚C)":"32 ± 3","NHIỆT ĐỘ  XẢ MAX (˚C)":"115"},{"BTP":"Q810","MÃ ĐƠN":"01-04 (31/12/25)","DÂY CHUYỀN":"270L","KL CAO SU (kg)":"180","KL HÓA CHẤT (kg)":"11.54","Tổng KL (kg)":"191.54","NĐ NLM ROTOR (˚C)":"32 ± 3","NĐ NLM RAM-CỮA XÃ (˚C)":"32 ± 3","NHIỆT ĐỘ  XẢ MAX (˚C)":"105"},{"BTP":"Q830","MÃ ĐƠN":"01-04 (31/12/25)","DÂY CHUYỀN":"270L","KL CAO SU (kg)":"168","KL HÓA CHẤT (kg)":"11.59","Tổng KL (kg)":"179.59","NĐ NLM ROTOR (˚C)":"32 ± 3","NĐ NLM RAM-CỮA XÃ (˚C)":"32 ± 3","NHIỆT ĐỘ  XẢ MAX (˚C)":"105"},{"BTP":"Q850","MÃ ĐƠN":"01-03 (12/11/25)","DÂY CHUYỀN":"270L","KL CAO SU (kg)":"182","KL HÓA CHẤT (kg)":"8.85","Tổng KL (kg)":"190.85","NĐ NLM ROTOR (˚C)":"32 ± 3","NĐ NLM RAM-CỮA XÃ (˚C)":"32 ± 3","NHIỆT ĐỘ  XẢ MAX (˚C)":"105"},{"BTP":"Q870","MÃ ĐƠN":"01-03 (31/12/25)","DÂY CHUYỀN":"270L","KL CAO SU (kg)":"177","KL HÓA CHẤT (kg)":"11.58","Tổng KL (kg)":"188.58","NĐ NLM ROTOR (˚C)":"32 ± 3","NĐ NLM RAM-CỮA XÃ (˚C)":"32 ± 3","NHIỆT ĐỘ  XẢ MAX (˚C)":"105"},{"BTP":"Q910","MÃ ĐƠN":"01-12 (28/1/26)","DÂY CHUYỀN":"270L","KL CAO SU (kg)":"194","KL HÓA CHẤT (kg)":"6.21","Tổng KL (kg)":"200.21","NĐ NLM ROTOR (˚C)":"32 ± 3","NĐ NLM RAM-CỮA XÃ (˚C)":"32 ± 3","NHIỆT ĐỘ  XẢ MAX (˚C)":"105"},{"BTP":"Q950","MÃ ĐƠN":"01-07 (28/1/26)","DÂY CHUYỀN":"270L","KL CAO SU (kg)":"195","KL HÓA CHẤT (kg)":"6.99","Tổng KL (kg)":"201.99","NĐ NLM ROTOR (˚C)":"32 ± 3","NĐ NLM RAM-CỮA XÃ (˚C)":"32 ± 3","NHIỆT ĐỘ  XẢ MAX (˚C)":"105"},{"BTP":"Q950HL","MÃ ĐƠN":"01-07 (28/1/26)","DÂY CHUYỀN":"270L","KL CAO SU (kg)":"185","KL HÓA CHẤT (kg)":"6.63","KL HL (kg)":"10","Tổng KL (kg)":"201.63","NĐ NLM ROTOR (˚C)":"32 ± 3","NĐ NLM RAM-CỮA XÃ (˚C)":"32 ± 3","NHIỆT ĐỘ  XẢ MAX (˚C)":"105"},{"BTP":"SGF21","MÃ ĐƠN":"01-02 (21/01/2022)","DÂY CHUYỀN":"LK10","KL CAO SU (kg)":"8.1","KL HÓA CHẤT (kg)":"-8.1","NĐ NLM ROTOR (˚C)":"32 ± 3","NĐ NLM RAM-CỮA XÃ (˚C)":"32 ± 3"},{"GROUP":"1"},{"GROUP":"2"},{"GROUP":"3"},{"GROUP":"4"},{"GROUP":"5"},{"GROUP":"6"},{"BTP":"END","MÃ ĐƠN":"END"}]}'; var timeold = '11-4-2026 8:29';
+//*#
+//---bien toan cuc-----------
+var host = "https://canluyen.com/2c4a88383dab0b8c57f461c217caa5e4"
+var printbtp = "";	//gia tri hien thi btp
+var info = "";	// gia tri hien thi DPC
+var stac = 0;   // gia tri vi tri bat dau btp gdc
+var stoc = 0;	// gia tri vi tri ket thuc btp gdc
+var stad = 0;   // gia tri vi tri bat dau btp gd1, cd
+var stod = 0;	// gia tri vi tri ket thuc btp gd1, cd
+var nhomds = []; //gia tri vi tri nhom gd1
+var nhomdc = []; //gia tri vi tri nhom gd1
+var nhomd = []; //gia tri vi tri nhom gd1
+var nhomc = []; //gia tri vi tri nhom gdc
+var btpview = ""; // gia tri btp
+
+
+//--------chuong trinh chinh-----
+obj = JSON.parse(DATA); // giai ma json data
+for (i = 0;i < obj.gd1.length; i++) { //hien thi btp
+	if (obj.gd1[i].BTP != undefined){
+		printbtp = printbtp + '<option value="'+ obj.gd1[i].BTP +'">' +obj.gd1[i].BTP+ '</option>'; 
+	}
+}
+document.getElementById("btp").innerHTML = '<select id="BTP" onchange="showdata(this.value)" ><option value="BTPC">Chọn BTP</option>' + printbtp + '</select>';
+document.getElementById("sch").innerHTML = '<input type="text" id="myseach" onkeyup="seach()" placeholder="Tìm BTP...">';
+document.getElementById("update").innerHTML = '<p>Dữ liệu cập nhập ngày: ' + timeold + '<br> Nếu dữ liệu không đúng thực tế. <a href="'+ host +'/download.php?file=html&dpc=radial">Vui lòng nhấn vào đây để tải file mới đã cập nhập dữ liệu</a> hoặc liên hệ: 0389749039 <p>';
+
+var oldgroupc = '';
+var j = 0;
+for (i in obj.gdc) { // lay vi tri nhom gdc
+	if (obj.gdc[i].GROUP != oldgroupc && obj.gdc[i].GROUP != undefined){
+		nhomc[j] = i; 
+		j++;
+		oldgroupc = obj.gdc[i].GROUP;
+	}
+}
+var s = 0;
+var c = 0;
+for (i in obj.gd1) { // lay vi tri nhom gd1, cd
+	if (obj.gd1[i].GROUP == 'S'){
+		nhomds[s] = i;
+		s++;
+	}
+	if (obj.gd1[i].GROUP == 'C'){
+		nhomdc[c] = i; 
+		c++;
+	}
+	if (obj.gd1[i].GROUP == 3){
+		nhomd[0] = i; 
+	}
+	if (obj.gd1[i].GROUP == 4){
+		nhomd[1] = i; 
+	}
+	if (obj.gd1[i].GROUP == 6){
+		nhomd[2] = i; 
+	}
+}
+console.log(nhomd);
+console.log(nhomds);
+console.log(nhomdc);
+console.log(nhomc);
+//--------------------------------
+function seach() { //tim kiem BTP
+    var input, remosp, filter, sel, opt, i, txtValue;
+    input = document.getElementById("myseach");
+	remosp = input.value.split(' ').join('');
+    filter = remosp.toUpperCase();
+    sel = document.getElementById("BTP");
+    for (i = 0; i < sel.options.length; i++) {
+        opt = sel.options[i];
+        txtValue = opt.textContent || opt.innerText;
+		if(txtValue != 'BTPC'){
+			if (txtValue.toUpperCase().indexOf(filter) > -1) {
+				sel.options[i].style.display = "";
+			} else {
+				sel.options[i].style.display = "none";
+			}
+		}
+    }
+}
+
+function showdata(str) { // hien thi tuy chon day chuyen
+	btpview = str; //lay gia tri btp
+	//---------hien thi day chuyen gdc --------------
+	info = "";
+	var tc = 0;
+	for (i in obj.gdc) {
+		if (obj.gdc[i].BTP == str){
+			stac = i;
+		}
+	}
+	for (i = stac; i < obj.gdc.length; i++) {
+		if (obj.gdc[i].BTP != str & obj.gdc[i].BTP != undefined & tc == 0){
+			stoc = i;
+			tc = 1;
+		}
+	}
+	var printdcgdc = "";
+	for (i = stac; i < stoc; i++) {    
+		var dataele = "";
+		printdcgdc = printdcgdc + '<option value="'+ obj.gdc[i]["DÂY CHUYỀN"] +'">' +obj.gdc[i]["DÂY CHUYỀN"]+ '</option>';
+		if (i == stac){ // hien thi thong tin don pha che
+			var keyobj = Object.keys(obj.gdc[i]);
+			var valobj = Object.values(obj.gdc[i])
+			for (j = 0;j < 3; j++) {
+				if (keyobj[0] == "GROUP" && j > 0){
+					dataele = dataele +'<td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td>'	
+				}
+				else if(keyobj[0] != "GROUP" && j <2){
+					dataele = dataele +'<td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td>'
+				}
+			}
+			info = info + dataele;
+		}
+	}
+	
+	//---------hien thi day chuyen gd1,cd --------------
+	var td = 0;
+	for (i in obj.gd1) {
+		if (obj.gd1[i].BTP == str){
+			stad = i;
+		}
+	}
+	for (i = stad; i < obj.gd1.length; i++) {
+		if (obj.gd1[i].BTP != str & obj.gd1[i].BTP != undefined & td == 0){
+			stod = i;
+			td = 1;
+		}
+	}
+	var printdcgd1 = "";
+	for (i = stad; i < stod; i++) {    
+		printdcgd1 = printdcgd1 + '<option value="'+ obj.gd1[i]["DÂY CHUYỀN"] +'">' +obj.gd1[i]["DÂY CHUYỀN"]+ '</option>';
+	}
+	//----------print html-------------
+	document.getElementById("info").innerHTML = '<table style="width:100%"><tr>'+ info +'</tr></table>';
+	document.getElementById("dcgdc").innerHTML = '<select id="dcc" onchange="showdcgdc(this.value)" ><option value="DCC">Chọn dây chuyền GĐC</option>' + printdcgdc + '</select>';
+	document.getElementById("dcgd1").innerHTML = '<select id="dc1" onchange="showdcgd1(this.value)" ><option value="DC1">Chọn dây chuyền GĐ1,CĐ</option>' + printdcgd1 + '</select>';
+	document.getElementById("cont").innerHTML = '';
+	document.getElementById("myseach").value = "";
+	seach();
+}
+
+function showdcgd1(str) { //hien thi gia tri gd1, cd
+	var dataall = "";
+	for (i = stad; i < stod; i++) {
+		if(obj.gd1[i]["DÂY CHUYỀN"] == str){	
+			var keyobj = Object.keys(obj.gd1[i]);
+			var valobj = Object.values(obj.gd1[i])
+			var datael = "";
+			for (j = 0;j < keyobj.length; j++) {
+				if (i == stad){ // in du lieu day chuyen bat dau btp gd1
+					if(keyobj[j] != "GROUP"){ // khong hien thi nhom
+						if(keyobj[j] != "BTP"){ // khong hien thi BTP							
+							if(keyobj[j] != "MÃ ĐƠN"){ // khong hien thi ma don
+								datael = datael + printgd1(i, nhomd, nhomds, nhomdc, keyobj[j], valobj[j], btpview)
+							}
+						}
+					}					
+				}
+				else{	// in du lieu day chuyen con lai btp gd1		
+					datael = datael + printgd1(i, nhomd, nhomds, nhomdc, keyobj[j], valobj[j], btpview)
+				}
+			}
+			dataall = dataall + datael;
+		}
+	}
+	document.getElementById('dcc').getElementsByTagName('option')[0].selected = 'selected';
+	document.getElementById("cont").innerHTML = '<table style="width:100%"><tr><th>GĐ 1; CĐ</th><th>Giá trị</th><th>Min</th><th>Max</th></tr> '+ dataall +'</table>'
+}
+
+function showdcgdc(str) { // hien thi du lieu gdc
+	var dataall = "";
+	for (i = stac; i < stoc; i++) {
+		if(obj.gdc[i]["DÂY CHUYỀN"] == str){	
+			var keyobj = Object.keys(obj.gdc[i]);
+			var valobj = Object.values(obj.gdc[i])
+			var datael = "";
+			for (j = 0;j < keyobj.length; j++) {
+				if (i == stac){ // hien thi du lieu day chuyen bat dau btp gdc
+					if(keyobj[j] != "GROUP"){ 
+						if(keyobj[j] != "BTP"){
+							if(keyobj[j] != "MÃ ĐƠN"){
+								datael = datael + printgdc(i, nhomc, keyobj[j], valobj[j]);
+							}
+						}
+					}
+				}
+				else{	// hien thi du lieu day chuyen con lai btp gdc		
+					datael = datael + printgdc(i, nhomc, keyobj[j], valobj[j]);
+				}
+			}
+			dataall = dataall + datael;
+		}
+	}
+	document.getElementById('dc1').getElementsByTagName('option')[0].selected = 'selected';
+	document.getElementById("cont").innerHTML = '<table style="width:100%"><tr><th>GĐ cuối</th><th>Giá trị</th><th>Min</th><th>Max</th></tr> '+ dataall +'</table>'
+}
+
+function caldata(val, ch, tole, rou) { //tinh hieu chinh (gia tri, kenh, %gia tri, lam tron)
+ var result;
+ var value = parseFloat(val)
+ var denta = (value * tole)/100
+ result = (ch == 0) ? value - denta : value + denta;
+ return result.toFixed(rou);
+}
+
+function printgd1(stt, index, indexs, indexc, key, val, btpw) {
+	var data;
+	if(key == "HD10 GĐ1 (kg)" || key == "HD23 GĐ1 (g)" || key == "HD11" || key == "HD12" || key == "HD13" || key == "HD14" || key == "HD10 GĐ2 (kg)"){ //in du lieu hieu chinh hoa deo
+		if(stt < parseInt(index[0], 10)){ //hien thi chinh HD23 radial
+			for (n = 0; n < indexs.length; n++) {
+				if(indexs[n] == i){ // hieu chinh hd23 dung so luyen
+					data = '<tr><td>' + key + '</td><td>' + val + '</td><td>0</td><td>800</td></tr>'
+				}
+			}
+			for (n = 0; n < indexc.length; n++) {
+				if(indexc[n] == i){ // hieu chinh hd23 dung su cuc
+					data = '<tr><td>' + key + '</td><td>' + val + '</td><td>0</td><td>950</td></tr>'
+				}
+			}
+		}
+		else if(i >= parseInt(index[0], 10) && i < parseInt(index[1], 10)){ //hien thi chinh dau nhom 3
+			if(btpw == "C12" || btpw == "C21"){ // khong chinh dau C12, C21
+				data = '<tr><td>' + key + '</td><td>' + val + '</td><td></td><td></td></tr>'
+			}
+			else{ // chinh dau 50% con lai
+				data = '<tr><td>' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 50, 2) +'</td><td>'+ caldata(val, 1, 50, 2) +'</td></tr>'	
+			}
+		}
+		else if(i >= parseInt(index[1], 10) && i < parseInt(index[2], 10)){ //hien thi chinh dau nhom 4
+			if(key == "HD23 GĐ1 (g)"){ //chinh hd23
+				data = '<tr><td>' + key + '</td><td>' + val + '</td><td>0</td><td>580</td></tr>'
+			}
+			else{
+				if(btpw == "C41" || btpw == "C42"){ //khong chinh dau C41, C42
+					data = '<tr><td>' + key + '</td><td>' + val + '</td><td></td><td></td></tr>'
+				}
+				else if(btpw == "Y41" || btpw == "Y42"){ // chinh dau 50% Y41, Y42
+					data = '<tr><td>' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 50, 2) +'</td><td>'+ caldata(val, 1, 50, 2) +'</td></tr>'
+				}
+				else { // chinh dau 40% con lai
+					data = '<tr><td>' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 40, 2) +'</td><td>'+ caldata(val, 1, 40, 2) +'</td></tr>'
+				}
+			}
+		}
+		else if(i >= parseInt(index[2], 10)){ //hien thi chinh dau nhom 6
+			if(key == "HD23 GĐ1 (g)"){ //chinh hd23
+				data = '<tr><td>' + key + '</td><td>' + val + '</td><td>0</td><td>580</td></tr>'
+			}
+			else {
+				data = '<tr><td>' + key + '</td><td>' + val + '</td><td></td><td></td></tr>'
+			}
+		}
+	}  
+	else{ //in du lieu khac
+		if(key == "KL GĐ1 CHƯA HÓA DẺO (kg)" || key == "KL GĐ2 CHƯA HÓA DẺO (kg)"){ //doi mau khoi luong chua dau
+			data = '<tr style="color:red"><td>' + key + '</td><td>' + val + '</td><td></td><td></td></tr>'
+		}
+		else if(key == "KL CAO SU GĐ2 (kg)"){ //phan biet gd2
+			data = '<tr style="background-color:#DEB887"><td>' + key + '</td><td>' + val + '</td><td></td><td></td></tr>'
+		} 
+		else if(key == "KL CAO SU GĐ3 (kg)"){ //phan biet gd3
+			data = '<tr style="background-color:#5F9EA0"><td>' + key + '</td><td>' + val + '</td><td></td><td></td></tr>'
+		}
+		else if(key == "THỜI GIAN GĐ1" || key == "THỜI GIAN GĐ2" || key == "THỜI GIAN GĐ3"){ // hien thi thoi gian 
+			data = '<tr><td>' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 10, 0) +'</td><td>'+ caldata(val, 1, 10, 0) +'</td></tr>'
+		}
+		else if(key == "TỐC ĐỘ GĐ1" || key == "TỐC ĐỘ GĐ2" || key == "TỐC ĐỘ GĐ3"){ // hien thi toc do
+			if(val.length <= 2){ // toc do khong doi
+				data = '<tr><td>' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 10, 0) +'</td><td>'+ caldata(val, 1, 10, 0) +'</td></tr>'
+			}
+			else { //toc do thay doi
+				data = '<tr><td>' + key + '</td><td>' + val + '</td><td>-10%</td><td>+10%</td></tr>'
+			}
+		}
+		else{ //in du lieu con lai khong hieu chinh
+			data = '<tr><td>' + key + '</td><td>' + val + '</td><td></td><td></td></tr>'
+		}
+	}
+	return data;
+}
+
+function printgdc(stt, index, key, val) {
+	var data;
+	if (stt < parseInt(index[1], 10)){
+		if(key == "PT01 (g)"){
+			data = '<tr><td>' + key + '</td><td>' + val + '</td><td>0</td><td>600</td></tr>'
+		}
+		else{ // hien thi gia tri con lai
+			data = '<tr><td>' + key + '</td><td>' + val + '</td> <td></td><td> </td></tr>'	
+		}
+	}
+	else if (stt >= parseInt(index[1], 10) && stt < parseInt(index[3], 10)){ // hien thi hieu chinh nhom 4-5
+		if(key == "PT01 (g)"){ // hieu chinh 50% PT01, XT10-39
+			data = '<tr><td>' + key + '</td><td>' +val + '</td><td>'+ caldata(val, 0, 50, 0) +'</td><td>'+ caldata(val, 1, 50, 0) +'</td></tr>'
+		}
+		else if(key.substr(0, 2) == "XT" && key.substr(2, 2) >= 10 && key.substr(2, 2) < 40){ // hieu chinh 50% PT01, XT10-39
+			data = '<tr><td>' + key + '</td><td>' +val + '</td><td>'+ caldata(val, 0, 50, 2) +'</td><td>'+ caldata(val, 1, 50, 2) +'</td></tr>'
+		}
+		else if(key.substr(0, 2) == "XT" && key.substr(2, 2) >= 40 && key.substr(2, 2) < 70){ // hieu chinh 20% XT40-70
+			data = '<tr><td>' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 20, 2) +'</td><td>'+ caldata(val, 1, 20, 2) +'</td></tr>'
+		}
+		else if(key == "THỜI GIAN"){ //hieu chinh thoi gian 10%
+			data = '<tr><td>' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 10, 0) +'</td><td>'+ caldata(val, 1, 10, 0) +'</td></tr>'
+		}
+		else if(key == "TỐC ĐỘ"){ //hieu chinh toc do 10%
+			if(val.length <= 2){ // toc do khong doi
+				data = '<tr><td>' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 10, 0) +'</td><td>'+ caldata(val, 1, 10, 0) +'</td></tr>'
+			}
+			else{ // toc do thay doi
+				data = '<tr><td>' + key + '</td><td>' + val + '</td>-10%<td></td><td>+10%</td></tr>'
+			}
+		}
+		else{ // hien thi gia tri con lai
+			data = '<tr><td>' + key + '</td><td>' + val + '</td> <td></td><td> </td></tr>'	
+		}
+	} 
+	else{ // hien thi hieu chinh nhom 6
+		if(key == "PT01 (g)"){ // hieu chinh 50% PT01
+			data = '<tr><td>' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 50, 0) +'</td><td>'+ caldata(val, 1, 50, 0) +'</td></tr>'
+		}
+		else if(key == "THỜI GIAN"){ //hieu chinh thoi gian 10%
+			data = '<tr><td>' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 10, 0) +'</td><td>'+ caldata(val, 1, 10, 0) +'</td></tr>'
+		}
+		else if(key == "TỐC ĐỘ"){
+			if(val.length <= 2){ // toc do khong doi
+				data = '<tr><td>' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 10, 0) +'</td><td>'+ caldata(val, 1, 10, 0) +'</td></tr>'
+			}
+			else{ // toc do thay doi
+				data = '<tr><td>' + key + '</td><td>' +val + '</td>-10%<td></td><td>+10%</td></tr>'
+			}
+		}
+		else{ // hien thi gia tri con lai
+			data = '<tr><td>' + key + '</td><td>' +val + '</td> <td></td><td> </td></tr>'	
+		}
+	}
+	return data;
+}
+</script>
+</body>
+</html>
