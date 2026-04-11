@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Excel to JSON</title>
+    <style>
+        a:link, a:visited {
+          color: blue;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+        }
+        
+        a:hover, a:active {
+          color: red;
+        }
+    </style>
+    <script src="jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="xlsx.full.min.js"></script>
+    <script type="text/javascript" src="jszip.js"></script>
+</head>
+
+<body>
+    <a href="view.html">>> Trở về trang chủ</a><br><br>
+    <label for="pass">Mật khẩu: </label>
+    <input type="password" id="pass" name="pass">
+    <select id="dpc">
+      <option value="">Chọn ĐPC</option>
+      <option value="bias">Bias</option>
+      <option value="radial">Radial</option>
+    </select>
+    <br><br>
+	<input type="file" id="fileUpload"/>
+    <input type="button" id="upload" value="Upload" onclick="Upload()" />
+    <hr/>
+	<div id="dvjson">
+    </div>
+    <script>
+	function Upload() {
+		
+		//Reference the FileUpload element.
+		var fileUpload = document.getElementById("fileUpload");
+		
+		//Validate whether File is valid Excel file.
+		var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xls|.xlsx)$/;
+		if (regex.test(fileUpload.value.toLowerCase())) {
+			if (typeof (FileReader) != "undefined") {
+				var reader = new FileReader();
+				console.log(reader);
+				//For Browsers other than IE.
+				if (reader.readAsBinaryString) {
+					reader.onload = function (e) {
+						ProcessExcel(e.target.result);	
+					};
+					reader.readAsBinaryString(fileUpload.files[0]);
+				} else {
+					//For IE Browser.
+					reader.onload = function (e) {
+						var data = "";
+						var bytes = new Uint8Array(e.target.result);
+						for (var i = 0; i < bytes.byteLength; i++) {
+							data += String.fromCharCode(bytes[i]);
+						}
+						
+						ProcessExcel(data);
+					};
+					reader.readAsArrayBuffer(fileUpload.files[0]);	
+				}
+			} else {
+				alert("Trình duyệt này không hỗ trợ HTML5.");
+			}
+		} else {
+			alert("Vui lòng chọn file excel");
+		}
+		
+	};
+	
+	function ProcessExcel(data) {
+		//Read the Excel File data.
+		var workBook = XLSX.read(data, {
+			type: 'binary'
+		});
+		jsonData = workBook.SheetNames.reduce((initial, name) => {
+        const sheet = workBook.Sheets[name];
+        initial[name] = XLSX.utils.sheet_to_json(sheet);
+        return initial;
+		}, {});
+		
+		var d = new Date();
+		var datestring = d.getDate()  + "-" + (d.getMonth()+1) + "-" + d.getFullYear() + " " +
+		d.getHours() + ":" + d.getMinutes();
+		var myJSON = JSON.stringify(jsonData);
+		var file_data = "var DATA = '" + myJSON + "';" + " var timeold = '" + datestring + "';";
+		var time_data = "var timenew = '" + datestring + "';";
+		document.getElementById("dvjson").innerHTML = file_data;	
+		var passw = document.getElementById("pass").value;
+		var dpcList = document.getElementById("dpc");
+        var seldpc = dpcList.options[dpcList.selectedIndex].value;
+        var form_data = new FormData(); 
+        form_data.append('passw', passw);
+        form_data.append('dpc', seldpc);
+        form_data.append('file1', file_data);  
+        form_data.append('file2', time_data); 
+        $.ajax({
+            url: 'writedata.php', // point to server-side PHP script 
+            dataType: 'text',  // what to expect back from the PHP script, if anything
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,                         
+            type: 'post',
+            success: function(php_script_response){
+                alert(php_script_response); // display response from the PHP script, if any
+            }
+        });
+        document.getElementById('dpc').getElementsByTagName('option')[0].selected = 'selected';
+	};
+    </script>
+</body>
+</html>

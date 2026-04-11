@@ -1,0 +1,577 @@
+<html>
+<head>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+<meta name="description" content="" />
+<meta name="keywords" content="" />
+<title>DPCBIAS</title>
+<style>
+	a:link, a:visited {
+	  color: blue;
+	  text-align: center;
+	  text-decoration: none;
+	  display: inline-block;
+	}      
+	a:hover, a:active {
+	  color: red;
+	}
+	h2 {
+	  text-align: center;
+	  font-size: 20px;
+	  line-height: 1; 
+	  margin:1px;
+	}
+	table, th, td {
+	  border: 1px solid black;
+	  border-collapse: collapse;
+	}
+	th, td {
+	  padding: 5px;
+	}
+	select{
+		background-color: #1e90ff;
+		width: 100%;
+		color: #ffffff;
+		padding: 5px;
+		font-size: 16px;
+		line-height: 1;
+		border: 0;
+		border-radius: 0;
+	}
+	
+	@media screen and (max-width: 600px) {
+		.top {
+			position: absolute;
+			top: 0px;
+			left: 8px;
+			width: 20%;
+		}
+	}
+	@media screen and (min-width: 620px) {
+		.top {
+			position: absolute;
+			top: 0px;
+			left: 8px;
+			width: 15%;
+		}
+	}
+	
+	.content {
+		display: inline-block;
+		padding: 8px 0px 3px 0px;
+		width: 100%;
+	}
+	.reg {
+		display: inline;
+	}
+	p {
+	  color: navy;
+	}
+	#BTP {
+		width: 55%;
+	}
+	#myseach {
+		width: 40%;
+		font-size: 16px;
+		padding: 5px 20px 5px 20px;
+		border: 1px solid #ddd;
+		margin-left: 7px;
+	}
+</style>
+</head>
+<body>
+
+</style>
+</head>
+<body>
+
+<!-- Thêm ngay sau <body> -->
+<div id="login-overlay">
+    <div class="login-box">
+        <h3>🔐 ĐĂNG NHẬP</h3>
+        <input type="text" id="login-username" placeholder="Tên đăng nhập">
+        <input type="password" id="login-password" placeholder="Mật khẩu">
+        <button onclick="checkLogin()">Đăng nhập</button>
+        <div id="login-error" class="error-msg"></div>
+    </div>
+</div>
+
+<script>
+const VALID_USER = "admin";
+const VALID_PASS = "123456";
+const MASTER_CODE = "031088";  // ← THÊM DÒNG NÀY
+
+function checkLogin() {
+    const username = document.getElementById('login-username').value;
+    const password = document.getElementById('login-password').value;
+    const errorDiv = document.getElementById('login-error');
+    
+    // ← THÊM 2 DÒNG NÀY
+    const customPass = localStorage.getItem('custom_password');
+    const validPass = customPass || VALID_PASS;
+    
+    // ← SỬA DÒNG if NÀY (thay VALID_PASS bằng validPass)
+    if (username === VALID_USER && password === validPass) {
+        localStorage.setItem('dpc_logged_in', 'true');
+        document.getElementById('login-overlay').style.display = 'none';
+    } else {
+        errorDiv.textContent = '❌ Sai tài khoản hoặc mật khẩu!';
+    }
+}
+
+// ← THÊM TOÀN BỘ HÀM NÀY
+function changePasswordWithCode() {
+    const masterCode = prompt("🔑 NHẬP MÃ ĐẶC BIỆT ĐỂ ĐỔI MẬT KHẨU:");
+    
+    if (masterCode !== MASTER_CODE) {
+        alert("❌ Mã không đúng!");
+        return;
+    }
+    
+    const newPass = prompt("🔐 NHẬP MẬT KHẨU MỚI (tối thiểu 4 ký tự):");
+    if (!newPass || newPass.length < 4) {
+        alert("❌ Mật khẩu phải có ít nhất 4 ký tự!");
+        return;
+    }
+    
+    const confirmPass = prompt("🔄 XÁC NHẬN MẬT KHẨU MỚI:");
+    if (newPass !== confirmPass) {
+        alert("❌ Mật khẩu xác nhận không khớp!");
+        return;
+    }
+    
+    localStorage.setItem('custom_password', newPass);
+    localStorage.removeItem('dpc_logged_in');
+    alert("✅ Đổi mật khẩu thành công! Vui lòng đăng nhập lại.");
+    location.reload();
+}
+// ← KẾT THÚC THÊM
+
+if (localStorage.getItem('dpc_logged_in') === 'true') {
+    document.getElementById('login-overlay').style.display = 'none';
+}
+</script>
+
+
+<style>
+#login-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85); display: flex; justify-content: center;
+    align-items: center; z-index: 1000;
+}
+.login-box { background: white; padding: 2rem; border-radius: 16px; width: 90%; max-width: 350px; text-align: center; }
+.login-box input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 8px; }
+.login-box button { width: 100%; padding: 10px; background: #1e90ff; color: white; border: none; border-radius: 8px; cursor: pointer; }
+.error-msg { color: red; margin-top: 10px; font-size: 14px; }
+</style>
+<button onclick="localStorage.removeItem('dpc_logged_in'); location.reload();" style="position:fixed; bottom:15px; right:15px; background:#dc3545; color:white; border:none; padding:8px 16px; border-radius:20px; cursor:pointer;">🚪 Đăng xuất</button>
+<button onclick="changePasswordWithCode()" style="position:fixed; bottom:15px; left:15px; background:#ffc107; color:#333; border:none; padding:8px 16px; border-radius:20px; cursor:pointer; z-index:999;">🔑 Đổi mật khẩu</button>
+<div class="top">
+    <select id="edit" onchange="redirect(this.value)"><option value="dpc">DPC</option><option value="view">Xem hiệu chỉnh</option><option value="code">Xem mã code</option></select>
+</div>
+<h2>ĐƠN PHA CHẾ BIAS</h2>
+<div class="content">
+	<div class="reg" id="btp"></div>
+	<div class="reg" id="sch"></div>
+</div>
+<div id="info"></div>
+<div class="content" id="dcgd1"></div>
+<div class="content" id="dcgdc"></div>
+<div id="cont"></div>
+<div id="update"></div>
+<script src="data/databias.js"></script>
+<script>
+//---bien toan cuc-----------
+var printbtp = "";	//gia tri hien thi btp
+var info = "";	// gia tri hien thi DPC
+var stac = 0;   // gia tri vi tri bat dau btp gdc
+var stoc = 0;	// gia tri vi tri ket thuc btp gdc
+var stad = 0;   // gia tri vi tri bat dau btp gd1, cd
+var stod = 0;	// gia tri vi tri ket thuc btp gd1, cd
+var nhomd = [0, 0]; //gia tri vi tri nhom gd1
+var nhomc = 0; //gia tri vi tri nhom gdc
+var btpview = ""; // gia tri btp
+
+//--------chuong trinh chinh-----
+if (window.DATA && window.timeold) {
+	obj = JSON.parse(DATA); // giai ma json data
+	for (i = 0;i < obj.gdc.length; i++) { //hien thi btp
+		if (obj.gdc[i].BTP != undefined){
+			printbtp = printbtp + '<option value="'+ obj.gdc[i].BTP +'">' +obj.gdc[i].BTP+ '</option>'; 
+		}
+	}
+	document.getElementById("btp").innerHTML = '<select id="BTP" onchange="showdata(this.value)" ><option value="BTPC">Chọn BTP</option>' + printbtp + '</select>';
+	document.getElementById("sch").innerHTML = '<input type="text" id="myseach" placeholder="Tìm BTP...">';
+	document.getElementById("update").innerHTML = '<p>Dữ liệu cập nhập ngày: ' + timeold + '<br> Nếu dữ liệu không đúng thực tế, vui lòng liên hệ: Tel:0793600220 <p>';
+
+	for (i in obj.gdc) { // lay vi tri nhom gdc
+		if (obj.gdc[i].GROUP == 6){
+			nhomc = i; 
+		}
+	}
+
+	for (i in obj.gd1) { // lay vi tri nhom gd1, cd
+		if (obj.gd1[i].GROUP == 4){
+		nhomd[0] = i; 
+		}
+		if (obj.gd1[i].GROUP == 6){
+		nhomd[1] = i; 
+		}
+	}
+	console.log(nhomc);
+	console.log(nhomd);
+	
+    let elem = document.getElementById('myseach');
+    elem.addEventListener("keyup", function (event) {
+      	seach();
+    });
+} 
+else {
+    document.getElementById("btp").innerHTML = '<a href="DPCBIAS.html" >Vui lòng bật kết nối mạng sau đó tải lại chương trình</a>';
+}
+//--------------------------------
+function seach() { //tim kiem BTP
+    var input, remosp, filter, i, sel, txtValue, printse;
+    input = document.getElementById("myseach");
+	remosp = input.value.split(' ').join('');
+    filter = remosp.toUpperCase();
+	for (i = 0;i < obj.gdc.length; i++) { //hien thi btp
+		if (obj.gdc[i].BTP != undefined){
+		    txtValue = obj.gdc[i].BTP;
+		    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+				printse = printse + '<option value="'+ txtValue +'">' + txtValue + '</option>'; 
+			}
+		}
+	}
+	document.getElementById("btp").innerHTML = '<select id="BTP" onchange="showdata(this.value)" ><option value="BTPC">Chọn BTP</option>' + printse + '</select>';
+}
+
+function showdata(str) { // hien thi tuy chon day chuyen
+	btpview = str; //lay gia tri btp
+	//---------hien thi day chuyen gdc --------------
+	info = "";
+	var tc = 0;
+	for (i in obj.gdc) {
+		if (obj.gdc[i].BTP == str){
+			stac = i;
+		}
+	}
+	for (i = stac; i < obj.gdc.length; i++) {
+		if (obj.gdc[i].BTP != str & obj.gdc[i].BTP != undefined & tc == 0){
+			stoc = i;
+			tc = 1;
+		}
+	}
+	var printdcgdc = "";
+	for (i = stac; i < stoc; i++) {    
+		var dataele = "";
+		printdcgdc = printdcgdc + '<option value="'+ obj.gdc[i]["DÂY CHUYỀN"] +'">' +obj.gdc[i]["DÂY CHUYỀN"]+ '</option>';
+		if (i == stac){ // hien thi thong tin don pha che
+			var keyobj = Object.keys(obj.gdc[i]);
+			var valobj = Object.values(obj.gdc[i])
+			for (j = 0;j < 3; j++) {
+				if (keyobj[0] == "GROUP" && j > 0){
+					dataele = dataele +'<td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td>'	
+				}
+				else if(keyobj[0] != "GROUP" && j <2){
+					dataele = dataele +'<td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td>'
+				}
+			}
+			info = info + dataele;
+		}
+	}
+	//---------hien thi day chuyen gd1,cd --------------
+	var td = 0;
+	for (i in obj.gd1) {
+		if (obj.gd1[i].BTP == str){
+			stad = i;
+		}
+	}
+	for (i = stad; i < obj.gd1.length; i++) {
+		if (obj.gd1[i].BTP != str & obj.gd1[i].BTP != undefined & td == 0){
+			stod = i;
+			td = 1;
+		}
+	}
+	var printdcgd1 = "";
+	for (i = stad; i < stod; i++) {    
+		printdcgd1 = printdcgd1 + '<option value="'+ obj.gd1[i]["DÂY CHUYỀN"] +'">' +obj.gd1[i]["DÂY CHUYỀN"]+ '</option>';
+	}
+	//----------print html-------------
+	document.getElementById("info").innerHTML = '<table style="width:100%"><tr>'+ info +'</tr></table>';
+	document.getElementById("dcgdc").innerHTML = '<select id="dcc" onchange="showdcgdc(this.value)" ><option value="DCC">Chọn dây chuyền GĐC</option>' + printdcgdc + '</select>';
+	document.getElementById("dcgd1").innerHTML = '<select id="dc1" onchange="showdcgd1(this.value)" ><option value="DC1">Chọn dây chuyền GĐ1,CĐ</option>' + printdcgd1 + '</select>';
+	document.getElementById("cont").innerHTML = '';
+	document.getElementById("myseach").value = "";
+	seach();
+}
+
+function showdcgdc(str) { // hien thi du lieu gdc
+	var dataall = "";
+	for (i = stac; i < stoc; i++) {
+		if(obj.gdc[i]["DÂY CHUYỀN"] == str){	
+			var keyobj = Object.keys(obj.gdc[i]);
+			var valobj = Object.values(obj.gdc[i])
+			var datael = "";
+			for (j = 0;j < keyobj.length; j++) {
+				if (i == stac){ // hien thi du lieu day chuyen bat dau btp gdc
+					if(keyobj[j] != "GROUP"){ 
+						if(keyobj[j] != "BTP"){
+							if(keyobj[j] != "MÃ ĐƠN"){
+								if (i < parseInt(nhomc, 10)){ // hien thi hieu chinh nhom 1-5
+									if(keyobj[j] == "PT01" || (keyobj[j].substr(0, 2) == "XT" && keyobj[j].substr(2, 2) >= 10 && keyobj[j].substr(2, 2) < 40)){ // hieu chinh 50% PT01, XT10-39
+										datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td>'+ caldata(valobj[j],0,50,2) +'</td><td>'+ caldata(valobj[j],1,50,2) +'</td></tr>'
+									}
+									else if(keyobj[j].substr(0, 2) == "XT" && keyobj[j].substr(2, 2) >= 40 && keyobj[j].substr(2, 2) < 70){ // hieu chinh 20% XT40-70
+										datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td>'+ caldata(valobj[j],0,20,2) +'</td><td>'+ caldata(valobj[j],1,20,2) +'</td></tr>'
+									}
+									else if(keyobj[j] == "THỜI GIAN"){ //hieu chinh thoi gian 10%
+									datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td>'+ caldata(valobj[j],0,10,0) +'</td><td>'+ caldata(valobj[j],1,10,0) +'</td></tr>'
+									}
+									else if(keyobj[j] == "TỐC ĐỘ"){ //hieu chinh toc do 10%
+										if(valobj[j].length <= 2){ // toc do khong doi
+											datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td>'+ caldata(valobj[j],0,10,0) +'</td><td>'+ caldata(valobj[j],1,10,0) +'</td></tr>'
+										}
+										else{ // toc do thay doi
+											datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td>-10%</td><td>+10%</td></tr>'
+										}
+									}
+									else{ // hien thi gia tri con lai
+										datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td> <td></td><td> </td></tr>'	
+									}
+								} 
+								else{ // hien thi hieu chinh nhom 6
+									if(keyobj[j] == "PT01"){ // hieu chinh 50% PT01
+										datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td>'+ caldata(valobj[j],0,50,2) +'</td><td>'+ caldata(valobj[j],1,50,2) +'</td></tr>'
+									}
+									else if(keyobj[j] == "THỜI GIAN"){ //hieu chinh thoi gian 10%
+									datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td>'+ caldata(valobj[j],0,10,0) +'</td><td>'+ caldata(valobj[j],1,10,0) +'</td></tr>'
+									}
+									else if(keyobj[j] == "TỐC ĐỘ"){
+										if(valobj[j].length <= 2){ // toc do khong doi
+											datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td>'+ caldata(valobj[j],0,10,0) +'</td><td>'+ caldata(valobj[j],1,10,0) +'</td></tr>'
+										}
+										else{ // toc do thay doi
+											datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td>-10%</td><td>+10%</td></tr>'
+										}
+									}
+									else{ // hien thi gia tri con lai
+										datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td> <td></td><td> </td></tr>'	
+									}
+								}
+							}
+						}
+					}
+				}
+				else{	// hien thi du lieu day chuyen ket thuc btp gdc		
+					if (i < parseInt(nhomc, 10)){				
+						if(keyobj[j] == "PT01" || (keyobj[j].substr(0, 2) == "XT" && keyobj[j].substr(2, 2) >= 10 && keyobj[j].substr(2, 2) < 40)){
+							datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td>'+ caldata(valobj[j],0,50,2) +'</td><td>'+ caldata(valobj[j],1,50,2) +'</td></tr>'
+						}
+						else if(keyobj[j].substr(0, 2) == "XT" && keyobj[j].substr(2, 2) >= 40 && keyobj[j].substr(2, 2) < 70){
+							datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td>'+ caldata(valobj[j],0,20,2) +'</td><td>'+ caldata(valobj[j],1,20,2) +'</td></tr>'
+						}
+						else if(keyobj[j] == "THỜI GIAN" || keyobj[j] == "TỐC ĐỘ"){
+							datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td>'+ caldata(valobj[j],0,10,0) +'</td><td>'+ caldata(valobj[j],1,10,0) +'</td></tr>'
+						}
+						else if(keyobj[j] == "TỐC ĐỘ"){
+							if(valobj[j].length <= 2){ // toc do khong doi
+								datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td>'+ caldata(valobj[j],0,10,0) +'</td><td>'+ caldata(valobj[j],1,10,0) +'</td></tr>'
+							}
+							else{ // toc do thay doi
+								datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td>-10%</td><td>+10%</td></tr>'
+							}
+						}
+						else{
+							datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td> <td></td><td> </td></tr>'	
+						}
+					}
+					else {
+						if(keyobj[j] == "PT01"){
+							datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td>'+ caldata(valobj[j],0,50,2) +'</td><td>'+ caldata(valobj[j],1,50,2) +'</td></tr>'
+						}
+						else if(keyobj[j] == "THỜI GIAN"){
+							datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td>'+ caldata(valobj[j],0,10,0) +'</td><td>'+ caldata(valobj[j],1,10,0) +'</td></tr>'
+						}
+						else if(keyobj[j] == "TỐC ĐỘ"){
+							if(valobj[j].length <= 2){ // toc do khong doi
+								datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td>'+ caldata(valobj[j],0,10,0) +'</td><td>'+ caldata(valobj[j],1,10,0) +'</td></tr>'
+							}
+							else{ // toc do thay doi
+								datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td>-10%</td><td>+10%</td></tr>'
+							}
+						}
+						else{
+							datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td> <td></td><td> </td></tr>'	
+						}
+					}
+				}
+			}
+			dataall = dataall + datael;
+		}
+	}
+	document.getElementById('dc1').getElementsByTagName('option')[0].selected = 'selected';
+	document.getElementById("cont").innerHTML = '<table style="width:100%"><tr><th>GĐ cuối</th><th>Giá trị</th><th>Min</th><th>Max</th></tr> '+ dataall +'</table>'
+}
+
+function showdcgd1(str) { //hien thi gia tri gd1, cd
+	var dataall = "";
+	for (i = stad; i < stod; i++) {
+		if(obj.gd1[i]["DÂY CHUYỀN"] == str){	
+			var keyobj = Object.keys(obj.gd1[i]);
+			var valobj = Object.values(obj.gd1[i])
+			var datael = "";
+			for (j = 0;j < keyobj.length; j++) {
+				if (i == stad){ // in du lieu day chuyen bat dau btp gd1
+					if(keyobj[j] != "GROUP"){ // khong hien thi nhom
+						if(keyobj[j] != "BTP"){ // khong hien thi BTP							
+							if(keyobj[j] != "MÃ ĐƠN"){ // khong hien thi ma don
+								if(keyobj[j] == "HD10" || keyobj[j] == "HD11" || keyobj[j] == "HD12" || keyobj[j] == "HD13" || keyobj[j] == "HD14" || keyobj[j] == "HD10 GĐ2"){
+									if(i < parseInt(nhomd[0], 10)){ //hien thi chinh dau nhom 1,2,3								
+										if(btpview == "C12" || btpview == "C21"){ // khong chinh dau C12, C21
+											datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td></td><td></td></tr>'
+										}
+										else{ // chinh dau 50% con lai
+											datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td>'+ caldata(valobj[j],0,50,2) +'</td><td>'+ caldata(valobj[j],1,50,2) +'</td></tr>'	
+										}
+									}
+									else if(i >= parseInt(nhomd[0], 10) && i < parseInt(nhomd[1], 10)){ //hien thi chinh dau nhom 4
+										if(btpview == "C41" || btpview == "C42"){ //khong chinh dau C41, C42
+											datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td></td><td></td></tr>'
+										}
+										else if(btpview == "Y41" || btpview == "Y42"){ // chinh dau 50% Y41, Y42
+											datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td>'+ caldata(valobj[j],0,50,2) +'</td><td>'+ caldata(valobj[j],1,50,2) +'</td></tr>'
+										}
+										else { // chinh dau 40% con lai
+											datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td>'+ caldata(valobj[j],0,40,2) +'</td><td>'+ caldata(valobj[j],1,40,2) +'</td></tr>'
+										}
+									}
+									else if(i >= parseInt(nhomd[1], 10)){ //hien thi chinh dau nhom 6
+										datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td></td><td></td></tr>'
+									}
+								} 
+								else{ //in du lieu khong hieu chinh
+								    if(keyobj[j] == "KL GĐ1 CHƯA  DẦU" || keyobj[j] == "KL GĐ2 CHƯA  DẦU"){ //doi mau khoi luong chua dau
+            							datael = datael +'<tr style="color:red"><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td></td><td></td></tr>'
+            						}
+									else if(keyobj[j] == "KL CAO SU GĐ2"){ //phan biet gd2
+										datael = datael +'<tr style="background-color:#DEB887"><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td></td><td></td></tr>'
+									} 
+									else if (keyobj[j] == "KL CAO SU GĐ3"){ //phan biet gd3
+										datael = datael +'<tr style="background-color:#5F9EA0"><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td></td><td></td></tr>'
+									}
+									else if(keyobj[j] == "THỜI GIAN GĐ1" || keyobj[j] == "THỜI GIAN GĐ2" || keyobj[j] == "THỜI GIAN GĐ3"){ // hien thi thoi gian 
+										datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td>'+ caldata(valobj[j],0,10,0) +'</td><td>'+ caldata(valobj[j],1,10,0) +'</td></tr>'
+									}
+									else if(keyobj[j] == "TỐC ĐỘ GĐ1" || keyobj[j] == "TỐC ĐỘ GĐ2" || keyobj[j] == "TỐC ĐỘ GĐ3"){ // hien thi toc do
+										if(valobj[j].length <= 2){ // toc do khong doi
+											datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td>'+ caldata(valobj[j],0,10,0) +'</td><td>'+ caldata(valobj[j],1,10,0) +'</td></tr>'
+										}
+										else { //toc do thay doi
+											datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td>-10%</td><td>+10%</td></tr>'
+										}
+									}
+									else{ //in du lieu con lai khong hieu chinh
+										datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td></td><td></td></tr>'
+									}
+								}
+							}
+						}
+					}					
+				}
+				else{	// in du lieu day chuyen con lai btp gd1		
+					if(keyobj[j] == "HD10" || keyobj[j] == "HD11" || keyobj[j] == "HD12" || keyobj[j] == "HD13" || keyobj[j] == "HD14" || keyobj[j] == "HD10 GĐ2"){
+						if(i < parseInt(nhomd[0], 10)){ //hien thi chinh dau nhom 1,2,3								
+							if(btpview == "C12" || btpview == "C21"){ // khong chinh dau C12, C21
+								datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td></td><td></td></tr>'
+							}
+							else{ // chinh dau 50% con lai
+								datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td>'+ caldata(valobj[j],0,50,2) +'</td><td>'+ caldata(valobj[j],1,50,2) +'</td></tr>'	
+							}
+						}
+						else if(i >= parseInt(nhomd[0], 10) && i < parseInt(nhomd[1], 10)){ //hien thi chinh dau nhom 4
+							if(btpview == "C41" || btpview == "C42"){ //khong chinh dau C41, C42
+								datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td></td><td></td></tr>'
+							}
+							else if(btpview == "Y41" || btpview == "Y42"){ // chinh dau 50% Y41, Y42
+								datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td>'+ caldata(valobj[j],0,50,2) +'</td><td>'+ caldata(valobj[j],1,50,2) +'</td></tr>'
+							}
+							else { // chinh dau 40% con lai
+								datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td>'+ caldata(valobj[j],0,40,2) +'</td><td>'+ caldata(valobj[j],1,40,2) +'</td></tr>'
+							}
+						}
+						else if(i >= parseInt(nhomd[1], 10)){ //hien thi khong chinh dau nhom 6
+							datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td></td><td></td></tr>'
+						}						
+					}
+					else{ //in du lieu khong hieu chinh
+						if(keyobj[j] == "KL GĐ1 CHƯA  DẦU" || keyobj[j] == "KL GĐ2 CHƯA  DẦU"){ //doi mau khoi luong chua dau
+							datael = datael +'<tr style="color:red"><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td></td><td></td></tr>'
+						}
+						else if(keyobj[j] == "KL CAO SU GĐ2"){ //phan biet gd2
+							datael = datael +'<tr style="background-color:#DEB887"><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td></td><td></td></tr>'
+						} 
+						else if (keyobj[j] == "KL CAO SU GĐ3"){ //phan biet gd3
+							datael = datael +'<tr style="background-color:#5F9EA0"><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td></td><td></td></tr>'
+						} 
+						else if(keyobj[j] == "THỜI GIAN GĐ1" || keyobj[j] == "THỜI GIAN GĐ2" || keyobj[j] == "THỜI GIAN GĐ3"){ // hien thi thoi gian 
+							datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td>'+ caldata(valobj[j],0,10,0) +'</td><td>'+ caldata(valobj[j],1,10,0) +'</td></tr>'
+						} 
+						else if(keyobj[j] == "TỐC ĐỘ GĐ1" || keyobj[j] == "TỐC ĐỘ GĐ2" || keyobj[j] == "TỐC ĐỘ GĐ3"){ // hien thi toc do
+							if(valobj[j].length <= 2){ // toc do khong doi
+								datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td>'+ caldata(valobj[j],0,10,0) +'</td><td>'+ caldata(valobj[j],1,10,0) +'</td></tr>'
+							}
+							else { //toc do thay doi
+								datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td>-10%</td><td>+10%</td></tr>'
+							}
+						}
+						else{ //in du lieu con lai khong hieu chinh
+							datael = datael +'<tr><td>' + keyobj[j] + '</td><td>' +valobj[j] + '</td><td></td><td></td></tr>'
+						}
+					}
+				}
+			}
+			dataall = dataall + datael;
+		}
+	}
+	document.getElementById('dcc').getElementsByTagName('option')[0].selected = 'selected';
+	document.getElementById("cont").innerHTML = '<table style="width:100%"><tr><th>GĐ 1; CĐ</th><th>Giá trị</th><th>Min</th><th>Max</th></tr> '+ dataall +'</table>'
+}
+
+function caldata(val, ch, tole, rou) { //tinh hieu chinh (gia tri, kenh, %gia tri, lam tron)
+ var result;
+ var value = parseFloat(val)
+ var denta = (value * tole)/100
+ result = (ch == 0) ? value - denta : value + denta;
+ return result.toFixed(rou);
+}
+
+function redirect(address) {
+	var timecookie = 365*24*60*60;
+	var types = "HD23";
+	var factory = "BIAS";
+	var cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)correction\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+	if (cookieValue == ''){
+		let setcookie = JSON.stringify({'type': types, 'factory': factory});
+		document.cookie = "correction=" + setcookie + "; max-age=" + timecookie + "; path=/";
+	}
+	else {
+		var cookieObj = JSON.parse(cookieValue);
+		types = cookieObj.type;
+		let setcookie = JSON.stringify({'type': types, 'factory': factory});
+		document.cookie = "correction=" + setcookie + "; max-age=" + timecookie + "; path=/";
+	}
+	if (address == "view" ){
+		location.href = '../hieuchinh/view.html';
+	}
+	else if (address == "code" ){
+		location.href = '../congcu/macode.html';
+	}
+	else location.href = 'DPC'+ factory +'.html';
+}
+</script>
+</body>
+</html>

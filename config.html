@@ -1,0 +1,56 @@
+<html>
+<head>
+<meta charset="utf-8">
+<title>Tai du lieu len server</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+        a:link, a:visited {
+          color: blue;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+        }
+        
+        a:hover, a:active {
+          color: red;
+        }
+    </style>
+<script src="jquery-1.11.1.min.js"></script>
+</head>
+
+<body>
+<div id="mainWrapper">
+    <label for="pass">Mật khẩu: </label>
+    <input type="password" id="pass" name="pass">
+	<p> Tải file lên máy chủ:</p>
+    <input id="firmware" type="file" name="firmware"/>
+    <input id="upload" type="button"  name="upload" value="Tải lên"/><br>
+    <hr>
+    <a href="XLSXTOJSON.html">Cập nhập dữ liệu mới lên máy chủ</a><br>
+    <a href="view.html">Trở về trang chủ</a>
+</div>
+</body>
+</html>
+<script>
+$('#upload').on('click', function() {
+    var passw = document.getElementById("pass").value;
+    var file_data = $('#firmware').prop('files')[0]; 
+    var file_name = file_data.name;
+    var form_data = new FormData();     
+    form_data.append('pass', passw); 
+    form_data.append('file', file_data); 
+    form_data.append('file2', file_name); 
+    $.ajax({
+        url: 'upload.php', // point to server-side PHP script 
+        dataType: 'text',  // what to expect back from the PHP script, if anything
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: form_data,                         
+        type: 'post',
+        success: function(php_script_response){
+            alert(php_script_response); // display response from the PHP script, if any
+        }
+     });
+});
+</script>
