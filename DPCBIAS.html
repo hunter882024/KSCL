@@ -91,71 +91,29 @@
 <!-- Thêm ngay sau <body> -->
 <div id="login-overlay">
     <div class="login-box">
-        <h3>🔐 ĐĂNG NHẬP</h3>
+        <h3>🔐 ĐĂNG NHẬP BIAS</h3>
         <input type="text" id="login-username" placeholder="Tên đăng nhập">
         <input type="password" id="login-password" placeholder="Mật khẩu">
         <button onclick="checkLogin()">Đăng nhập</button>
         <div id="login-error" class="error-msg"></div>
     </div>
 </div>
-
 <script>
 const VALID_USER = "admin";
-const VALID_PASS = "123456";
-const MASTER_CODE = "031088";  // ← THÊM DÒNG NÀY
-
+const VALID_PASS = "123456BI";
 function checkLogin() {
-    const username = document.getElementById('login-username').value;
-    const password = document.getElementById('login-password').value;
-    const errorDiv = document.getElementById('login-error');
-    
-    // ← THÊM 2 DÒNG NÀY
-    const customPass = localStorage.getItem('custom_password');
-    const validPass = customPass || VALID_PASS;
-    
-    // ← SỬA DÒNG if NÀY (thay VALID_PASS bằng validPass)
-    if (username === VALID_USER && password === validPass) {
-        localStorage.setItem('dpc_logged_in', 'true');
+    if (document.getElementById('login-username').value === VALID_USER && 
+        document.getElementById('login-password').value === VALID_PASS) {
+        localStorage.setItem('dpc_bias_logged_in', 'true');
         document.getElementById('login-overlay').style.display = 'none';
     } else {
-        errorDiv.textContent = '❌ Sai tài khoản hoặc mật khẩu!';
+        document.getElementById('login-error').textContent = 'Sai tài khoản!';
     }
 }
-
-// ← THÊM TOÀN BỘ HÀM NÀY
-function changePasswordWithCode() {
-    const masterCode = prompt("🔑 NHẬP MÃ ĐẶC BIỆT ĐỂ ĐỔI MẬT KHẨU:");
-    
-    if (masterCode !== MASTER_CODE) {
-        alert("❌ Mã không đúng!");
-        return;
-    }
-    
-    const newPass = prompt("🔐 NHẬP MẬT KHẨU MỚI (tối thiểu 4 ký tự):");
-    if (!newPass || newPass.length < 4) {
-        alert("❌ Mật khẩu phải có ít nhất 4 ký tự!");
-        return;
-    }
-    
-    const confirmPass = prompt("🔄 XÁC NHẬN MẬT KHẨU MỚI:");
-    if (newPass !== confirmPass) {
-        alert("❌ Mật khẩu xác nhận không khớp!");
-        return;
-    }
-    
-    localStorage.setItem('custom_password', newPass);
-    localStorage.removeItem('dpc_logged_in');
-    alert("✅ Đổi mật khẩu thành công! Vui lòng đăng nhập lại.");
-    location.reload();
-}
-// ← KẾT THÚC THÊM
-
-if (localStorage.getItem('dpc_logged_in') === 'true') {
+if (localStorage.getItem('dpc_bias_logged_in') === 'true') {
     document.getElementById('login-overlay').style.display = 'none';
 }
 </script>
-
-
 <style>
 #login-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -167,8 +125,7 @@ if (localStorage.getItem('dpc_logged_in') === 'true') {
 .login-box button { width: 100%; padding: 10px; background: #1e90ff; color: white; border: none; border-radius: 8px; cursor: pointer; }
 .error-msg { color: red; margin-top: 10px; font-size: 14px; }
 </style>
-<button onclick="localStorage.removeItem('dpc_logged_in'); location.reload();" style="position:fixed; bottom:15px; right:15px; background:#dc3545; color:white; border:none; padding:8px 16px; border-radius:20px; cursor:pointer;">🚪 Đăng xuất</button>
-<button onclick="changePasswordWithCode()" style="position:fixed; bottom:15px; left:15px; background:#ffc107; color:#333; border:none; padding:8px 16px; border-radius:20px; cursor:pointer; z-index:999;">🔑 Đổi mật khẩu</button>
+<button onclick="localStorage.removeItem('dpc_bias_logged_in'); location.reload();" style="position:fixed; bottom:15px; right:15px; background:#dc3545; color:white; border:none; padding:8px 16px; border-radius:20px; cursor:pointer;">🚪 Đăng xuất</button>
 <div class="top">
     <select id="edit" onchange="redirect(this.value)"><option value="dpc">DPC</option><option value="view">Xem hiệu chỉnh</option><option value="code">Xem mã code</option></select>
 </div>

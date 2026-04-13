@@ -84,7 +84,7 @@
 <!-- Thêm ngay sau <body> -->
 <div id="login-overlay">
     <div class="login-box">
-        <h3>🔐 ĐĂNG NHẬP</h3>
+        <h3>🔐 ĐĂNG NHẬP RADIAL</h3>
         <input type="text" id="login-username" placeholder="Tên đăng nhập">
         <input type="password" id="login-password" placeholder="Mật khẩu">
         <button onclick="checkLogin()">Đăng nhập</button>
@@ -97,13 +97,13 @@ const VALID_PASS = "123456RA";
 function checkLogin() {
     if (document.getElementById('login-username').value === VALID_USER && 
         document.getElementById('login-password').value === VALID_PASS) {
-        localStorage.setItem('dpc_logged_in', 'true');
+        localStorage.setItem('dpc_radial_logged_in', 'true');
         document.getElementById('login-overlay').style.display = 'none';
     } else {
         document.getElementById('login-error').textContent = 'Sai tài khoản!';
     }
 }
-if (localStorage.getItem('dpc_logged_in') === 'true') {
+if (localStorage.getItem('dpc_radial_logged_in') === 'true') {
     document.getElementById('login-overlay').style.display = 'none';
 }
 </script>
@@ -118,8 +118,7 @@ if (localStorage.getItem('dpc_logged_in') === 'true') {
 .login-box button { width: 100%; padding: 10px; background: #1e90ff; color: white; border: none; border-radius: 8px; cursor: pointer; }
 .error-msg { color: red; margin-top: 10px; font-size: 14px; }
 </style>
-<button onclick="localStorage.removeItem('dpc_logged_in'); location.reload();" style="position:fixed; bottom:15px; right:15px; background:#dc3545; color:white; border:none; padding:8px 16px; border-radius:20px; cursor:pointer;">🚪 Đăng xuất</button>
-
+<button onclick="localStorage.removeItem('dpc_radial_logged_in'); location.reload();" style="position:fixed; bottom:15px; right:15px; background:#dc3545; color:white; border:none; padding:8px 16px; border-radius:20px; cursor:pointer;">🚪 Đăng xuất</button>
 
 
 <div class="top">
