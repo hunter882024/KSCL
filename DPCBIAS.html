@@ -392,7 +392,7 @@
     <div class="header">
         <div class="title-section">
             <h1>📦 DPC BIAS · ĐƠN PHA CHẾ</h1>
-          
+            <p>Giám sát thông số sản xuất | Hiệu chỉnh động theo nhóm</p>
         </div>
         <div class="nav-selector">
             <select id="edit" onchange="redirect(this.value)">
@@ -415,13 +415,17 @@
                 <div id="sch"></div>
             </div>
         </div>
+
+        <!-- Thông tin đơn pha chế -->
+        <div id="info" class="info-card" style="display: none;"></div>
+
         <!-- Chọn dây chuyền GĐC + GĐ1/CĐ -->
         <div class="dc-selectors" id="selector-area" style="display: none;">
-            <div class="dc-card">
+             <div class="dc-card">
                 <label>🧪 DÂY CHUYỀN GĐ1 / CĐ</label>
                 <div id="dcgd1"></div>
             </div>
-			<div class="dc-card">
+	<div class="dc-card">
                 <label>⚙️ DÂY CHUYỀN GIAI ĐOẠN CUỐI (GĐC)</label>
                 <div id="dcgdc"></div>
             </div>
@@ -502,21 +506,7 @@
         }
         if (tc === 0) stoc = obj.gdc.length;
 
-        // Lấy thông tin tóm tắt đơn
-        var infoHtml = '<div class="info-grid">';
-        for (var i = stac; i < stoc; i++) {
-            var keys = Object.keys(obj.gdc[i]);
-            var vals = Object.values(obj.gdc[i]);
-            for (var j = 0; j < Math.min(3, keys.length); j++) {
-                if (keys[j] !== "GROUP" && keys[j] !== "BTP" && keys[j] !== "MÃ ĐƠN") {
-                    infoHtml += `<div class="info-item"><span>${keys[j]}:</span> <strong>${vals[j]}</strong></div>`;
-                }
-            }
-            break; // chỉ lấy dòng đầu
-        }
-        infoHtml += '</div>';
-        document.getElementById("info").style.display = "block";
-        document.getElementById("info").innerHTML = infoHtml;
+    document.getElementById("info").style.display = "none";
 
         // Xây dựng danh sách dây chuyền GĐC
         var printdcgdc = '<select id="dcc" class="modern-select" onchange="showdcgdc(this.value)"><option value="">-- GĐC --</option>';
