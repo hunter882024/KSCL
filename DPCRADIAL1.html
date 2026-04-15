@@ -2,488 +2,52 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <meta name="description" content="Hệ thống quản lý đơn pha chế RADIAL - DPC chuyên nghiệp">
     <title>DPC RADIAL | Quản lý pha chế</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-            background: #f0f4f8;
-            padding: 20px 16px 60px 16px;
-            color: #1a2c3e;
-        }
-
-        .dashboard {
-            max-width: 1400px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 32px;
-            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #0b3b2b 0%, #1a6f4a 100%);
-            padding: 1.5rem 2rem;
-            color: white;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .title-section h1 {
-            font-size: 1.7rem;
-            font-weight: 600;
-            letter-spacing: -0.3px;
-        }
-
-        .title-section p {
-            font-size: 0.85rem;
-            opacity: 0.85;
-            margin-top: 6px;
-        }
-
-        .nav-selector {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(4px);
-            border-radius: 60px;
-            padding: 4px 12px;
-        }
-
-        .nav-selector select {
-            background: transparent;
-            border: none;
-            color: white;
-            font-weight: 500;
-            font-size: 1rem;
-            padding: 8px 16px;
-            cursor: pointer;
-            outline: none;
-            width: auto;
-        }
-
-        .nav-selector select option {
-            background: #1e5a3e;
-            color: white;
-        }
-
-        .content-panel {
-            padding: 24px 28px;
-        }
-
-        .btp-search-area {
-            background: #f9fafc;
-            border-radius: 28px;
-            padding: 20px 24px;
-            margin-bottom: 28px;
-            border: 1px solid #e2edf2;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            align-items: flex-end;
-        }
-
-        .btp-box {
-            flex: 2;
-            min-width: 200px;
-        }
-
-        .search-box {
-            flex: 1.5;
-            min-width: 200px;
-        }
-
-        .label-modern {
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #4a6f8f;
-            margin-bottom: 6px;
-            display: block;
-        }
-
-        select, .search-input {
-            width: 100%;
-            padding: 12px 16px;
-            font-size: 0.95rem;
-            border: 1px solid #cbdde6;
-            border-radius: 20px;
-            background: white;
-            transition: 0.2s;
-            font-family: inherit;
-            cursor: pointer;
-        }
-
-        select:focus, .search-input:focus {
-            outline: none;
-            border-color: #1e90ff;
-            box-shadow: 0 0 0 3px rgba(30,144,255,0.2);
-        }
-
-        .search-input {
-            cursor: text;
-        }
-
-        .info-card {
-            background: #eef3fc;
-            border-left: 6px solid #1e90ff;
-            border-radius: 20px;
-            padding: 14px 20px;
-            margin-bottom: 28px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .info-item {
-            background: white;
-            border-radius: 40px;
-            padding: 8px 18px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-
-        .info-item span:first-child {
-            font-weight: 600;
-            color: #2c5a7a;
-        }
-
-        .history-buttons {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .btn-history {
-            background: #1e90ff;
-            color: white;
-            border: none;
-            border-radius: 40px;
-            padding: 8px 20px;
-            font-weight: 500;
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .btn-history:hover {
-            background: #0c6bcf;
-            transform: scale(1.02);
-        }
-
-        .btn-excel {
-            background: #28a745;
-        }
-
-        .btn-excel:hover {
-            background: #1e7e34;
-        }
-
-        .btn-clear-history {
-            background: #dc3545;
-        }
-
-        .btn-clear-history:hover {
-            background: #b91d2e;
-        }
-
-        .btn-sync {
-            background: #17a2b8;
-        }
-
-        .btn-sync:hover {
-            background: #138496;
-        }
-
-        .dc-selectors {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 24px;
-            margin: 20px 0 24px 0;
-        }
-
-        .dc-card {
-            flex: 1;
-            background: #ffffff;
-            border: 1px solid #e2edf2;
-            border-radius: 24px;
-            padding: 12px 20px;
-        }
-
-        .dc-card label {
-            font-weight: 600;
-            color: #0f3b5c;
-            display: block;
-            margin-bottom: 8px;
-            font-size: 0.85rem;
-        }
-
-        .data-table-wrapper {
-            overflow-x: auto;
-            border-radius: 24px;
-            border: 1px solid #e9eef3;
-            background: white;
-            margin-top: 12px;
-        }
-
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.85rem;
-            min-width: 600px;
-        }
-
-        .data-table th {
-            background: #eef2f7;
-            padding: 14px 12px;
-            text-align: left;
-            font-weight: 600;
-            color: #1f506e;
-            border-bottom: 1px solid #d4e0e9;
-        }
-
-        .data-table td {
-            padding: 12px 12px;
-            border-bottom: 1px solid #ecf3f8;
-            vertical-align: top;
-        }
-
-        .data-table tr:hover td {
-            background-color: #f8fbfe;
-        }
-
-        .update-footer {
-            margin-top: 32px;
-            text-align: center;
-            font-size: 0.75rem;
-            color: #6c8eaa;
-            border-top: 1px solid #e2edf2;
-            padding-top: 20px;
-        }
-
-        .btn-logout {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #dc3545;
-            color: white;
-            border: none;
-            border-radius: 40px;
-            padding: 10px 20px;
-            font-weight: 600;
-            font-size: 0.8rem;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            z-index: 99;
-        }
-
-        .btn-logout:hover {
-            background: #b91d2e;
-            transform: scale(1.02);
-        }
-
-        .message-placeholder {
-            text-align: center;
-            padding: 40px;
-            color: #5a6e7c;
-            font-style: italic;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 2100;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            backdrop-filter: blur(5px);
-        }
-
-        .modal-content {
-            background-color: white;
-            margin: 5% auto;
-            padding: 20px;
-            border-radius: 24px;
-            width: 90%;
-            max-width: 1000px;
-            max-height: 80vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #e2edf2;
-        }
-
-        .modal-header h3 {
-            color: #0b3b2b;
-        }
-
-        .close-modal {
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            color: #aaa;
-        }
-
-        .close-modal:hover {
-            color: #333;
-        }
-
-        .history-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.85rem;
-        }
-
-        .history-table th, .history-table td {
-            padding: 10px 8px;
-            text-align: left;
-            border-bottom: 1px solid #e2edf2;
-        }
-
-        .history-table th {
-            background: #eef2f7;
-            position: sticky;
-            top: 0;
-        }
-
-        .filter-input {
-            padding: 8px 12px;
-            border: 1px solid #cbdde6;
-            border-radius: 20px;
-            width: 200px;
-            margin-bottom: 15px;
-        }
-
-        .loading {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid #f3f3f3;
-            border-top: 2px solid #1e90ff;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-left: 8px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @media (max-width: 680px) {
-            .content-panel {
-                padding: 16px;
-            }
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .info-card {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .history-buttons {
-                justify-content: center;
-            }
-        }
-
-        #login-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(10, 25, 40, 0.92);
-            backdrop-filter: blur(10px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-        }
-
-        .login-card {
-            background: white;
-            border-radius: 40px;
-            width: 90%;
-            max-width: 380px;
-            padding: 2rem 1.8rem;
-            text-align: center;
-            box-shadow: 0 25px 40px rgba(0,0,0,0.3);
-        }
-
-        .login-card h3 {
-            font-size: 1.6rem;
-            margin-bottom: 1.2rem;
-            color: #0b2b3b;
-        }
-
-        .login-card input {
-            width: 100%;
-            padding: 14px 16px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 60px;
-            font-size: 1rem;
-        }
-
-        .login-card button {
-            width: 100%;
-            background: #1e90ff;
-            border: none;
-            padding: 12px;
-            border-radius: 60px;
-            color: white;
-            font-weight: bold;
-            font-size: 1rem;
-            margin-top: 12px;
-            cursor: pointer;
-        }
-
-        .error-msg {
-            color: #d9534f;
-            margin-top: 12px;
-            font-size: 0.8rem;
-        }
-
-        .toast {
-            position: fixed;
-            bottom: 80px;
-            right: 20px;
-            background: #333;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
-            z-index: 100;
-            animation: fadeOut 3s ease-in-out forwards;
-        }
-
-        @keyframes fadeOut {
-            0% { opacity: 1; }
-            70% { opacity: 1; }
-            100% { opacity: 0; visibility: hidden; }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Roboto, sans-serif; background: #f0f4f8; padding: 20px 16px 60px; }
+        .dashboard { max-width: 1400px; margin: 0 auto; background: white; border-radius: 32px; box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1); overflow: hidden; }
+        .header { background: linear-gradient(135deg, #0b3b2b 0%, #1a6f4a 100%); padding: 1.5rem 2rem; color: white; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; }
+        .title-section h1 { font-size: 1.7rem; }
+        .title-section p { font-size: 0.85rem; opacity: 0.85; }
+        .nav-selector { background: rgba(255,255,255,0.15); border-radius: 60px; padding: 4px 12px; }
+        .nav-selector select { background: transparent; border: none; color: white; font-weight: 500; font-size: 1rem; padding: 8px 16px; cursor: pointer; }
+        .content-panel { padding: 24px 28px; }
+        .btp-search-area { background: #f9fafc; border-radius: 28px; padding: 20px 24px; margin-bottom: 28px; border: 1px solid #e2edf2; display: flex; flex-wrap: wrap; gap: 20px; }
+        .btp-box { flex: 2; min-width: 200px; }
+        .search-box { flex: 1.5; min-width: 200px; }
+        .label-modern { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; color: #4a6f8f; margin-bottom: 6px; display: block; }
+        select, .search-input { width: 100%; padding: 12px 16px; font-size: 0.95rem; border: 1px solid #cbdde6; border-radius: 20px; background: white; }
+        .info-card { background: #eef3fc; border-left: 6px solid #1e90ff; border-radius: 20px; padding: 14px 20px; margin-bottom: 28px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; }
+        .info-item { background: white; border-radius: 40px; padding: 8px 18px; }
+        .history-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn-history { background: #1e90ff; color: white; border: none; border-radius: 40px; padding: 8px 20px; font-weight: 500; cursor: pointer; }
+        .btn-excel { background: #28a745; }
+        .btn-clear { background: #dc3545; }
+        .dc-selectors { display: flex; flex-wrap: wrap; gap: 24px; margin: 20px 0; }
+        .dc-card { flex: 1; background: white; border: 1px solid #e2edf2; border-radius: 24px; padding: 12px 20px; }
+        .data-table-wrapper { overflow-x: auto; border-radius: 24px; border: 1px solid #e9eef3; margin-top: 12px; }
+        .data-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        .data-table th { background: #eef2f7; padding: 14px 12px; text-align: left; font-weight: 600; }
+        .data-table td { padding: 12px; border-bottom: 1px solid #ecf3f8; }
+        .update-footer { margin-top: 32px; text-align: center; font-size: 0.75rem; color: #6c8eaa; border-top: 1px solid #e2edf2; padding-top: 20px; }
+        .btn-logout { position: fixed; bottom: 20px; right: 20px; background: #dc3545; color: white; border: none; border-radius: 40px; padding: 10px 20px; cursor: pointer; z-index: 99; }
+        .modal { display: none; position: fixed; z-index: 2100; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
+        .modal-content { background: white; margin: 5% auto; padding: 20px; border-radius: 24px; width: 90%; max-width: 1000px; max-height: 80vh; overflow-y: auto; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #e2edf2; }
+        .close-modal { font-size: 28px; cursor: pointer; }
+        .history-table { width: 100%; border-collapse: collapse; }
+        .history-table th, .history-table td { padding: 10px 8px; text-align: left; border-bottom: 1px solid #e2edf2; }
+        .filter-input { padding: 8px 12px; border: 1px solid #cbdde6; border-radius: 20px; width: 200px; margin-bottom: 15px; }
+        .toast { position: fixed; bottom: 80px; right: 20px; background: #28a745; color: white; padding: 10px 20px; border-radius: 8px; animation: fadeOut 3s forwards; z-index: 100; }
+        .toast.error { background: #dc3545; }
+        @keyframes fadeOut { 0% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; visibility: hidden; } }
+        #login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10,25,40,0.95); display: flex; justify-content: center; align-items: center; z-index: 2000; }
+        .login-card { background: white; border-radius: 40px; width: 90%; max-width: 380px; padding: 2rem; text-align: center; }
+        .login-card input { width: 100%; padding: 14px; margin: 10px 0; border: 1px solid #ccc; border-radius: 60px; }
+        .login-card button { width: 100%; background: #1e90ff; border: none; padding: 12px; border-radius: 60px; color: white; font-weight: bold; cursor: pointer; }
+        @media (max-width: 680px) { .content-panel { padding: 16px; } .info-card { flex-direction: column; } }
     </style>
 </head>
 <body>
@@ -491,50 +55,25 @@
 <div id="login-overlay">
     <div class="login-card">
         <h3>🔐 ĐĂNG NHẬP RADIAL</h3>
-        <input type="text" id="login-username" placeholder="Tài khoản" autocomplete="off">
+        <input type="text" id="login-username" placeholder="Tài khoản">
         <input type="password" id="login-password" placeholder="Mật khẩu">
-        <button onclick="checkLogin()">Đăng nhập hệ thống</button>
-        <div id="login-error" class="error-msg"></div>
+        <button onclick="checkLogin()">Đăng nhập</button>
+        <div id="login-error" style="color:red; margin-top:10px"></div>
     </div>
 </div>
 
-<script>
-    const VALID_USER = "admin";
-    const VALID_PASS = "123456RA";
-    
-    // CẤU HÌNH GOOGLE SHEETS - THAY URL NÀY BẰNG URL CỦA BẠN
-    const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbw48yqt3ZMSToaES3D-ajn1u1rJDNgUrGNs3PcVyt_j62jD-UtAv-4wMAQDn5DPM5d5/exec";
-    
-    function checkLogin() {
-        const user = document.getElementById('login-username').value;
-        const pass = document.getElementById('login-password').value;
-        if (user === VALID_USER && pass === VALID_PASS) {
-            localStorage.setItem('dpc_radial_logged_in', 'true');
-            localStorage.setItem('dpc_radial_user', user);
-            document.getElementById('login-overlay').style.display = 'none';
-            if (typeof initializeApp === 'function') initializeApp();
-        } else {
-            document.getElementById('login-error').textContent = '❌ Sai tài khoản hoặc mật khẩu!';
-        }
-    }
-    if (localStorage.getItem('dpc_radial_logged_in') === 'true') {
-        document.getElementById('login-overlay').style.display = 'none';
-    }
-</script>
-
-<button class="btn-logout" onclick="localStorage.removeItem('dpc_radial_logged_in'); localStorage.removeItem('dpc_radial_user'); location.reload();">🚪 Đăng xuất</button>
+<button class="btn-logout" onclick="logout()">🚪 Đăng xuất</button>
 
 <div class="dashboard">
     <div class="header">
         <div class="title-section">
             <h1>📦 DPC RADIAL · ĐƠN PHA CHẾ</h1>
-            <p>Giám sát thông số sản xuất | Hiệu chỉnh động theo nhóm</p>
+            <p>Giám sát thông số sản xuất | Tự động lưu lịch sử mã đơn</p>
         </div>
         <div class="nav-selector">
             <select id="edit" onchange="redirect(this.value)">
                 <option value="dpc">🏭 DPC RADIAL</option>
                 <option value="view">📊 Xem hiệu chỉnh</option>
-                <option value="code">🛠️ Mã nguồn</option>
             </select>
         </div>
     </div>
@@ -554,26 +93,17 @@
         <div id="info" class="info-card" style="display: none;">
             <div id="info-content"></div>
             <div class="history-buttons">
-                <button class="btn-history" onclick="saveCurrentHistory()">💾 Lưu thay đổi</button>
                 <button class="btn-history btn-excel" onclick="exportToExcel()">📊 Xuất Excel</button>
                 <button class="btn-history" onclick="showHistoryModal()">📜 Xem lịch sử</button>
-                <button class="btn-history btn-sync" onclick="syncHistoryFromCloud()">🔄 Đồng bộ</button>
             </div>
         </div>
 
         <div class="dc-selectors" id="selector-area" style="display: none;">
-            <div class="dc-card">
-                <label>🧪 DÂY CHUYỀN GĐ1 / CĐ</label>
-                <div id="dcgd1"></div>
-            </div>
-            <div class="dc-card">
-                <label>⚙️ DÂY CHUYỀN GIAI ĐOẠN CUỐI (GĐC)</label>
-                <div id="dcgdc"></div>
-            </div>
+            <div class="dc-card"><label>🧪 DÂY CHUYỀN GĐ1 / CĐ</label><div id="dcgd1"></div></div>
+            <div class="dc-card"><label>⚙️ DÂY CHUYỀN GĐC</label><div id="dcgdc"></div></div>
         </div>
 
         <div id="cont" class="data-table-wrapper" style="display: none;"></div>
-
         <div id="update" class="update-footer"></div>
     </div>
 </div>
@@ -581,30 +111,14 @@
 <div id="historyModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
-            <h3>📋 LỊCH SỬ THAY ĐỔI MÃ ĐƠN (ĐỒNG BỘ TOÀN HỆ THỐNG)</h3>
+            <h3>📋 LỊCH SỬ THAY ĐỔI MÃ ĐƠN</h3>
             <span class="close-modal" onclick="closeHistoryModal()">&times;</span>
         </div>
-        <input type="text" id="historyFilter" class="filter-input" placeholder="🔍 Lọc theo BTP, mã đơn hoặc người dùng..." onkeyup="filterHistory()">
-        <div style="margin-bottom: 10px;">
-            <button class="btn-history btn-excel" onclick="exportHistoryToExcel()" style="margin-right: 10px;">📊 Xuất lịch sử Excel</button>
-            <button class="btn-history btn-sync" onclick="syncHistoryFromCloud()">🔄 Làm mới từ Cloud</button>
-        </div>
+        <input type="text" id="historyFilter" class="filter-input" placeholder="🔍 Lọc BTP hoặc mã đơn..." onkeyup="renderHistoryTable()">
         <div style="overflow-x: auto;">
             <table class="history-table" id="historyTable">
-                <thead>
-                    <tr>
-                        <th>STT</th>
-                        <th>Thời gian</th>
-                        <th>BTP</th>
-                        <th>Mã đơn cũ</th>
-                        <th>Mã đơn mới</th>
-                        <th>Người thực hiện</th>
-                        <th>Thiết bị</th>
-                    </tr>
-                </thead>
-                <tbody id="historyBody">
-                    <tr><td colspan="7" style="text-align:center">🔄 Đang tải dữ liệu...</td></tr>
-                </tbody>
+                <thead><tr><th>STT</th><th>Thời gian</th><th>BTP</th><th>Mã cũ</th><th>Mã mới</th><th>Người dùng</th></tr></thead>
+                <tbody id="historyBody"></tbody>
             </table>
         </div>
     </div>
@@ -612,629 +126,352 @@
 
 <script src="data/dataradial.js"></script>
 <script>
-    var obj = null;
-    var stac = 0, stoc = 0, stad = 0, stod = 0;
-    var nhomds = [];
-    var nhomdc = [];
-    var nhomd = [];
-    var nhomc = [];
-    var btpview = "";
-    var timeold = (typeof timeold !== 'undefined') ? timeold : "Chưa xác định";
-    var currentMaDon = "";
+    const VALID_USER = "admin";
+    const VALID_PASS = "123456RA";
+    const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbw48yqt3ZMSToaES3D-ajn1u1rJDNgUrGNs3PcVyt_j62jD-UtAv-4wMAQDn5DPM5d5/exec"; // THAY URL CỦA BẠN
+    
+    var obj = null, btpview = "", currentMaDon = "", timeold = "Chưa xác định";
+    var stac, stoc, stad, stod, nhomds = [], nhomdc = [], nhomd = [], nhomc = [];
     var cloudHistory = [];
 
-    function showToast(message, isError = false) {
-        var toast = document.createElement('div');
-        toast.className = 'toast';
-        toast.style.background = isError ? '#dc3545' : '#28a745';
-        toast.innerHTML = message;
-        document.body.appendChild(toast);
-        setTimeout(function() {
-            if (toast.parentNode) toast.parentNode.removeChild(toast);
-        }, 3000);
+    // ========== LOCALSTORAGE LƯU MÃ ĐƠN ==========
+    function saveMaDonToLocal(btp, maDon) {
+        var saved = localStorage.getItem('dpc_radial_ma_don_map') || '{}';
+        var data = JSON.parse(saved);
+        data[btp] = { maDon: maDon, time: new Date().toISOString() };
+        localStorage.setItem('dpc_radial_ma_don_map', JSON.stringify(data));
     }
 
+    function getSavedMaDon(btp) {
+        var saved = localStorage.getItem('dpc_radial_ma_don_map');
+        if (!saved) return null;
+        var data = JSON.parse(saved);
+        return data[btp] ? data[btp].maDon : null;
+    }
+
+    function showToast(msg, isError = false) {
+        var toast = document.createElement('div');
+        toast.className = 'toast' + (isError ? ' error' : '');
+        toast.innerHTML = msg;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+    }
+
+    // ========== GOOGLE SHEETS ==========
     async function saveToCloud(btp, oldCode, newCode, user) {
         try {
-            var deviceInfo = navigator.userAgent.split(' ').slice(-2).join(' ') || 'Unknown';
-            var response = await fetch(GOOGLE_SHEET_API_URL, {
+            await fetch(GOOGLE_SHEET_API_URL, {
                 method: 'POST',
                 mode: 'no-cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    btp: btp,
-                    oldCode: oldCode,
-                    newCode: newCode,
-                    user: user,
-                    deviceInfo: deviceInfo,
-                    action: 'save'
-                })
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ btp, oldCode, newCode, user, deviceInfo: navigator.userAgent })
             });
             return true;
-        } catch(e) {
-            console.warn('Save to cloud failed:', e);
-            return false;
-        }
+        } catch(e) { return false; }
     }
 
     async function loadFromCloud() {
         try {
-            var response = await fetch(GOOGLE_SHEET_API_URL + '?action=get');
-            if (response.ok) {
-                cloudHistory = await response.json();
+            var res = await fetch(GOOGLE_SHEET_API_URL + '?t=' + Date.now());
+            if (res.ok) {
+                var data = await res.json();
+                cloudHistory = data.data || [];
                 return true;
             }
-            return false;
-        } catch(e) {
-            console.warn('Load from cloud failed:', e);
-            return false;
-        }
-    }
-
-    async function syncHistoryFromCloud() {
-        showToast('🔄 Đang đồng bộ dữ liệu từ Cloud...');
-        var success = await loadFromCloud();
-        if (success && cloudHistory && cloudHistory.length > 0) {
-            showToast('✅ Đã đồng bộ ' + cloudHistory.length + ' bản ghi từ Cloud');
-            if (document.getElementById('historyModal').style.display === 'block') {
-                renderHistoryTable();
-            }
-        } else if (success) {
-            showToast('ℹ️ Chưa có dữ liệu lịch sử trên Cloud');
-        } else {
-            showToast('⚠️ Không thể kết nối Cloud, kiểm tra lại URL Google Sheet', true);
-        }
+        } catch(e) { console.warn(e); }
+        return false;
     }
 
     async function addHistoryRecord(btp, oldCode, newCode, user) {
-        var now = new Date();
-        var timeStr = now.toLocaleString('vi-VN', { hour12: false });
-        
         var record = {
-            time: timeStr,
+            time: new Date().toLocaleString('vi-VN'),
             btp: btp,
             oldCode: oldCode,
             newCode: newCode,
             user: user || localStorage.getItem('dpc_radial_user') || 'admin'
         };
-        
         cloudHistory.unshift(record);
-        if (cloudHistory.length > 1000) cloudHistory = cloudHistory.slice(0, 1000);
-        
-        var saved = await saveToCloud(btp, oldCode, record.newCode, record.user);
-        if (saved) {
-            showToast('✅ Đã lưu lịch sử lên Cloud (đồng bộ mọi thiết bị)');
-        } else {
-            showToast('⚠️ Lưu lịch sử thành công nhưng chưa đồng bộ Cloud', true);
-        }
-        
-        renderHistoryTable();
+        await saveToCloud(btp, oldCode, newCode, record.user);
+        showToast(`✅ Đã lưu: ${btp} | ${oldCode} → ${newCode}`);
     }
 
-    function saveCurrentHistory() {
-        if (!btpview) {
-            alert('❌ Vui lòng chọn BTP trước!');
-            return;
-        }
-        
-        var newMaDonElement = document.querySelector('#info-content .info-item strong');
-        var newMaDon = newMaDonElement ? newMaDonElement.innerText : '';
-        
-        if (!newMaDon) {
-            alert('❌ Không tìm thấy mã đơn hiện tại!');
-            return;
-        }
-        
-        if (currentMaDon && currentMaDon !== newMaDon) {
-            addHistoryRecord(btpview, currentMaDon, newMaDon, null);
-            currentMaDon = newMaDon;
-        } else if (!currentMaDon) {
-            currentMaDon = newMaDon;
-            showToast('ℹ️ Đã ghi nhận mã đơn hiện tại làm mốc');
-        } else {
-            showToast('ℹ️ Mã đơn chưa thay đổi, không cần lưu lịch sử');
-        }
-    }
-
-    function showHistoryModal() {
-        var modal = document.getElementById('historyModal');
-        modal.style.display = 'block';
-        renderHistoryTable();
-        syncHistoryFromCloud();
-    }
-
-    function closeHistoryModal() {
-        document.getElementById('historyModal').style.display = 'none';
-    }
-
-    function renderHistoryTable() {
-        var filter = document.getElementById('historyFilter') ? document.getElementById('historyFilter').value.toLowerCase() : '';
-        var filtered = cloudHistory;
-        
-        if (filter) {
-            filtered = cloudHistory.filter(function(item) {
-                return (item.btp && item.btp.toLowerCase().includes(filter)) ||
-                       (item.oldCode && item.oldCode.toLowerCase().includes(filter)) ||
-                       (item.newCode && item.newCode.toLowerCase().includes(filter)) ||
-                       (item.user && item.user.toLowerCase().includes(filter));
-            });
-        }
-        
-        var tbody = document.getElementById('historyBody');
-        tbody.innerHTML = '';
-        
-        if (!filtered || filtered.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center">📭 Chưa có lịch sử thay đổi nào</td></tr>';
-            return;
-        }
-        
-        for (var i = 0; i < filtered.length; i++) {
-            var item = filtered[i];
-            var row = tbody.insertRow();
-            row.insertCell(0).innerHTML = (i + 1).toString();
-            row.insertCell(1).innerHTML = item.time || '';
-            row.insertCell(2).innerHTML = item.btp || '';
-            row.insertCell(3).innerHTML = '<span style="color:#dc3545">' + (item.oldCode || '') + '</span>';
-            row.insertCell(4).innerHTML = '<span style="color:#28a745">' + (item.newCode || '') + '</span>';
-            row.insertCell(5).innerHTML = item.user || '';
-            row.insertCell(6).innerHTML = item.deviceInfo || '-';
-        }
-    }
-
-    function filterHistory() {
-        renderHistoryTable();
-    }
-
-    function exportToExcel() {
-        if (!btpview) {
-            alert('❌ Vui lòng chọn BTP trước!');
-            return;
-        }
-        
-        var table = document.querySelector('#cont .data-table');
-        if (!table) {
-            alert('❌ Không có dữ liệu để xuất!');
-            return;
-        }
-        
-        var maDonHienTai = document.querySelector('#info-content .info-item strong');
-        var maDonText = maDonHienTai ? maDonHienTai.innerText : '';
-        
-        var htmlContent = `
-        <html>
-        <head><meta charset="UTF-8"><title>DPC_RADIAL_${btpview}</title>
-        <style>th{background:#4CAF50;color:#fff;padding:8px}td{padding:6px;border:1px solid #ddd}table{border-collapse:collapse;width:100%}</style>
-        </head>
-        <body>
-            <h2>📊 BÁO CÁO THÔNG SỐ DPC RADIAL</h2>
-            <p><strong>BTP:</strong> ${btpview}</p>
-            <p><strong>MÃ ĐƠN:</strong> ${maDonText}</p>
-            <p><strong>THỜI GIAN XUẤT:</strong> ${new Date().toLocaleString('vi-VN')}</p>
-            <hr/>${table.cloneNode(true).outerHTML}
-            <hr/><p><em>Hệ thống DPC RADIAL - Dữ liệu thông số sản xuất</em></p>
-        </body>
-        </html>`;
-        
-        var blob = new Blob([htmlContent], { type: 'application/vnd.ms-excel' });
-        var link = document.createElement('a');
-        var url = URL.createObjectURL(blob);
-        link.href = url;
-        link.download = `DPC_RADIAL_${btpview}_${new Date().getTime()}.xls`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-        showToast('✅ Đã xuất file Excel!');
-    }
-
-    function exportHistoryToExcel() {
-        if (!cloudHistory || cloudHistory.length === 0) {
-            alert('❌ Không có lịch sử để xuất!');
-            return;
-        }
-        
-        var htmlContent = `
-        <html>
-        <head><meta charset="UTF-8"><title>Lich_su_thay_doi_ma_don</title>
-        <style>th{background:#007bff;color:#fff;padding:8px}td{padding:6px;border:1px solid #ddd}table{border-collapse:collapse;width:100%}</style>
-        </head>
-        <body>
-            <h2>📋 LỊCH SỬ THAY ĐỔI MÃ ĐƠN DPC RADIAL</h2>
-            <p><strong>THỜI GIAN XUẤT:</strong> ${new Date().toLocaleString('vi-VN')}</p>
-            <p><strong>TỔNG SỐ BẢN GHI:</strong> ${cloudHistory.length}</p>
-            <hr/>
-            <table><thead><tr><th>STT</th><th>Thời gian</th><th>BTP</th><th>Mã đơn cũ</th><th>Mã đơn mới</th><th>Người thực hiện</th></tr></thead><tbody>`;
-        
-        for (var i = 0; i < cloudHistory.length; i++) {
-            var item = cloudHistory[i];
-            htmlContent += `<tr><td>${i+1}</td><td>${item.time || ''}</td><td>${item.btp || ''}</td><td>${item.oldCode || ''}</td><td>${item.newCode || ''}</td><td>${item.user || ''}</td></tr>`;
-        }
-        
-        htmlContent += `</tbody></table><hr/><p><em>Hệ thống DPC RADIAL - Lịch sử thay đổi mã đơn (Đồng bộ Cloud)</em></p></body></html>`;
-        
-        var blob = new Blob([htmlContent], { type: 'application/vnd.ms-excel' });
-        var link = document.createElement('a');
-        var url = URL.createObjectURL(blob);
-        link.href = url;
-        link.download = `Lich_su_doi_ma_don_${new Date().getTime()}.xls`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-        showToast('✅ Đã xuất lịch sử ra Excel!');
-    }
-
+    // ========== HIỂN THỊ DỮ LIỆU ==========
     function caldata(val, ch, tole, rou) {
-        var value = parseFloat(val);
-        if (isNaN(value)) return val;
-        var denta = (value * tole) / 100;
-        var result = (ch == 0) ? value - denta : value + denta;
-        return result.toFixed(rou);
+        var v = parseFloat(val);
+        if (isNaN(v)) return val;
+        var denta = (v * tole) / 100;
+        return (ch == 0 ? v - denta : v + denta).toFixed(rou);
     }
 
-    function resetToInitialState() {
-        document.getElementById("selector-area").style.display = "none";
-        document.getElementById("cont").style.display = "none";
-        document.getElementById("cont").innerHTML = "";
-        document.getElementById("dcgdc").innerHTML = "";
-        document.getElementById("dcgd1").innerHTML = "";
-        document.getElementById("info").style.display = "none";
-        btpview = "";
-        currentMaDon = "";
-    }
-
-    function seach() {
-        if (!obj) return;
-        var input = document.getElementById("myseach");
-        if (!input) return;
-        var filter = input.value.trim().toUpperCase();
-        var printse = '<option value="">-- Chọn BTP --</option>';
-        for (var i = 0; i < obj.gd1.length; i++) {
-            if (obj.gd1[i].BTP) {
-                var txtValue = obj.gd1[i].BTP;
-                if (filter === "" || txtValue.toUpperCase().indexOf(filter) > -1) {
-                    printse += '<option value="'+ txtValue +'">' + txtValue + '</option>';
-                }
-            }
-        }
-        var btpContainer = document.getElementById("btp");
-        if (btpContainer) {
-            btpContainer.innerHTML = '<select id="BTP" class="modern-select" onchange="showdata(this.value)">' + printse + '</select>';
-        }
-    }
-
-    // Các hàm printgd1, printgdc giữ nguyên như cũ
     function printgd1(stt, index, indexs, indexc, key, val, btpw) {
-        var data;
+        // Giữ nguyên code printgd1 từ file gốc của bạn
         if(key == "HD10 GĐ1 (kg)" || key == "HD23 GĐ1 (g)" || key == "HD11" || key == "HD12" || key == "HD13" || key == "HD14" || key == "HD10 GĐ2 (kg)"){
             if(stt < parseInt(index[0], 10)){
-                for (var n = 0; n < indexs.length; n++) {
-                    if(indexs[n] == stt){
-                        data = '<tr style="background:#e8f5e9"><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>0NonNull<td>800NonNull</tr>';
-                    }
-                }
-                for (var n = 0; n < indexc.length; n++) {
-                    if(indexc[n] == stt){
-                        data = '<tr style="background:#fff3e0"><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>0NonNull<td>950NonNull</tr>';
-                    }
-                }
-                if(!data) data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>—NonNull<td>—NonNull</tr>';
+                for (var n = 0; n < indexs.length; n++) { if(indexs[n] == stt) return '<tr style="background:#e8f5e9"><td>' + key + '</td><td>' + val + '</td><td>0</td><td>800</td></tr>'; }
+                for (var n = 0; n < indexc.length; n++) { if(indexc[n] == stt) return '<tr style="background:#fff3e0"><td>' + key + '</td><td>' + val + '</td><td>0</td><td>950</td></tr>'; }
+                return '<tr><td>' + key + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
             }
-            else if(stt >= parseInt(index[0], 10) && stt < parseInt(index[1], 10)){
-                if(btpw == "C12" || btpw == "C21"){
-                    data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>—NonNull<td>—NonNull</tr>';
-                }
-                else{
-                    data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>'+ caldata(val, 0, 50, 2) +'NonNull<td>'+ caldata(val, 1, 50, 2) +'NonNull</tr>';
-                }
+            else if(stt >= parseInt(index[0],10) && stt < parseInt(index[1],10)){
+                if(btpw == "C12" || btpw == "C21") return '<tr><td>' + key + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
+                return '<tr><td>' + key + '</td><td>' + val + '</td><td>'+ caldata(val,0,50,2) +'</td><td>'+ caldata(val,1,50,2) +'</td></tr>';
             }
-            else if(stt >= parseInt(index[1], 10) && stt < parseInt(index[2], 10)){
-                if(key == "HD23 GĐ1 (g)"){
-                    data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>0NonNull<td>580NonNull</tr>';
-                }
-                else{
-                    if(btpw == "C41" || btpw == "C42"){
-                        data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>—NonNull<td>—NonNull</tr>';
-                    }
-                    else if(btpw == "Y41" || btpw == "Y42"){
-                        data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>'+ caldata(val, 0, 50, 2) +'NonNull<td>'+ caldata(val, 1, 50, 2) +'NonNull</tr>';
-                    }
-                    else {
-                        data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>'+ caldata(val, 0, 40, 2) +'NonNull<td>'+ caldata(val, 1, 40, 2) +'NonNull</tr>';
-                    }
-                }
+            else if(stt >= parseInt(index[1],10) && stt < parseInt(index[2],10)){
+                if(key == "HD23 GĐ1 (g)") return '<tr><td>' + key + '</td><td>' + val + '</td><td>0</td><td>580</td></tr>';
+                if(btpw == "C41" || btpw == "C42") return '<tr><td>' + key + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
+                if(btpw == "Y41" || btpw == "Y42") return '<tr><td>' + key + '</td><td>' + val + '</td><td>'+ caldata(val,0,50,2) +'</td><td>'+ caldata(val,1,50,2) +'</td></tr>';
+                return '<tr><td>' + key + '</td><td>' + val + '</td><td>'+ caldata(val,0,40,2) +'</td><td>'+ caldata(val,1,40,2) +'</td></tr>';
             }
-            else if(stt >= parseInt(index[2], 10)){
-                if(key == "HD23 GĐ1 (g)"){
-                    data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>0NonNull<td>580NonNull</tr>';
-                }
-                else {
-                    data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>—NonNull<td>—NonNull</tr>';
-                }
-            }
-        } 
-        else{
-            var rowStyle = "";
-            if(key == "KL GĐ1 CHƯA HÓA DẺO (kg)" || key == "KL GĐ2 CHƯA HÓA DẺO (kg)") rowStyle = 'style="color:#d9534f; font-weight:500"';
-            if(key == "KL CAO SU GĐ2 (kg)") rowStyle = 'style="background:#f7e5cd"';
-            if(key == "KL CAO SU GĐ3 (kg)") rowStyle = 'style="background:#c1e0e6"';
-            
-            if(key == "THỜI GIAN GĐ1" || key == "THỜI GIAN GĐ2" || key == "THỜI GIAN GĐ3"){
-                data = '<tr '+ rowStyle +'><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>'+ caldata(val, 0, 10, 0) +'NonNull<td>'+ caldata(val, 1, 10, 0) +'NonNull</tr>';
-            }
-            else if(key == "TỐC ĐỘ GĐ1" || key == "TỐC ĐỘ GĐ2" || key == "TỐC ĐỘ GĐ3"){
-                if(val.toString().length <= 2){
-                    data = '<tr '+ rowStyle +'><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>'+ caldata(val, 0, 10, 0) +'NonNull<td>'+ caldata(val, 1, 10, 0) +'NonNull</tr>';
-                }
-                else {
-                    data = '<tr '+ rowStyle +'><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>-10%NonNull<td>+10%NonNull</tr>';
-                }
-            }
-            else{
-                data = '<tr '+ rowStyle +'><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>—NonNull<td>—NonNull</tr>';
+            else {
+                if(key == "HD23 GĐ1 (g)") return '<tr><td>' + key + '</td><td>' + val + '</td><td>0</td><td>580</td></tr>';
+                return '<tr><td>' + key + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
             }
         }
-        return data;
+        var rowStyle = "";
+        if(key == "KL GĐ1 CHƯA HÓA DẺO (kg)" || key == "KL GĐ2 CHƯA HÓA DẺO (kg)") rowStyle = 'style="color:#d9534f"';
+        if(key == "THỜI GIAN GĐ1" || key == "THỜI GIAN GĐ2" || key == "THỜI GIAN GĐ3") return '<tr '+rowStyle+'><td>' + key + '</td><td>' + val + '</td><td>'+ caldata(val,0,10,0) +'</td><td>'+ caldata(val,1,10,0) +'</td></tr>';
+        if(key == "TỐC ĐỘ GĐ1" || key == "TỐC ĐỘ GĐ2" || key == "TỐC ĐỘ GĐ3"){
+            if(val.toString().length <= 2) return '<tr '+rowStyle+'><td>' + key + '</td><td>' + val + '</td><td>'+ caldata(val,0,10,0) +'</td><td>'+ caldata(val,1,10,0) +'</td></tr>';
+            return '<tr '+rowStyle+'><td>' + key + '</td><td>' + val + '</td><td>-10%</td><td>+10%</td></tr>';
+        }
+        return '<tr '+rowStyle+'><td>' + key + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
     }
 
     function printgdc(stt, index, key, val) {
-        var data;
-        if (stt < parseInt(index[1], 10)){
-            if(key == "PT01 (g)"){
-                data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>0NonNull<td>600NonNull</tr>';
-            }
-            else{
-                data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>—NonNull<td>—NonNull</tr>';
-            }
+        if (stt < parseInt(index[1],10)){
+            if(key == "PT01 (g)") return '<tr><td>' + key + '</td><td>' + val + '</td><td>0</td><td>600</td></tr>';
+            return '<tr><td>' + key + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
         }
-        else if (stt >= parseInt(index[1], 10) && stt < parseInt(index[3], 10)){
-            if(key == "PT01 (g)"){
-                data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>'+ caldata(val, 0, 50, 0) +'NonNull<td>'+ caldata(val, 1, 50, 0) +'NonNull</tr>';
+        else if (stt >= parseInt(index[1],10) && stt < parseInt(index[3],10)){
+            if(key == "PT01 (g)") return '<tr><td>' + key + '</td><td>' + val + '</td><td>'+ caldata(val,0,50,0) +'</td><td>'+ caldata(val,1,50,0) +'</td></tr>';
+            if(key.substr(0,2) == "XT" && parseInt(key.substr(2,2)) >= 10 && parseInt(key.substr(2,2)) < 40) return '<tr><td>' + key + '</td><td>' + val + '</td><td>'+ caldata(val,0,50,2) +'</td><td>'+ caldata(val,1,50,2) +'</td></tr>';
+            if(key.substr(0,2) == "XT" && parseInt(key.substr(2,2)) >= 40 && parseInt(key.substr(2,2)) < 70) return '<tr><td>' + key + '</td><td>' + val + '</td><td>'+ caldata(val,0,20,2) +'</td><td>'+ caldata(val,1,20,2) +'</td></tr>';
+            if(key == "THỜI GIAN") return '<tr><td>' + key + '</td><td>' + val + '</td><td>'+ caldata(val,0,10,0) +'</td><td>'+ caldata(val,1,10,0) +'</td></tr>';
+            if(key == "TỐC ĐỘ"){
+                if(val.toString().length <= 2) return '<tr><td>' + key + '</td><td>' + val + '</td><td>'+ caldata(val,0,10,0) +'</td><td>'+ caldata(val,1,10,0) +'</td></tr>';
+                return '<tr><td>' + key + '</td><td>' + val + '</td><td>-10%</td><td>+10%</td></tr>';
             }
-            else if(key.substr(0, 2) == "XT" && key.substr(2, 2) >= 10 && key.substr(2, 2) < 40){
-                data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>'+ caldata(val, 0, 50, 2) +'NonNull<td>'+ caldata(val, 1, 50, 2) +'NonNull</tr>';
-            }
-            else if(key.substr(0, 2) == "XT" && key.substr(2, 2) >= 40 && key.substr(2, 2) < 70){
-                data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>'+ caldata(val, 0, 20, 2) +'NonNull<td>'+ caldata(val, 1, 20, 2) +'NonNull</tr>';
-            }
-            else if(key == "THỜI GIAN"){
-                data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>'+ caldata(val, 0, 10, 0) +'NonNull<td>'+ caldata(val, 1, 10, 0) +'NonNull</tr>';
-            }
-            else if(key == "TỐC ĐỘ"){
-                if(val.toString().length <= 2){
-                    data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>'+ caldata(val, 0, 10, 0) +'NonNull<td>'+ caldata(val, 1, 10, 0) +'NonNull</tr>';
-                }
-                else{
-                    data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>-10%NonNull<td>+10%NonNull</tr>';
-                }
-            }
-            else{
-                data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>—NonNull<td>—NonNull</tr>';
-            }
-        } 
-        else{
-            if(key == "PT01 (g)"){
-                data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>'+ caldata(val, 0, 50, 0) +'NonNull<td>'+ caldata(val, 1, 50, 0) +'NonNull</tr>';
-            }
-            else if(key == "THỜI GIAN"){
-                data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>'+ caldata(val, 0, 10, 0) +'NonNull<td>'+ caldata(val, 1, 10, 0) +'NonNull</tr>';
-            }
-            else if(key == "TỐC ĐỘ"){
-                if(val.toString().length <= 2){
-                    data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>'+ caldata(val, 0, 10, 0) +'NonNull<td>'+ caldata(val, 1, 10, 0) +'NonNull</tr>';
-                }
-                else{
-                    data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>-10%NonNull<td>+10%NonNull</tr>';
-                }
-            }
-            else{
-                data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>—NonNull<td>—NonNull</tr>';
-            }
+            return '<tr><td>' + key + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
         }
-        return data;
+        else {
+            if(key == "PT01 (g)") return '<tr><td>' + key + '</td><td>' + val + '</td><td>'+ caldata(val,0,50,0) +'</td><td>'+ caldata(val,1,50,0) +'</td></tr>';
+            if(key == "THỜI GIAN") return '<tr><td>' + key + '</td><td>' + val + '</td><td>'+ caldata(val,0,10,0) +'</td><td>'+ caldata(val,1,10,0) +'</td></tr>';
+            if(key == "TỐC ĐỘ"){
+                if(val.toString().length <= 2) return '<tr><td>' + key + '</td><td>' + val + '</td><td>'+ caldata(val,0,10,0) +'</td><td>'+ caldata(val,1,10,0) +'</td></tr>';
+                return '<tr><td>' + key + '</td><td>' + val + '</td><td>-10%</td><td>+10%</td></tr>';
+            }
+            return '<tr><td>' + key + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
+        }
     }
 
     window.showdata = function(str) {
-        if (!obj) return;
-        if (!str || str === "") {
-            resetToInitialState();
-            return;
-        }
+        if (!obj || !str) { resetToInitialState(); return; }
         
         btpview = str;
-        var tc = 0;
-        stac = 0; stoc = obj.gdc.length;
+        
+        // Tìm mã đơn mới từ data
+        var newMaDon = "";
         for (var i = 0; i < obj.gdc.length; i++) {
-            if (obj.gdc[i].BTP == str) { stac = i; break; }
+            if (obj.gdc[i].BTP == str) { newMaDon = obj.gdc[i]["MÃ ĐƠN"] || ""; break; }
         }
-        for (var i = stac + 1; i < obj.gdc.length; i++) {
-            if (obj.gdc[i].BTP != str && obj.gdc[i].BTP != undefined && tc === 0) {
-                stoc = i; tc = 1; break;
-            }
+        
+        // Lấy mã đơn cũ đã lưu
+        var oldMaDon = getSavedMaDon(str);
+        
+        // Nếu có thay đổi và mã cũ khác mã mới → tự động lưu lịch sử
+        if (oldMaDon && oldMaDon !== newMaDon && newMaDon !== "") {
+            addHistoryRecord(str, oldMaDon, newMaDon, null);
+            showToast(`📝 Tự động lưu: ${oldMaDon} → ${newMaDon}`);
         }
-        if (tc === 0) stoc = obj.gdc.length;
-
-        var infoHtml = '<div class="info-grid">';
-        for (var i = stac; i < stoc; i++) {
-            var keys = Object.keys(obj.gdc[i]);
-            var vals = Object.values(obj.gdc[i]);
-            for (var j = 0; j < keys.length; j++) {
-                if (keys[j] === "MÃ ĐƠN") {
-                    infoHtml += `<div class="info-item"><span>${keys[j]}:</span> <strong>${vals[j]}</strong></div>`;
-                    currentMaDon = vals[j];
-                }
-            }
-            break;
-        }
-        infoHtml += '</div>';
-        document.getElementById("info").style.display = "block";
+        
+        // Cập nhật current và lưu lại
+        currentMaDon = newMaDon;
+        saveMaDonToLocal(str, newMaDon);
+        
+        // Hiển thị thông tin
+        var infoHtml = `<div class="info-item"><span>📄 MÃ ĐƠN:</span> <strong>${newMaDon}</strong></div>`;
         document.getElementById("info-content").innerHTML = infoHtml;
-
-        var printdcgdc = '<select id="dcc" class="modern-select" onchange="showdcgdc(this.value)"><option value="">-- Chọn dây chuyền GĐC --</option>';
-        for (var i = stac; i < stoc; i++) {
-            if (obj.gdc[i]["DÂY CHUYỀN"])
-                printdcgdc += '<option value="'+ obj.gdc[i]["DÂY CHUYỀN"] +'">'+ obj.gdc[i]["DÂY CHUYỀN"] +'</option>';
-        }
+        document.getElementById("info").style.display = "flex";
+        
+        // Xử lý dây chuyền GĐC
+        var tc = 0; stac = 0; stoc = obj.gdc.length;
+        for (var i = 0; i < obj.gdc.length; i++) { if (obj.gdc[i].BTP == str) { stac = i; break; } }
+        for (var i = stac + 1; i < obj.gdc.length; i++) { if (obj.gdc[i].BTP != str && obj.gdc[i].BTP) { stoc = i; tc = 1; break; } }
+        if (tc === 0) stoc = obj.gdc.length;
+        
+        var printdcgdc = '<select id="dcc" onchange="showdcgdc(this.value)"><option value="">-- Chọn dây chuyền GĐC --</option>';
+        for (var i = stac; i < stoc; i++) { if (obj.gdc[i]["DÂY CHUYỀN"]) printdcgdc += '<option value="'+ obj.gdc[i]["DÂY CHUYỀN"] +'">'+ obj.gdc[i]["DÂY CHUYỀN"] +'</option>'; }
         printdcgdc += '</select>';
         document.getElementById("dcgdc").innerHTML = printdcgdc;
-
-        var td = 0;
-        stad = 0; stod = obj.gd1.length;
-        for (var i = 0; i < obj.gd1.length; i++) {
-            if (obj.gd1[i].BTP == str) { stad = i; break; }
-        }
-        for (var i = stad + 1; i < obj.gd1.length; i++) {
-            if (obj.gd1[i].BTP != str && obj.gd1[i].BTP != undefined) {
-                stod = i; td = 1; break;
-            }
-        }
+        
+        // Xử lý dây chuyền GĐ1
+        var td = 0; stad = 0; stod = obj.gd1.length;
+        for (var i = 0; i < obj.gd1.length; i++) { if (obj.gd1[i].BTP == str) { stad = i; break; } }
+        for (var i = stad + 1; i < obj.gd1.length; i++) { if (obj.gd1[i].BTP != str && obj.gd1[i].BTP) { stod = i; td = 1; break; } }
         if (td === 0) stod = obj.gd1.length;
-
-        var printdcgd1 = '<select id="dc1" class="modern-select" onchange="showdcgd1(this.value)"><option value="">-- Chọn dây chuyền GĐ1/CĐ --</option>';
-        for (var i = stad; i < stod; i++) {
-            if (obj.gd1[i]["DÂY CHUYỀN"])
-                printdcgd1 += '<option value="'+ obj.gd1[i]["DÂY CHUYỀN"] +'">'+ obj.gd1[i]["DÂY CHUYỀN"] +'</option>';
-        }
+        
+        var printdcgd1 = '<select id="dc1" onchange="showdcgd1(this.value)"><option value="">-- Chọn dây chuyền GĐ1/CĐ --</option>';
+        for (var i = stad; i < stod; i++) { if (obj.gd1[i]["DÂY CHUYỀN"]) printdcgd1 += '<option value="'+ obj.gd1[i]["DÂY CHUYỀN"] +'">'+ obj.gd1[i]["DÂY CHUYỀN"] +'</option>'; }
         printdcgd1 += '</select>';
         document.getElementById("dcgd1").innerHTML = printdcgd1;
         
         document.getElementById("selector-area").style.display = "flex";
         document.getElementById("cont").style.display = "block";
-        document.getElementById("cont").innerHTML = '<div class="message-placeholder">✅ Vui lòng chọn dây chuyền để xem chi tiết hiệu chỉnh</div>';
+        document.getElementById("cont").innerHTML = '<div class="message-placeholder">✅ Vui lòng chọn dây chuyền</div>';
     };
 
     window.showdcgd1 = function(str) {
-        if (!obj || !btpview) return;
-        if (!str) {
-            document.getElementById("cont").innerHTML = '<div class="message-placeholder">✅ Vui lòng chọn dây chuyền để xem chi tiết hiệu chỉnh</div>';
-            return;
-        }
+        if (!str) { document.getElementById("cont").innerHTML = '<div class="message-placeholder">✅ Vui lòng chọn dây chuyền</div>'; return; }
         var dataall = "";
         for (var i = stad; i < stod; i++) {
             if(obj.gd1[i]["DÂY CHUYỀN"] == str){
-                var keys = Object.keys(obj.gd1[i]);
-                var vals = Object.values(obj.gd1[i]);
+                var keys = Object.keys(obj.gd1[i]), vals = Object.values(obj.gd1[i]);
                 for (var j = 0; j < keys.length; j++) {
-                    if(keys[j] != "GROUP" && keys[j] != "BTP" && keys[j] != "MÃ ĐƠN"){
+                    if(keys[j] != "GROUP" && keys[j] != "BTP" && keys[j] != "MÃ ĐƠN")
                         dataall += printgd1(i, nhomd, nhomds, nhomdc, keys[j], vals[j], btpview);
-                    }
                 }
                 break;
             }
         }
-        document.getElementById("cont").innerHTML = `<table class="data-table"><thead><tr><th>Thông số GĐ1 / CĐ</th><th>Giá trị chuẩn</th><th>Min (HC -)</th><th>Max (HC +)</th></tr></thead><tbody>${dataall}</tbody></table>`;
-        var dcc = document.getElementById("dcc");
-        if (dcc) dcc.value = "";
+        document.getElementById("cont").innerHTML = `<table class="data-table"><thead><tr><th>Thông số GĐ1/CĐ</th><th>Giá trị chuẩn</th><th>Min (HC -)</th><th>Max (HC +)</th></tr></thead><tbody>${dataall}</tbody></table>`;
+        document.getElementById("dcc").value = "";
     };
 
     window.showdcgdc = function(str) {
-        if (!obj || !btpview) return;
-        if (!str) {
-            document.getElementById("cont").innerHTML = '<div class="message-placeholder">✅ Vui lòng chọn dây chuyền để xem chi tiết hiệu chỉnh</div>';
-            return;
-        }
+        if (!str) { document.getElementById("cont").innerHTML = '<div class="message-placeholder">✅ Vui lòng chọn dây chuyền</div>'; return; }
         var dataall = "";
         for (var i = stac; i < stoc; i++) {
             if(obj.gdc[i]["DÂY CHUYỀN"] == str){
-                var keys = Object.keys(obj.gdc[i]);
-                var vals = Object.values(obj.gdc[i]);
+                var keys = Object.keys(obj.gdc[i]), vals = Object.values(obj.gdc[i]);
                 for (var j = 0; j < keys.length; j++) {
-                    if(keys[j] != "GROUP" && keys[j] != "BTP" && keys[j] != "MÃ ĐƠN"){
+                    if(keys[j] != "GROUP" && keys[j] != "BTP" && keys[j] != "MÃ ĐƠN")
                         dataall += printgdc(i, nhomc, keys[j], vals[j]);
-                    }
                 }
                 break;
             }
         }
         document.getElementById("cont").innerHTML = `<table class="data-table"><thead><tr><th>Thông số GĐC</th><th>Giá trị chuẩn</th><th>Min (HC -)</th><th>Max (HC +)</th></tr></thead><tbody>${dataall}</tbody></table>`;
-        var dc1 = document.getElementById("dc1");
-        if (dc1) dc1.value = "";
+        document.getElementById("dc1").value = "";
     };
 
-    function initializeApp() {
-        if (window.DATA && window.timeold) {
-            try {
-                obj = JSON.parse(DATA);
-                timeold = window.timeold;
-                
-                nhomc = [];
-                var oldgroupc = '';
-                var j = 0;
-                for (var i = 0; i < obj.gdc.length; i++) {
-                    if (obj.gdc[i].GROUP != oldgroupc && obj.gdc[i].GROUP != undefined){
-                        nhomc[j] = i; 
-                        j++;
-                        oldgroupc = obj.gdc[i].GROUP;
-                    }
-                }
-                
-                nhomds = [];
-                nhomdc = [];
-                nhomd = [];
-                var s = 0, c = 0;
-                for (var i = 0; i < obj.gd1.length; i++) {
-                    if (obj.gd1[i].GROUP == 'S'){ nhomds[s] = i; s++; }
-                    if (obj.gd1[i].GROUP == 'C'){ nhomdc[c] = i; c++; }
-                    if (obj.gd1[i].GROUP == 3){ nhomd[0] = i; }
-                    if (obj.gd1[i].GROUP == 4){ nhomd[1] = i; }
-                    if (obj.gd1[i].GROUP == 6){ nhomd[2] = i; }
-                }
-                
-                var printbtp = '<option value="">-- Chọn BTP --</option>';
-                for (var i = 0; i < obj.gd1.length; i++) {
-                    if (obj.gd1[i].BTP) {
-                        printbtp += '<option value="'+ obj.gd1[i].BTP +'">' + obj.gd1[i].BTP + '</option>';
-                    }
-                }
-                document.getElementById("btp").innerHTML = '<select id="BTP" class="modern-select" onchange="showdata(this.value)">' + printbtp + '</select>';
-                document.getElementById("sch").innerHTML = '<input type="text" id="myseach" class="search-input" placeholder="🔎 Nhập mã BTP ..." autocomplete="off">';
-                document.getElementById("update").innerHTML = `<span>📅 Dữ liệu cập nhật: ${timeold} | ☁️ Lịch sử được đồng bộ Cloud | 🔔 Liên hệ: 0793600220</span>`;
+    function resetToInitialState() {
+        document.getElementById("selector-area").style.display = "none";
+        document.getElementById("cont").style.display = "none";
+        document.getElementById("info").style.display = "none";
+    }
 
-                var searchInput = document.getElementById("myseach");
-                if (searchInput) { searchInput.addEventListener("keyup", function() { seach(); }); }
-                
-                resetToInitialState();
-                syncHistoryFromCloud();
-            } catch(e) { console.warn(e); }
+    function seach() {
+        if (!obj) return;
+        var filter = document.getElementById("myseach").value.trim().toUpperCase();
+        var printse = '<option value="">-- Chọn BTP --</option>';
+        for (var i = 0; i < obj.gd1.length; i++) {
+            if (obj.gd1[i].BTP && (filter === "" || obj.gd1[i].BTP.toUpperCase().indexOf(filter) > -1))
+                printse += '<option value="'+ obj.gd1[i].BTP +'">' + obj.gd1[i].BTP + '</option>';
+        }
+        document.getElementById("btp").innerHTML = '<select id="BTP" onchange="showdata(this.value)">' + printse + '</select>';
+    }
+
+    function exportToExcel() {
+        var table = document.querySelector('#cont .data-table');
+        if (!table) { alert('Không có dữ liệu'); return; }
+        var maDon = document.querySelector('#info-content .info-item strong')?.innerText || '';
+        var html = `<html><head><meta charset="UTF-8"></head><body>
+            <h2>DPC RADIAL - ${btpview}</h2>
+            <p>Mã đơn: ${maDon} | Xuất: ${new Date().toLocaleString('vi-VN')}</p>
+            ${table.cloneNode(true).outerHTML}
+        </body></html>`;
+        var blob = new Blob([html], {type: 'application/vnd.ms-excel'});
+        var link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `DPC_RADIAL_${btpview}_${Date.now()}.xls`;
+        link.click();
+        URL.revokeObjectURL(link.href);
+    }
+
+    function renderHistoryTable() {
+        var filter = document.getElementById('historyFilter')?.value.toLowerCase() || '';
+        var filtered = cloudHistory.filter(item => 
+            (item.btp || '').toLowerCase().includes(filter) ||
+            (item.oldCode || '').toLowerCase().includes(filter) ||
+            (item.newCode || '').toLowerCase().includes(filter)
+        );
+        var tbody = document.getElementById('historyBody');
+        tbody.innerHTML = '';
+        if(filtered.length === 0) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center">📭 Chưa có lịch sử</td></tr>'; return; }
+        for(var i=0; i<filtered.length; i++){
+            var r = tbody.insertRow();
+            r.insertCell(0).innerHTML = (i+1).toString();
+            r.insertCell(1).innerHTML = filtered[i].time || '';
+            r.insertCell(2).innerHTML = filtered[i].btp || '';
+            r.insertCell(3).innerHTML = `<span style="color:#dc3545">${filtered[i].oldCode || ''}</span>`;
+            r.insertCell(4).innerHTML = `<span style="color:#28a745">${filtered[i].newCode || ''}</span>`;
+            r.insertCell(5).innerHTML = filtered[i].user || '';
+        }
+    }
+
+    function showHistoryModal() {
+        document.getElementById('historyModal').style.display = 'block';
+        renderHistoryTable();
+        loadFromCloud().then(() => renderHistoryTable());
+    }
+
+    function closeHistoryModal() { document.getElementById('historyModal').style.display = 'none'; }
+
+    function logout() { localStorage.clear(); location.reload(); }
+
+    function checkLogin() {
+        var user = document.getElementById('login-username').value;
+        var pass = document.getElementById('login-password').value;
+        if(user === VALID_USER && pass === VALID_PASS){
+            localStorage.setItem('dpc_radial_logged_in', 'true');
+            localStorage.setItem('dpc_radial_user', user);
+            document.getElementById('login-overlay').style.display = 'none';
+            initializeApp();
         } else {
-            document.getElementById("btp").innerHTML = '<div class="message-placeholder">⚠️ Không tải được dữ liệu. Vui lòng kiểm tra file data/dataradial.js</div>';
+            document.getElementById('login-error').innerText = '❌ Sai tài khoản hoặc mật khẩu!';
+        }
+    }
+
+    function initializeApp() {
+        if(window.DATA && window.timeold){
+            obj = JSON.parse(DATA);
+            timeold = window.timeold;
+            
+            // Khởi tạo nhóm
+            nhomc = [];
+            var oldg = '', j=0;
+            for(var i=0; i<obj.gdc.length; i++){ if(obj.gdc[i].GROUP != oldg && obj.gdc[i].GROUP){ nhomc[j]=i; j++; oldg=obj.gdc[i].GROUP; } }
+            nhomds = []; nhomdc = []; nhomd = [];
+            var s=0, c=0;
+            for(var i=0; i<obj.gd1.length; i++){
+                if(obj.gd1[i].GROUP == 'S'){ nhomds[s]=i; s++; }
+                if(obj.gd1[i].GROUP == 'C'){ nhomdc[c]=i; c++; }
+                if(obj.gd1[i].GROUP == 3) nhomd[0]=i;
+                if(obj.gd1[i].GROUP == 4) nhomd[1]=i;
+                if(obj.gd1[i].GROUP == 6) nhomd[2]=i;
+            }
+            
+            var printbtp = '<option value="">-- Chọn BTP --</option>';
+            for(var i=0; i<obj.gd1.length; i++){ if(obj.gd1[i].BTP) printbtp += '<option value="'+ obj.gd1[i].BTP +'">' + obj.gd1[i].BTP + '</option>'; }
+            document.getElementById("btp").innerHTML = '<select id="BTP" onchange="showdata(this.value)">' + printbtp + '</select>';
+            document.getElementById("sch").innerHTML = '<input type="text" id="myseach" class="search-input" placeholder="🔎 Nhập mã BTP..." onkeyup="seach()">';
+            document.getElementById("update").innerHTML = `<span>📅 Dữ liệu: ${timeold} | ☁️ Lịch sử đồng bộ Cloud</span>`;
+            
+            resetToInitialState();
+            loadFromCloud();
+        } else {
+            document.getElementById("btp").innerHTML = '<div>⚠️ Không tải được dữ liệu</div>';
         }
     }
 
     function redirect(address) {
-        var timecookie = 365*24*60*60;
-        var types = "HD23";
         var factory = "RADIAL";
-        var cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)correction\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-        if (cookieValue == ''){
-            let setcookie = JSON.stringify({'type': types, 'factory': factory});
-            document.cookie = "correction=" + setcookie + "; max-age=" + timecookie + "; path=/";
-        } else {
-            var cookieObj = JSON.parse(cookieValue);
-            types = cookieObj.type;
-            let setcookie = JSON.stringify({'type': types, 'factory': factory});
-            document.cookie = "correction=" + setcookie + "; max-age=" + timecookie + "; path=/";
-        }
-        if (address == "view" ) location.href = '../hieuchinh/view.html';
-        else if (address == "code" ) location.href = '../congcu/macode.html';
+        if(address == "view") location.href = '../hieuchinh/view.html';
         else location.href = 'DPC'+ factory +'.html';
     }
 
-    window.onclick = function(event) {
-        var modal = document.getElementById('historyModal');
-        if (event.target == modal) modal.style.display = "none";
-    }
-
-    if (localStorage.getItem('dpc_radial_logged_in') === 'true') {
-        initializeApp();
-    } else {
-        window.initializeApp = initializeApp;
-    }
-    if (localStorage.getItem('dpc_radial_logged_in') === 'true' && typeof initializeApp === 'function') {
-        initializeApp();
-    }
+    window.onclick = function(e) { if(e.target == document.getElementById('historyModal')) closeHistoryModal(); }
+    if(localStorage.getItem('dpc_radial_logged_in') === 'true') initializeApp();
+    else window.initializeApp = initializeApp;
 </script>
 </body>
 </html>
