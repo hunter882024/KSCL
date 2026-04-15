@@ -2,52 +2,68 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>DPC RADIAL | Quản lý pha chế</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Roboto, sans-serif; background: #f0f4f8; padding: 20px 16px 60px; }
+        body { font-family: 'Segoe UI', Roboto, sans-serif; background: #f0f4f8; padding: 20px 16px 60px; color: #1a2c3e; }
         .dashboard { max-width: 1400px; margin: 0 auto; background: white; border-radius: 32px; box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1); overflow: hidden; }
-        .header { background: linear-gradient(135deg, #0b3b2b 0%, #1a6f4a 100%); padding: 1.5rem 2rem; color: white; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; }
-        .title-section h1 { font-size: 1.7rem; }
-        .title-section p { font-size: 0.85rem; opacity: 0.85; }
+        .header { background: linear-gradient(135deg, #0b3b2b 0%, #1a6f4a 100%); padding: 1.5rem 2rem; color: white; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; }
+        .title-section h1 { font-size: 1.7rem; font-weight: 600; }
+        .title-section p { font-size: 0.85rem; opacity: 0.85; margin-top: 6px; }
         .nav-selector { background: rgba(255,255,255,0.15); border-radius: 60px; padding: 4px 12px; }
-        .nav-selector select { background: transparent; border: none; color: white; font-weight: 500; font-size: 1rem; padding: 8px 16px; cursor: pointer; }
+        .nav-selector select { background: transparent; border: none; color: white; font-weight: 500; font-size: 1rem; padding: 8px 16px; cursor: pointer; outline: none; }
         .content-panel { padding: 24px 28px; }
-        .btp-search-area { background: #f9fafc; border-radius: 28px; padding: 20px 24px; margin-bottom: 28px; border: 1px solid #e2edf2; display: flex; flex-wrap: wrap; gap: 20px; }
+        .btp-search-area { background: #f9fafc; border-radius: 28px; padding: 20px 24px; margin-bottom: 28px; border: 1px solid #e2edf2; display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-end; }
         .btp-box { flex: 2; min-width: 200px; }
         .search-box { flex: 1.5; min-width: 200px; }
         .label-modern { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; color: #4a6f8f; margin-bottom: 6px; display: block; }
-        select, .search-input { width: 100%; padding: 12px 16px; font-size: 0.95rem; border: 1px solid #cbdde6; border-radius: 20px; background: white; }
-        .info-card { background: #eef3fc; border-left: 6px solid #1e90ff; border-radius: 20px; padding: 14px 20px; margin-bottom: 28px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; }
-        .info-item { background: white; border-radius: 40px; padding: 8px 18px; }
+        select, .search-input { width: 100%; padding: 12px 16px; font-size: 0.95rem; border: 1px solid #cbdde6; border-radius: 20px; background: white; font-family: inherit; cursor: pointer; }
+        select:focus, .search-input:focus { outline: none; border-color: #1e90ff; box-shadow: 0 0 0 3px rgba(30,144,255,0.2); }
+        .search-input { cursor: text; }
+        .info-card { background: #eef3fc; border-left: 6px solid #1e90ff; border-radius: 20px; padding: 14px 20px; margin-bottom: 28px; display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: space-between; }
+        .info-item { background: white; border-radius: 40px; padding: 8px 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .info-item span:first-child { font-weight: 600; color: #2c5a7a; }
         .history-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
-        .btn-history { background: #1e90ff; color: white; border: none; border-radius: 40px; padding: 8px 20px; font-weight: 500; cursor: pointer; }
+        .btn-history { background: #1e90ff; color: white; border: none; border-radius: 40px; padding: 8px 20px; font-weight: 500; font-size: 0.8rem; cursor: pointer; transition: 0.2s; }
+        .btn-history:hover { background: #0c6bcf; transform: scale(1.02); }
         .btn-excel { background: #28a745; }
-        .btn-clear { background: #dc3545; }
-        .dc-selectors { display: flex; flex-wrap: wrap; gap: 24px; margin: 20px 0; }
-        .dc-card { flex: 1; background: white; border: 1px solid #e2edf2; border-radius: 24px; padding: 12px 20px; }
-        .data-table-wrapper { overflow-x: auto; border-radius: 24px; border: 1px solid #e9eef3; margin-top: 12px; }
-        .data-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-        .data-table th { background: #eef2f7; padding: 14px 12px; text-align: left; font-weight: 600; }
-        .data-table td { padding: 12px; border-bottom: 1px solid #ecf3f8; }
+        .btn-excel:hover { background: #1e7e34; }
+        .btn-sync { background: #17a2b8; }
+        .btn-sync:hover { background: #138496; }
+        .dc-selectors { display: flex; flex-wrap: wrap; gap: 24px; margin: 20px 0 24px 0; }
+        .dc-card { flex: 1; background: #ffffff; border: 1px solid #e2edf2; border-radius: 24px; padding: 12px 20px; }
+        .dc-card label { font-weight: 600; color: #0f3b5c; display: block; margin-bottom: 8px; font-size: 0.85rem; }
+        .data-table-wrapper { overflow-x: auto; border-radius: 24px; border: 1px solid #e9eef3; background: white; margin-top: 12px; }
+        .data-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; min-width: 600px; }
+        .data-table th { background: #eef2f7; padding: 14px 12px; text-align: left; font-weight: 600; color: #1f506e; border-bottom: 1px solid #d4e0e9; }
+        .data-table td { padding: 12px 12px; border-bottom: 1px solid #ecf3f8; vertical-align: top; }
+        .data-table tr:hover td { background-color: #f8fbfe; }
         .update-footer { margin-top: 32px; text-align: center; font-size: 0.75rem; color: #6c8eaa; border-top: 1px solid #e2edf2; padding-top: 20px; }
-        .btn-logout { position: fixed; bottom: 20px; right: 20px; background: #dc3545; color: white; border: none; border-radius: 40px; padding: 10px 20px; cursor: pointer; z-index: 99; }
-        .modal { display: none; position: fixed; z-index: 2100; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
-        .modal-content { background: white; margin: 5% auto; padding: 20px; border-radius: 24px; width: 90%; max-width: 1000px; max-height: 80vh; overflow-y: auto; }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #e2edf2; }
-        .close-modal { font-size: 28px; cursor: pointer; }
-        .history-table { width: 100%; border-collapse: collapse; }
+        .btn-logout { position: fixed; bottom: 20px; right: 20px; background: #dc3545; color: white; border: none; border-radius: 40px; padding: 10px 20px; font-weight: 600; font-size: 0.8rem; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 99; }
+        .btn-logout:hover { background: #b91d2e; transform: scale(1.02); }
+        .message-placeholder { text-align: center; padding: 40px; color: #5a6e7c; font-style: italic; }
+        .modal { display: none; position: fixed; z-index: 2100; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); backdrop-filter: blur(5px); }
+        .modal-content { background-color: white; margin: 5% auto; padding: 20px; border-radius: 24px; width: 90%; max-width: 1000px; max-height: 80vh; overflow-y: auto; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #e2edf2; }
+        .modal-header h3 { color: #0b3b2b; }
+        .close-modal { font-size: 28px; font-weight: bold; cursor: pointer; color: #aaa; }
+        .close-modal:hover { color: #333; }
+        .history-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
         .history-table th, .history-table td { padding: 10px 8px; text-align: left; border-bottom: 1px solid #e2edf2; }
+        .history-table th { background: #eef2f7; position: sticky; top: 0; }
         .filter-input { padding: 8px 12px; border: 1px solid #cbdde6; border-radius: 20px; width: 200px; margin-bottom: 15px; }
-        .toast { position: fixed; bottom: 80px; right: 20px; background: #28a745; color: white; padding: 10px 20px; border-radius: 8px; animation: fadeOut 3s forwards; z-index: 100; }
+        .toast { position: fixed; bottom: 80px; right: 20px; background: #28a745; color: white; padding: 10px 20px; border-radius: 8px; z-index: 100; animation: fadeOut 3s ease-in-out forwards; }
         .toast.error { background: #dc3545; }
         @keyframes fadeOut { 0% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; visibility: hidden; } }
-        #login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10,25,40,0.95); display: flex; justify-content: center; align-items: center; z-index: 2000; }
-        .login-card { background: white; border-radius: 40px; width: 90%; max-width: 380px; padding: 2rem; text-align: center; }
-        .login-card input { width: 100%; padding: 14px; margin: 10px 0; border: 1px solid #ccc; border-radius: 60px; }
-        .login-card button { width: 100%; background: #1e90ff; border: none; padding: 12px; border-radius: 60px; color: white; font-weight: bold; cursor: pointer; }
-        @media (max-width: 680px) { .content-panel { padding: 16px; } .info-card { flex-direction: column; } }
+        #login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 25, 40, 0.92); backdrop-filter: blur(10px); display: flex; justify-content: center; align-items: center; z-index: 2000; }
+        .login-card { background: white; border-radius: 40px; width: 90%; max-width: 380px; padding: 2rem 1.8rem; text-align: center; box-shadow: 0 25px 40px rgba(0,0,0,0.3); }
+        .login-card h3 { font-size: 1.6rem; margin-bottom: 1.2rem; color: #0b2b3b; }
+        .login-card input { width: 100%; padding: 14px 16px; margin: 10px 0; border: 1px solid #ccc; border-radius: 60px; font-size: 1rem; }
+        .login-card button { width: 100%; background: #1e90ff; border: none; padding: 12px; border-radius: 60px; color: white; font-weight: bold; font-size: 1rem; margin-top: 12px; cursor: pointer; }
+        .error-msg { color: #d9534f; margin-top: 12px; font-size: 0.8rem; }
+        @media (max-width: 680px) { .content-panel { padding: 16px; } .header { flex-direction: column; align-items: flex-start; } .info-card { flex-direction: column; align-items: stretch; } }
     </style>
 </head>
 <body>
@@ -55,10 +71,10 @@
 <div id="login-overlay">
     <div class="login-card">
         <h3>🔐 ĐĂNG NHẬP RADIAL</h3>
-        <input type="text" id="login-username" placeholder="Tài khoản">
+        <input type="text" id="login-username" placeholder="Tài khoản" autocomplete="off">
         <input type="password" id="login-password" placeholder="Mật khẩu">
-        <button onclick="checkLogin()">Đăng nhập</button>
-        <div id="login-error" style="color:red; margin-top:10px"></div>
+        <button onclick="checkLogin()">Đăng nhập hệ thống</button>
+        <div id="login-error" class="error-msg"></div>
     </div>
 </div>
 
@@ -68,12 +84,13 @@
     <div class="header">
         <div class="title-section">
             <h1>📦 DPC RADIAL · ĐƠN PHA CHẾ</h1>
-            <p>Giám sát thông số sản xuất | Tự động lưu lịch sử mã đơn</p>
+            <p>Giám sát thông số sản xuất | Hiệu chỉnh động theo nhóm</p>
         </div>
         <div class="nav-selector">
             <select id="edit" onchange="redirect(this.value)">
                 <option value="dpc">🏭 DPC RADIAL</option>
                 <option value="view">📊 Xem hiệu chỉnh</option>
+                <option value="code">🛠️ Mã nguồn</option>
             </select>
         </div>
     </div>
@@ -95,15 +112,23 @@
             <div class="history-buttons">
                 <button class="btn-history btn-excel" onclick="exportToExcel()">📊 Xuất Excel</button>
                 <button class="btn-history" onclick="showHistoryModal()">📜 Xem lịch sử</button>
+                <button class="btn-history btn-sync" onclick="syncHistory()">🔄 Đồng bộ</button>
             </div>
         </div>
 
         <div class="dc-selectors" id="selector-area" style="display: none;">
-            <div class="dc-card"><label>🧪 DÂY CHUYỀN GĐ1 / CĐ</label><div id="dcgd1"></div></div>
-            <div class="dc-card"><label>⚙️ DÂY CHUYỀN GĐC</label><div id="dcgdc"></div></div>
+            <div class="dc-card">
+                <label>🧪 DÂY CHUYỀN GĐ1 / CĐ</label>
+                <div id="dcgd1"></div>
+            </div>
+            <div class="dc-card">
+                <label>⚙️ DÂY CHUYỀN GIAI ĐOẠN CUỐI (GĐC)</label>
+                <div id="dcgdc"></div>
+            </div>
         </div>
 
         <div id="cont" class="data-table-wrapper" style="display: none;"></div>
+
         <div id="update" class="update-footer"></div>
     </div>
 </div>
@@ -114,12 +139,26 @@
             <h3>📋 LỊCH SỬ THAY ĐỔI MÃ ĐƠN</h3>
             <span class="close-modal" onclick="closeHistoryModal()">&times;</span>
         </div>
-        <input type="text" id="historyFilter" class="filter-input" placeholder="🔍 Lọc BTP hoặc mã đơn..." onkeyup="renderHistoryTable()">
+        <input type="text" id="historyFilter" class="filter-input" placeholder="🔍 Lọc theo BTP, mã đơn hoặc người dùng..." onkeyup="renderHistoryTable()">
         <div style="overflow-x: auto;">
             <table class="history-table" id="historyTable">
-                <thead><tr><th>STT</th><th>Thời gian</th><th>BTP</th><th>Mã cũ</th><th>Mã mới</th><th>Người dùng</th></tr></thead>
-                <tbody id="historyBody"></tbody>
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Thời gian</th>
+                        <th>BTP</th>
+                        <th>Mã đơn cũ</th>
+                        <th>Mã đơn mới</th>
+                        <th>Người dùng</th>
+                    </tr>
+                </thead>
+                <tbody id="historyBody">
+                    <tr><td colspan="6" style="text-align:center">🔄 Đang tải dữ liệu...</td></tr>
+                </tbody>
             </table>
+        </div>
+        <div style="margin-top: 15px; text-align: center;">
+            <button class="btn-history btn-excel" onclick="exportHistoryToExcel()">📊 Xuất lịch sử ra Excel</button>
         </div>
     </div>
 </div>
@@ -128,10 +167,16 @@
 <script>
     const VALID_USER = "admin";
     const VALID_PASS = "123456RA";
-    const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbw48yqt3ZMSToaES3D-ajn1u1rJDNgUrGNs3PcVyt_j62jD-UtAv-4wMAQDn5DPM5d5/exec"; // THAY URL CỦA BẠN
     
-    var obj = null, btpview = "", currentMaDon = "", timeold = "Chưa xác định";
-    var stac, stoc, stad, stod, nhomds = [], nhomdc = [], nhomd = [], nhomc = [];
+    // ⚠️ THAY URL NÀY BẰNG URL GOOGLE SHEET CỦA BẠN
+    const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbw48yqt3ZMSToaES3D-ajn1u1rJDNgUrGNs3PcVyt_j62jD-UtAv-4wMAQDn5DPM5d5/exec";
+    
+    var obj = null;
+    var btpview = "";
+    var currentMaDon = "";
+    var timeold = "Chưa xác định";
+    var stac = 0, stoc = 0, stad = 0, stod = 0;
+    var nhomds = [], nhomdc = [], nhomd = [], nhomc = [];
     var cloudHistory = [];
 
     // ========== LOCALSTORAGE LƯU MÃ ĐƠN ==========
@@ -154,7 +199,7 @@
         toast.className = 'toast' + (isError ? ' error' : '');
         toast.innerHTML = msg;
         document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 3000);
+        setTimeout(function() { if(toast.parentNode) toast.parentNode.removeChild(toast); }, 3000);
     }
 
     // ========== GOOGLE SHEETS ==========
@@ -167,19 +212,45 @@
                 body: JSON.stringify({ btp, oldCode, newCode, user, deviceInfo: navigator.userAgent })
             });
             return true;
-        } catch(e) { return false; }
+        } catch(e) { 
+            console.warn('Save error:', e);
+            return false; 
+        }
     }
 
     async function loadFromCloud() {
         try {
             var res = await fetch(GOOGLE_SHEET_API_URL + '?t=' + Date.now());
             if (res.ok) {
-                var data = await res.json();
-                cloudHistory = data.data || [];
+                var result = await res.json();
+                console.log('Cloud response:', result);
+                
+                if (result.status === 'success' && result.data) {
+                    cloudHistory = result.data;
+                } else if (Array.isArray(result)) {
+                    cloudHistory = result;
+                } else {
+                    cloudHistory = [];
+                }
+                console.log('Loaded', cloudHistory.length, 'records');
                 return true;
             }
-        } catch(e) { console.warn(e); }
-        return false;
+            return false;
+        } catch(e) { 
+            console.warn('Load error:', e);
+            return false; 
+        }
+    }
+
+    async function syncHistory() {
+        showToast('🔄 Đang đồng bộ lịch sử...');
+        var success = await loadFromCloud();
+        if (success) {
+            showToast('✅ Đã đồng bộ ' + cloudHistory.length + ' bản ghi');
+            renderHistoryTable();
+        } else {
+            showToast('❌ Không thể kết nối Cloud', true);
+        }
     }
 
     async function addHistoryRecord(btp, oldCode, newCode, user) {
@@ -193,285 +264,464 @@
         cloudHistory.unshift(record);
         await saveToCloud(btp, oldCode, newCode, record.user);
         showToast(`✅ Đã lưu: ${btp} | ${oldCode} → ${newCode}`);
+        renderHistoryTable();
     }
 
-    // ========== HIỂN THỊ DỮ LIỆU ==========
+    // ========== HIỂN THỊ LỊCH SỬ ==========
+    function renderHistoryTable() {
+        var filterInput = document.getElementById('historyFilter');
+        var filter = filterInput ? filterInput.value.toLowerCase() : '';
+        
+        var filtered = cloudHistory.filter(function(item) {
+            return (item.btp || '').toLowerCase().includes(filter) ||
+                   (item.oldCode || '').toLowerCase().includes(filter) ||
+                   (item.newCode || '').toLowerCase().includes(filter) ||
+                   (item.user || '').toLowerCase().includes(filter);
+        });
+        
+        var tbody = document.getElementById('historyBody');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+        
+        if (filtered.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center">📭 Chưa có lịch sử thay đổi</td></tr>';
+            return;
+        }
+        
+        for (var i = 0; i < filtered.length; i++) {
+            var item = filtered[i];
+            var row = tbody.insertRow();
+            row.insertCell(0).innerHTML = (i + 1).toString();
+            row.insertCell(1).innerHTML = item.time || '';
+            row.insertCell(2).innerHTML = item.btp || '';
+            row.insertCell(3).innerHTML = '<span style="color:#dc3545">' + (item.oldCode || '') + '</span>';
+            row.insertCell(4).innerHTML = '<span style="color:#28a745">' + (item.newCode || '') + '</span>';
+            row.insertCell(5).innerHTML = item.user || '';
+        }
+    }
+
+    function showHistoryModal() {
+        var modal = document.getElementById('historyModal');
+        modal.style.display = 'block';
+        renderHistoryTable();
+        syncHistory();
+    }
+
+    function closeHistoryModal() {
+        document.getElementById('historyModal').style.display = 'none';
+    }
+
+    function exportHistoryToExcel() {
+        if (!cloudHistory || cloudHistory.length === 0) {
+            alert('❌ Không có lịch sử để xuất!');
+            return;
+        }
+        
+        var htmlContent = '<html><head><meta charset="UTF-8"><title>Lich_su_thay_doi_ma_don</title>';
+        htmlContent += '<style>th{background:#007bff;color:#fff;padding:8px}td{padding:6px;border:1px solid #ddd}table{border-collapse:collapse;width:100%}</style>';
+        htmlContent += '</head><body>';
+        htmlContent += '<h2>📋 LỊCH SỬ THAY ĐỔI MÃ ĐƠN DPC RADIAL</h2>';
+        htmlContent += '<p><strong>THỜI GIAN XUẤT:</strong> ' + new Date().toLocaleString('vi-VN') + '</p>';
+        htmlContent += '<p><strong>TỔNG SỐ BẢN GHI:</strong> ' + cloudHistory.length + '</p><hr/>';
+        htmlContent += '<table><thead><tr><th>STT</th><th>Thời gian</th><th>BTP</th><th>Mã đơn cũ</th><th>Mã đơn mới</th><th>Người dùng</th></tr></thead><tbody>';
+        
+        for (var i = 0; i < cloudHistory.length; i++) {
+            var item = cloudHistory[i];
+            htmlContent += '<tr>';
+            htmlContent += '<td>' + (i+1) + '</td>';
+            htmlContent += '<td>' + (item.time || '') + '</td>';
+            htmlContent += '<td>' + (item.btp || '') + '</td>';
+            htmlContent += '<td>' + (item.oldCode || '') + '</td>';
+            htmlContent += '<td>' + (item.newCode || '') + '</td>';
+            htmlContent += '<td>' + (item.user || '') + '</td>';
+            htmlContent += '</tr>';
+        }
+        
+        htmlContent += '</tbody></table><hr/><p><em>Hệ thống DPC RADIAL - Lịch sử thay đổi mã đơn</em></p></body></html>';
+        
+        var blob = new Blob([htmlContent], { type: 'application/vnd.ms-excel' });
+        var link = document.createElement('a');
+        var url = URL.createObjectURL(blob);
+        link.href = url;
+        link.download = 'Lich_su_doi_ma_don_DPC_RADIAL_' + new Date().getTime() + '.xls';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        showToast('✅ Đã xuất lịch sử ra Excel!');
+    }
+
+    // ========== CÁC HÀM TÍNH TOÁN ==========
     function caldata(val, ch, tole, rou) {
-        var v = parseFloat(val);
-        if (isNaN(v)) return val;
-        var denta = (v * tole) / 100;
-        return (ch == 0 ? v - denta : v + denta).toFixed(rou);
+        var value = parseFloat(val);
+        if (isNaN(value)) return val;
+        var denta = (value * tole) / 100;
+        var result = (ch == 0) ? value - denta : value + denta;
+        return result.toFixed(rou);
     }
 
     function printgd1(stt, index, indexs, indexc, key, val, btpw) {
-        // Giữ nguyên code printgd1 từ file gốc của bạn
+        var data;
         if(key == "HD10 GĐ1 (kg)" || key == "HD23 GĐ1 (g)" || key == "HD11" || key == "HD12" || key == "HD13" || key == "HD14" || key == "HD10 GĐ2 (kg)"){
             if(stt < parseInt(index[0], 10)){
-                for (var n = 0; n < indexs.length; n++) { if(indexs[n] == stt) return '<tr style="background:#e8f5e9"><td>' + key + '</td><td>' + val + '</td><td>0</td><td>800</td></tr>'; }
-                for (var n = 0; n < indexc.length; n++) { if(indexc[n] == stt) return '<tr style="background:#fff3e0"><td>' + key + '</td><td>' + val + '</td><td>0</td><td>950</td></tr>'; }
-                return '<tr><td>' + key + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
+                for (var n = 0; n < indexs.length; n++) { if(indexs[n] == stt) return '<tr style="background:#e8f5e9"><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>0</td><td>800</td></tr>'; }
+                for (var n = 0; n < indexc.length; n++) { if(indexc[n] == stt) return '<tr style="background:#fff3e0"><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>0</td><td>950</td></tr>'; }
+                return '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
             }
-            else if(stt >= parseInt(index[0],10) && stt < parseInt(index[1],10)){
-                if(btpw == "C12" || btpw == "C21") return '<tr><td>' + key + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
-                return '<tr><td>' + key + '</td><td>' + val + '</td><td>'+ caldata(val,0,50,2) +'</td><td>'+ caldata(val,1,50,2) +'</td></tr>';
+            else if(stt >= parseInt(index[0], 10) && stt < parseInt(index[1], 10)){
+                if(btpw == "C12" || btpw == "C21") return '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
+                return '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 50, 2) +'</td><td>'+ caldata(val, 1, 50, 2) +'</td></tr>';
             }
-            else if(stt >= parseInt(index[1],10) && stt < parseInt(index[2],10)){
-                if(key == "HD23 GĐ1 (g)") return '<tr><td>' + key + '</td><td>' + val + '</td><td>0</td><td>580</td></tr>';
-                if(btpw == "C41" || btpw == "C42") return '<tr><td>' + key + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
-                if(btpw == "Y41" || btpw == "Y42") return '<tr><td>' + key + '</td><td>' + val + '</td><td>'+ caldata(val,0,50,2) +'</td><td>'+ caldata(val,1,50,2) +'</td></tr>';
-                return '<tr><td>' + key + '</td><td>' + val + '</td><td>'+ caldata(val,0,40,2) +'</td><td>'+ caldata(val,1,40,2) +'</td></tr>';
+            else if(stt >= parseInt(index[1], 10) && stt < parseInt(index[2], 10)){
+                if(key == "HD23 GĐ1 (g)") return '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>0</td><td>580</td></tr>';
+                if(btpw == "C41" || btpw == "C42") return '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
+                if(btpw == "Y41" || btpw == "Y42") return '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 50, 2) +'</td><td>'+ caldata(val, 1, 50, 2) +'</td></tr>';
+                return '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 40, 2) +'</td><td>'+ caldata(val, 1, 40, 2) +'</td></tr>';
             }
             else {
-                if(key == "HD23 GĐ1 (g)") return '<tr><td>' + key + '</td><td>' + val + '</td><td>0</td><td>580</td></tr>';
-                return '<tr><td>' + key + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
+                if(key == "HD23 GĐ1 (g)") return '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>0</td><td>580</td></tr>';
+                return '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
             }
         }
         var rowStyle = "";
-        if(key == "KL GĐ1 CHƯA HÓA DẺO (kg)" || key == "KL GĐ2 CHƯA HÓA DẺO (kg)") rowStyle = 'style="color:#d9534f"';
-        if(key == "THỜI GIAN GĐ1" || key == "THỜI GIAN GĐ2" || key == "THỜI GIAN GĐ3") return '<tr '+rowStyle+'><td>' + key + '</td><td>' + val + '</td><td>'+ caldata(val,0,10,0) +'</td><td>'+ caldata(val,1,10,0) +'</td></tr>';
-        if(key == "TỐC ĐỘ GĐ1" || key == "TỐC ĐỘ GĐ2" || key == "TỐC ĐỘ GĐ3"){
-            if(val.toString().length <= 2) return '<tr '+rowStyle+'><td>' + key + '</td><td>' + val + '</td><td>'+ caldata(val,0,10,0) +'</td><td>'+ caldata(val,1,10,0) +'</td></tr>';
-            return '<tr '+rowStyle+'><td>' + key + '</td><td>' + val + '</td><td>-10%</td><td>+10%</td></tr>';
+        if(key == "KL GĐ1 CHƯA HÓA DẺO (kg)" || key == "KL GĐ2 CHƯA HÓA DẺO (kg)") rowStyle = 'style="color:#d9534f; font-weight:500"';
+        if(key == "KL CAO SU GĐ2 (kg)") rowStyle = 'style="background:#f7e5cd"';
+        if(key == "KL CAO SU GĐ3 (kg)") rowStyle = 'style="background:#c1e0e6"';
+        
+        if(key == "THỜI GIAN GĐ1" || key == "THỜI GIAN GĐ2" || key == "THỜI GIAN GĐ3"){
+            return '<tr '+ rowStyle +'><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 10, 0) +'</td><td>'+ caldata(val, 1, 10, 0) +'</td></tr>';
         }
-        return '<tr '+rowStyle+'><td>' + key + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
+        else if(key == "TỐC ĐỘ GĐ1" || key == "TỐC ĐỘ GĐ2" || key == "TỐC ĐỘ GĐ3"){
+            if(val.toString().length <= 2){
+                return '<tr '+ rowStyle +'><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 10, 0) +'</td><td>'+ caldata(val, 1, 10, 0) +'</td></tr>';
+            }
+            else {
+                return '<tr '+ rowStyle +'><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>-10%</td><td>+10%</td></tr>';
+            }
+        }
+        return '<tr '+ rowStyle +'><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
     }
 
     function printgdc(stt, index, key, val) {
-        if (stt < parseInt(index[1],10)){
-            if(key == "PT01 (g)") return '<tr><td>' + key + '</td><td>' + val + '</td><td>0</td><td>600</td></tr>';
-            return '<tr><td>' + key + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
+        if (stt < parseInt(index[1], 10)){
+            if(key == "PT01 (g)") return '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>0</td><td>600</td></tr>';
+            return '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
         }
-        else if (stt >= parseInt(index[1],10) && stt < parseInt(index[3],10)){
-            if(key == "PT01 (g)") return '<tr><td>' + key + '</td><td>' + val + '</td><td>'+ caldata(val,0,50,0) +'</td><td>'+ caldata(val,1,50,0) +'</td></tr>';
-            if(key.substr(0,2) == "XT" && parseInt(key.substr(2,2)) >= 10 && parseInt(key.substr(2,2)) < 40) return '<tr><td>' + key + '</td><td>' + val + '</td><td>'+ caldata(val,0,50,2) +'</td><td>'+ caldata(val,1,50,2) +'</td></tr>';
-            if(key.substr(0,2) == "XT" && parseInt(key.substr(2,2)) >= 40 && parseInt(key.substr(2,2)) < 70) return '<tr><td>' + key + '</td><td>' + val + '</td><td>'+ caldata(val,0,20,2) +'</td><td>'+ caldata(val,1,20,2) +'</td></tr>';
-            if(key == "THỜI GIAN") return '<tr><td>' + key + '</td><td>' + val + '</td><td>'+ caldata(val,0,10,0) +'</td><td>'+ caldata(val,1,10,0) +'</td></tr>';
+        else if (stt >= parseInt(index[1], 10) && stt < parseInt(index[3], 10)){
+            if(key == "PT01 (g)") return '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 50, 0) +'</td><td>'+ caldata(val, 1, 50, 0) +'</td></tr>';
+            if(key.substr(0, 2) == "XT" && parseInt(key.substr(2, 2)) >= 10 && parseInt(key.substr(2, 2)) < 40) return '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 50, 2) +'</td><td>'+ caldata(val, 1, 50, 2) +'</td></tr>';
+            if(key.substr(0, 2) == "XT" && parseInt(key.substr(2, 2)) >= 40 && parseInt(key.substr(2, 2)) < 70) return '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 20, 2) +'</td><td>'+ caldata(val, 1, 20, 2) +'</td></tr>';
+            if(key == "THỜI GIAN") return '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 10, 0) +'</td><td>'+ caldata(val, 1, 10, 0) +'</td></tr>';
             if(key == "TỐC ĐỘ"){
-                if(val.toString().length <= 2) return '<tr><td>' + key + '</td><td>' + val + '</td><td>'+ caldata(val,0,10,0) +'</td><td>'+ caldata(val,1,10,0) +'</td></tr>';
-                return '<tr><td>' + key + '</td><td>' + val + '</td><td>-10%</td><td>+10%</td></tr>';
+                if(val.toString().length <= 2) return '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 10, 0) +'</td><td>'+ caldata(val, 1, 10, 0) +'</td></tr>';
+                return '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>-10%</td><td>+10%</td></tr>';
             }
-            return '<tr><td>' + key + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
+            return '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
         }
         else {
-            if(key == "PT01 (g)") return '<tr><td>' + key + '</td><td>' + val + '</td><td>'+ caldata(val,0,50,0) +'</td><td>'+ caldata(val,1,50,0) +'</td></tr>';
-            if(key == "THỜI GIAN") return '<tr><td>' + key + '</td><td>' + val + '</td><td>'+ caldata(val,0,10,0) +'</td><td>'+ caldata(val,1,10,0) +'</td></tr>';
+            if(key == "PT01 (g)") return '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 50, 0) +'</td><td>'+ caldata(val, 1, 50, 0) +'</td></tr>';
+            if(key == "THỜI GIAN") return '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 10, 0) +'</td><td>'+ caldata(val, 1, 10, 0) +'</td></tr>';
             if(key == "TỐC ĐỘ"){
-                if(val.toString().length <= 2) return '<tr><td>' + key + '</td><td>' + val + '</td><td>'+ caldata(val,0,10,0) +'</td><td>'+ caldata(val,1,10,0) +'</td></tr>';
-                return '<tr><td>' + key + '</td><td>' + val + '</td><td>-10%</td><td>+10%</td></tr>';
+                if(val.toString().length <= 2) return '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 10, 0) +'</td><td>'+ caldata(val, 1, 10, 0) +'</td></tr>';
+                return '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>-10%</td><td>+10%</td></tr>';
             }
-            return '<tr><td>' + key + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
+            return '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
         }
     }
-
-    window.showdata = function(str) {
-        if (!obj || !str) { resetToInitialState(); return; }
-        
-        btpview = str;
-        
-        // Tìm mã đơn mới từ data
-        var newMaDon = "";
-        for (var i = 0; i < obj.gdc.length; i++) {
-            if (obj.gdc[i].BTP == str) { newMaDon = obj.gdc[i]["MÃ ĐƠN"] || ""; break; }
-        }
-        
-        // Lấy mã đơn cũ đã lưu
-        var oldMaDon = getSavedMaDon(str);
-        
-        // Nếu có thay đổi và mã cũ khác mã mới → tự động lưu lịch sử
-        if (oldMaDon && oldMaDon !== newMaDon && newMaDon !== "") {
-            addHistoryRecord(str, oldMaDon, newMaDon, null);
-            showToast(`📝 Tự động lưu: ${oldMaDon} → ${newMaDon}`);
-        }
-        
-        // Cập nhật current và lưu lại
-        currentMaDon = newMaDon;
-        saveMaDonToLocal(str, newMaDon);
-        
-        // Hiển thị thông tin
-        var infoHtml = `<div class="info-item"><span>📄 MÃ ĐƠN:</span> <strong>${newMaDon}</strong></div>`;
-        document.getElementById("info-content").innerHTML = infoHtml;
-        document.getElementById("info").style.display = "flex";
-        
-        // Xử lý dây chuyền GĐC
-        var tc = 0; stac = 0; stoc = obj.gdc.length;
-        for (var i = 0; i < obj.gdc.length; i++) { if (obj.gdc[i].BTP == str) { stac = i; break; } }
-        for (var i = stac + 1; i < obj.gdc.length; i++) { if (obj.gdc[i].BTP != str && obj.gdc[i].BTP) { stoc = i; tc = 1; break; } }
-        if (tc === 0) stoc = obj.gdc.length;
-        
-        var printdcgdc = '<select id="dcc" onchange="showdcgdc(this.value)"><option value="">-- Chọn dây chuyền GĐC --</option>';
-        for (var i = stac; i < stoc; i++) { if (obj.gdc[i]["DÂY CHUYỀN"]) printdcgdc += '<option value="'+ obj.gdc[i]["DÂY CHUYỀN"] +'">'+ obj.gdc[i]["DÂY CHUYỀN"] +'</option>'; }
-        printdcgdc += '</select>';
-        document.getElementById("dcgdc").innerHTML = printdcgdc;
-        
-        // Xử lý dây chuyền GĐ1
-        var td = 0; stad = 0; stod = obj.gd1.length;
-        for (var i = 0; i < obj.gd1.length; i++) { if (obj.gd1[i].BTP == str) { stad = i; break; } }
-        for (var i = stad + 1; i < obj.gd1.length; i++) { if (obj.gd1[i].BTP != str && obj.gd1[i].BTP) { stod = i; td = 1; break; } }
-        if (td === 0) stod = obj.gd1.length;
-        
-        var printdcgd1 = '<select id="dc1" onchange="showdcgd1(this.value)"><option value="">-- Chọn dây chuyền GĐ1/CĐ --</option>';
-        for (var i = stad; i < stod; i++) { if (obj.gd1[i]["DÂY CHUYỀN"]) printdcgd1 += '<option value="'+ obj.gd1[i]["DÂY CHUYỀN"] +'">'+ obj.gd1[i]["DÂY CHUYỀN"] +'</option>'; }
-        printdcgd1 += '</select>';
-        document.getElementById("dcgd1").innerHTML = printdcgd1;
-        
-        document.getElementById("selector-area").style.display = "flex";
-        document.getElementById("cont").style.display = "block";
-        document.getElementById("cont").innerHTML = '<div class="message-placeholder">✅ Vui lòng chọn dây chuyền</div>';
-    };
-
-    window.showdcgd1 = function(str) {
-        if (!str) { document.getElementById("cont").innerHTML = '<div class="message-placeholder">✅ Vui lòng chọn dây chuyền</div>'; return; }
-        var dataall = "";
-        for (var i = stad; i < stod; i++) {
-            if(obj.gd1[i]["DÂY CHUYỀN"] == str){
-                var keys = Object.keys(obj.gd1[i]), vals = Object.values(obj.gd1[i]);
-                for (var j = 0; j < keys.length; j++) {
-                    if(keys[j] != "GROUP" && keys[j] != "BTP" && keys[j] != "MÃ ĐƠN")
-                        dataall += printgd1(i, nhomd, nhomds, nhomdc, keys[j], vals[j], btpview);
-                }
-                break;
-            }
-        }
-        document.getElementById("cont").innerHTML = `<table class="data-table"><thead><tr><th>Thông số GĐ1/CĐ</th><th>Giá trị chuẩn</th><th>Min (HC -)</th><th>Max (HC +)</th></tr></thead><tbody>${dataall}</tbody></table>`;
-        document.getElementById("dcc").value = "";
-    };
-
-    window.showdcgdc = function(str) {
-        if (!str) { document.getElementById("cont").innerHTML = '<div class="message-placeholder">✅ Vui lòng chọn dây chuyền</div>'; return; }
-        var dataall = "";
-        for (var i = stac; i < stoc; i++) {
-            if(obj.gdc[i]["DÂY CHUYỀN"] == str){
-                var keys = Object.keys(obj.gdc[i]), vals = Object.values(obj.gdc[i]);
-                for (var j = 0; j < keys.length; j++) {
-                    if(keys[j] != "GROUP" && keys[j] != "BTP" && keys[j] != "MÃ ĐƠN")
-                        dataall += printgdc(i, nhomc, keys[j], vals[j]);
-                }
-                break;
-            }
-        }
-        document.getElementById("cont").innerHTML = `<table class="data-table"><thead><tr><th>Thông số GĐC</th><th>Giá trị chuẩn</th><th>Min (HC -)</th><th>Max (HC +)</th></tr></thead><tbody>${dataall}</tbody></table>`;
-        document.getElementById("dc1").value = "";
-    };
 
     function resetToInitialState() {
         document.getElementById("selector-area").style.display = "none";
         document.getElementById("cont").style.display = "none";
         document.getElementById("info").style.display = "none";
+        btpview = "";
+        currentMaDon = "";
     }
 
     function seach() {
         if (!obj) return;
-        var filter = document.getElementById("myseach").value.trim().toUpperCase();
+        var input = document.getElementById("myseach");
+        if (!input) return;
+        var filter = input.value.trim().toUpperCase();
         var printse = '<option value="">-- Chọn BTP --</option>';
         for (var i = 0; i < obj.gd1.length; i++) {
-            if (obj.gd1[i].BTP && (filter === "" || obj.gd1[i].BTP.toUpperCase().indexOf(filter) > -1))
-                printse += '<option value="'+ obj.gd1[i].BTP +'">' + obj.gd1[i].BTP + '</option>';
+            if (obj.gd1[i].BTP) {
+                var txtValue = obj.gd1[i].BTP;
+                if (filter === "" || txtValue.toUpperCase().indexOf(filter) > -1) {
+                    printse += '<option value="'+ txtValue +'">' + txtValue + '</option>';
+                }
+            }
         }
-        document.getElementById("btp").innerHTML = '<select id="BTP" onchange="showdata(this.value)">' + printse + '</select>';
+        var btpContainer = document.getElementById("btp");
+        if (btpContainer) {
+            btpContainer.innerHTML = '<select id="BTP" class="modern-select" onchange="showdata(this.value)">' + printse + '</select>';
+        }
     }
+
+    window.showdata = function(str) {
+        if (!obj) return;
+        if (!str || str === "") {
+            resetToInitialState();
+            return;
+        }
+        
+        btpview = str;
+        
+        var newMaDon = "";
+        for (var i = 0; i < obj.gdc.length; i++) {
+            if (obj.gdc[i].BTP == str) {
+                newMaDon = obj.gdc[i]["MÃ ĐƠN"] || "";
+                break;
+            }
+        }
+        
+        var oldMaDon = getSavedMaDon(str);
+        
+        if (oldMaDon && oldMaDon !== newMaDon && newMaDon !== "") {
+            addHistoryRecord(str, oldMaDon, newMaDon, null);
+            showToast(`📝 Tự động lưu: ${oldMaDon} → ${newMaDon}`);
+        }
+        
+        currentMaDon = newMaDon;
+        saveMaDonToLocal(str, newMaDon);
+        
+        var infoHtml = '<div class="info-item"><span>📄 MÃ ĐƠN:</span> <strong>' + newMaDon + '</strong></div>';
+        document.getElementById("info-content").innerHTML = infoHtml;
+        document.getElementById("info").style.display = "flex";
+        
+        var tc = 0;
+        stac = 0; stoc = obj.gdc.length;
+        for (var i = 0; i < obj.gdc.length; i++) {
+            if (obj.gdc[i].BTP == str) { stac = i; break; }
+        }
+        for (var i = stac + 1; i < obj.gdc.length; i++) {
+            if (obj.gdc[i].BTP != str && obj.gdc[i].BTP != undefined && tc === 0) {
+                stoc = i; tc = 1; break;
+            }
+        }
+        if (tc === 0) stoc = obj.gdc.length;
+        
+        var printdcgdc = '<select id="dcc" class="modern-select" onchange="showdcgdc(this.value)"><option value="">-- Chọn dây chuyền GĐC --</option>';
+        for (var i = stac; i < stoc; i++) {
+            if (obj.gdc[i]["DÂY CHUYỀN"])
+                printdcgdc += '<option value="'+ obj.gdc[i]["DÂY CHUYỀN"] +'">'+ obj.gdc[i]["DÂY CHUYỀN"] +'</option>';
+        }
+        printdcgdc += '</select>';
+        document.getElementById("dcgdc").innerHTML = printdcgdc;
+        
+        var td = 0;
+        stad = 0; stod = obj.gd1.length;
+        for (var i = 0; i < obj.gd1.length; i++) {
+            if (obj.gd1[i].BTP == str) { stad = i; break; }
+        }
+        for (var i = stad + 1; i < obj.gd1.length; i++) {
+            if (obj.gd1[i].BTP != str && obj.gd1[i].BTP != undefined) {
+                stod = i; td = 1; break;
+            }
+        }
+        if (td === 0) stod = obj.gd1.length;
+        
+        var printdcgd1 = '<select id="dc1" class="modern-select" onchange="showdcgd1(this.value)"><option value="">-- Chọn dây chuyền GĐ1/CĐ --</option>';
+        for (var i = stad; i < stod; i++) {
+            if (obj.gd1[i]["DÂY CHUYỀN"])
+                printdcgd1 += '<option value="'+ obj.gd1[i]["DÂY CHUYỀN"] +'">'+ obj.gd1[i]["DÂY CHUYỀN"] +'</option>';
+        }
+        printdcgd1 += '</select>';
+        document.getElementById("dcgd1").innerHTML = printdcgd1;
+        
+        document.getElementById("selector-area").style.display = "flex";
+        document.getElementById("cont").style.display = "block";
+        document.getElementById("cont").innerHTML = '<div class="message-placeholder">✅ Vui lòng chọn dây chuyền để xem chi tiết hiệu chỉnh</div>';
+    };
+
+    window.showdcgd1 = function(str) {
+        if (!obj || !btpview) return;
+        if (!str) {
+            document.getElementById("cont").innerHTML = '<div class="message-placeholder">✅ Vui lòng chọn dây chuyền để xem chi tiết hiệu chỉnh</div>';
+            return;
+        }
+        var dataall = "";
+        for (var i = stad; i < stod; i++) {
+            if(obj.gd1[i]["DÂY CHUYỀN"] == str){
+                var keys = Object.keys(obj.gd1[i]);
+                var vals = Object.values(obj.gd1[i]);
+                for (var j = 0; j < keys.length; j++) {
+                    if(keys[j] != "GROUP" && keys[j] != "BTP" && keys[j] != "MÃ ĐƠN"){
+                        dataall += printgd1(i, nhomd, nhomds, nhomdc, keys[j], vals[j], btpview);
+                    }
+                }
+                break;
+            }
+        }
+        document.getElementById("cont").innerHTML = `<table class="data-table"><thead><tr><th>Thông số GĐ1 / CĐ</th><th>Giá trị chuẩn</th><th>Min (HC -)</th><th>Max (HC +)</th></tr></thead><tbody>${dataall}</tbody>}</table>`;
+        var dcc = document.getElementById("dcc");
+        if (dcc) dcc.value = "";
+    };
+
+    window.showdcgdc = function(str) {
+        if (!obj || !btpview) return;
+        if (!str) {
+            document.getElementById("cont").innerHTML = '<div class="message-placeholder">✅ Vui lòng chọn dây chuyền để xem chi tiết hiệu chỉnh</div>';
+            return;
+        }
+        var dataall = "";
+        for (var i = stac; i < stoc; i++) {
+            if(obj.gdc[i]["DÂY CHUYỀN"] == str){
+                var keys = Object.keys(obj.gdc[i]);
+                var vals = Object.values(obj.gdc[i]);
+                for (var j = 0; j < keys.length; j++) {
+                    if(keys[j] != "GROUP" && keys[j] != "BTP" && keys[j] != "MÃ ĐƠN"){
+                        dataall += printgdc(i, nhomc, keys[j], vals[j]);
+                    }
+                }
+                break;
+            }
+        }
+        document.getElementById("cont").innerHTML = `<table class="data-table"><thead><tr><th>Thông số GĐC</th><th>Giá trị chuẩn</th><th>Min (HC -)</th><th>Max (HC +)</th></tr></thead><tbody>${dataall}</tbody>}</table>`;
+        var dc1 = document.getElementById("dc1");
+        if (dc1) dc1.value = "";
+    };
 
     function exportToExcel() {
+        if (!btpview) {
+            alert('❌ Vui lòng chọn BTP trước!');
+            return;
+        }
         var table = document.querySelector('#cont .data-table');
-        if (!table) { alert('Không có dữ liệu'); return; }
-        var maDon = document.querySelector('#info-content .info-item strong')?.innerText || '';
-        var html = `<html><head><meta charset="UTF-8"></head><body>
-            <h2>DPC RADIAL - ${btpview}</h2>
-            <p>Mã đơn: ${maDon} | Xuất: ${new Date().toLocaleString('vi-VN')}</p>
-            ${table.cloneNode(true).outerHTML}
-        </body></html>`;
-        var blob = new Blob([html], {type: 'application/vnd.ms-excel'});
+        if (!table) {
+            alert('❌ Không có dữ liệu để xuất!');
+            return;
+        }
+        var maDonElement = document.querySelector('#info-content .info-item strong');
+        var maDonText = maDonElement ? maDonElement.innerText : '';
+        
+        var htmlContent = '<html><head><meta charset="UTF-8"><title>DPC_RADIAL_' + btpview + '</title>';
+        htmlContent += '<style>th{background:#4CAF50;color:#fff;padding:8px}td{padding:6px;border:1px solid #ddd}table{border-collapse:collapse;width:100%}</style>';
+        htmlContent += '</head><body>';
+        htmlContent += '<h2>📊 BÁO CÁO THÔNG SỐ DPC RADIAL</h2>';
+        htmlContent += '<p><strong>BTP:</strong> ' + btpview + '</p>';
+        htmlContent += '<p><strong>MÃ ĐƠN:</strong> ' + maDonText + '</p>';
+        htmlContent += '<p><strong>THỜI GIAN XUẤT:</strong> ' + new Date().toLocaleString('vi-VN') + '</p><hr/>';
+        htmlContent += table.cloneNode(true).outerHTML;
+        htmlContent += '<hr/><p><em>Hệ thống DPC RADIAL - Dữ liệu thông số sản xuất</em></p></body></html>';
+        
+        var blob = new Blob([htmlContent], { type: 'application/vnd.ms-excel' });
         var link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = `DPC_RADIAL_${btpview}_${Date.now()}.xls`;
+        var url = URL.createObjectURL(blob);
+        link.href = url;
+        link.download = 'DPC_RADIAL_' + btpview + '_' + new Date().getTime() + '.xls';
+        document.body.appendChild(link);
         link.click();
-        URL.revokeObjectURL(link.href);
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        showToast('✅ Đã xuất file Excel!');
     }
 
-    function renderHistoryTable() {
-        var filter = document.getElementById('historyFilter')?.value.toLowerCase() || '';
-        var filtered = cloudHistory.filter(item => 
-            (item.btp || '').toLowerCase().includes(filter) ||
-            (item.oldCode || '').toLowerCase().includes(filter) ||
-            (item.newCode || '').toLowerCase().includes(filter)
-        );
-        var tbody = document.getElementById('historyBody');
-        tbody.innerHTML = '';
-        if(filtered.length === 0) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center">📭 Chưa có lịch sử</td></tr>'; return; }
-        for(var i=0; i<filtered.length; i++){
-            var r = tbody.insertRow();
-            r.insertCell(0).innerHTML = (i+1).toString();
-            r.insertCell(1).innerHTML = filtered[i].time || '';
-            r.insertCell(2).innerHTML = filtered[i].btp || '';
-            r.insertCell(3).innerHTML = `<span style="color:#dc3545">${filtered[i].oldCode || ''}</span>`;
-            r.insertCell(4).innerHTML = `<span style="color:#28a745">${filtered[i].newCode || ''}</span>`;
-            r.insertCell(5).innerHTML = filtered[i].user || '';
+    function initializeApp() {
+        if (window.DATA && window.timeold) {
+            try {
+                obj = JSON.parse(DATA);
+                timeold = window.timeold;
+                
+                // Cập nhật thời gian hiển thị đúng từ file data
+                var updateDiv = document.getElementById("update");
+                if (updateDiv) {
+                    updateDiv.innerHTML = '<span>📅 Dữ liệu cập nhật: ' + timeold + ' | ☁️ Lịch sử đồng bộ Cloud | 🔔 Mọi thắc mắc liên hệ: 0793600220</span>';
+                }
+                
+                nhomc = [];
+                var oldgroupc = '';
+                var j = 0;
+                for (var i = 0; i < obj.gdc.length; i++) {
+                    if (obj.gdc[i].GROUP != oldgroupc && obj.gdc[i].GROUP != undefined){
+                        nhomc[j] = i; 
+                        j++;
+                        oldgroupc = obj.gdc[i].GROUP;
+                    }
+                }
+                
+                nhomds = [];
+                nhomdc = [];
+                nhomd = [];
+                var s = 0, c = 0;
+                for (var i = 0; i < obj.gd1.length; i++) {
+                    if (obj.gd1[i].GROUP == 'S'){ nhomds[s] = i; s++; }
+                    if (obj.gd1[i].GROUP == 'C'){ nhomdc[c] = i; c++; }
+                    if (obj.gd1[i].GROUP == 3){ nhomd[0] = i; }
+                    if (obj.gd1[i].GROUP == 4){ nhomd[1] = i; }
+                    if (obj.gd1[i].GROUP == 6){ nhomd[2] = i; }
+                }
+                
+                var printbtp = '<option value="">-- Chọn BTP --</option>';
+                for (var i = 0; i < obj.gd1.length; i++) {
+                    if (obj.gd1[i].BTP) {
+                        printbtp += '<option value="'+ obj.gd1[i].BTP +'">' + obj.gd1[i].BTP + '</option>';
+                    }
+                }
+                document.getElementById("btp").innerHTML = '<select id="BTP" class="modern-select" onchange="showdata(this.value)">' + printbtp + '</select>';
+                document.getElementById("sch").innerHTML = '<input type="text" id="myseach" class="search-input" placeholder="🔎 Nhập mã BTP ..." autocomplete="off" onkeyup="seach()">';
+                
+                resetToInitialState();
+                syncHistory();
+            } catch(e) { 
+                console.warn(e); 
+            }
+        } else {
+            document.getElementById("btp").innerHTML = '<div class="message-placeholder">⚠️ Không tải được dữ liệu. Vui lòng kiểm tra file data/dataradial.js</div>';
+            var updateDiv = document.getElementById("update");
+            if (updateDiv) {
+                updateDiv.innerHTML = '<span>📅 Dữ liệu cập nhật: Lỗi tải dữ liệu | 🔔 Mọi thắc mắc liên hệ: 0793600220</span>';
+            }
         }
     }
 
-    function showHistoryModal() {
-        document.getElementById('historyModal').style.display = 'block';
-        renderHistoryTable();
-        loadFromCloud().then(() => renderHistoryTable());
+    function redirect(address) {
+        var timecookie = 365*24*60*60;
+        var types = "HD23";
+        var factory = "RADIAL";
+        var cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)correction\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+        if (cookieValue == ''){
+            let setcookie = JSON.stringify({'type': types, 'factory': factory});
+            document.cookie = "correction=" + setcookie + "; max-age=" + timecookie + "; path=/";
+        } else {
+            var cookieObj = JSON.parse(cookieValue);
+            types = cookieObj.type;
+            let setcookie = JSON.stringify({'type': types, 'factory': factory});
+            document.cookie = "correction=" + setcookie + "; max-age=" + timecookie + "; path=/";
+        }
+        if (address == "view" ) location.href = '../hieuchinh/view.html';
+        else if (address == "code" ) location.href = '../congcu/macode.html';
+        else location.href = 'DPC'+ factory +'.html';
     }
 
-    function closeHistoryModal() { document.getElementById('historyModal').style.display = 'none'; }
-
-    function logout() { localStorage.clear(); location.reload(); }
+    function logout() {
+        localStorage.removeItem('dpc_radial_logged_in');
+        localStorage.removeItem('dpc_radial_user');
+        location.reload();
+    }
 
     function checkLogin() {
         var user = document.getElementById('login-username').value;
         var pass = document.getElementById('login-password').value;
-        if(user === VALID_USER && pass === VALID_PASS){
+        if (user === VALID_USER && pass === VALID_PASS) {
             localStorage.setItem('dpc_radial_logged_in', 'true');
             localStorage.setItem('dpc_radial_user', user);
             document.getElementById('login-overlay').style.display = 'none';
             initializeApp();
         } else {
-            document.getElementById('login-error').innerText = '❌ Sai tài khoản hoặc mật khẩu!';
+            document.getElementById('login-error').textContent = '❌ Sai tài khoản hoặc mật khẩu!';
         }
     }
 
-    function initializeApp() {
-        if(window.DATA && window.timeold){
-            obj = JSON.parse(DATA);
-            timeold = window.timeold;
-            
-            // Khởi tạo nhóm
-            nhomc = [];
-            var oldg = '', j=0;
-            for(var i=0; i<obj.gdc.length; i++){ if(obj.gdc[i].GROUP != oldg && obj.gdc[i].GROUP){ nhomc[j]=i; j++; oldg=obj.gdc[i].GROUP; } }
-            nhomds = []; nhomdc = []; nhomd = [];
-            var s=0, c=0;
-            for(var i=0; i<obj.gd1.length; i++){
-                if(obj.gd1[i].GROUP == 'S'){ nhomds[s]=i; s++; }
-                if(obj.gd1[i].GROUP == 'C'){ nhomdc[c]=i; c++; }
-                if(obj.gd1[i].GROUP == 3) nhomd[0]=i;
-                if(obj.gd1[i].GROUP == 4) nhomd[1]=i;
-                if(obj.gd1[i].GROUP == 6) nhomd[2]=i;
-            }
-            
-            var printbtp = '<option value="">-- Chọn BTP --</option>';
-            for(var i=0; i<obj.gd1.length; i++){ if(obj.gd1[i].BTP) printbtp += '<option value="'+ obj.gd1[i].BTP +'">' + obj.gd1[i].BTP + '</option>'; }
-            document.getElementById("btp").innerHTML = '<select id="BTP" onchange="showdata(this.value)">' + printbtp + '</select>';
-            document.getElementById("sch").innerHTML = '<input type="text" id="myseach" class="search-input" placeholder="🔎 Nhập mã BTP..." onkeyup="seach()">';
-            document.getElementById("update").innerHTML = `<span>📅 Dữ liệu: ${timeold} | ☁️ Lịch sử đồng bộ Cloud</span>`;
-            
-            resetToInitialState();
-            loadFromCloud();
-        } else {
-            document.getElementById("btp").innerHTML = '<div>⚠️ Không tải được dữ liệu</div>';
-        }
+    window.onclick = function(event) {
+        var modal = document.getElementById('historyModal');
+        if (event.target == modal) modal.style.display = "none";
     }
 
-    function redirect(address) {
-        var factory = "RADIAL";
-        if(address == "view") location.href = '../hieuchinh/view.html';
-        else location.href = 'DPC'+ factory +'.html';
+    if (localStorage.getItem('dpc_radial_logged_in') === 'true') {
+        initializeApp();
+    } else {
+        window.initializeApp = initializeApp;
     }
-
-    window.onclick = function(e) { if(e.target == document.getElementById('historyModal')) closeHistoryModal(); }
-    if(localStorage.getItem('dpc_radial_logged_in') === 'true') initializeApp();
-    else window.initializeApp = initializeApp;
 </script>
 </body>
 </html>
