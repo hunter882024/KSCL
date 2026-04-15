@@ -164,6 +164,7 @@
         .history-buttons {
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
         }
 
         .btn-history {
@@ -197,6 +198,14 @@
 
         .btn-clear-history:hover {
             background: #b91d2e;
+        }
+
+        .btn-sync {
+            background: #17a2b8;
+        }
+
+        .btn-sync:hover {
+            background: #138496;
         }
 
         .dc-selectors {
@@ -293,7 +302,6 @@
             font-style: italic;
         }
 
-        /* Modal lịch sử */
         .modal {
             display: none;
             position: fixed;
@@ -312,7 +320,7 @@
             padding: 20px;
             border-radius: 24px;
             width: 90%;
-            max-width: 900px;
+            max-width: 1000px;
             max-height: 80vh;
             overflow-y: auto;
             box-shadow: 0 20px 40px rgba(0,0,0,0.2);
@@ -366,6 +374,22 @@
             border-radius: 20px;
             width: 200px;
             margin-bottom: 15px;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #1e90ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 8px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         @media (max-width: 680px) {
@@ -442,6 +466,24 @@
             margin-top: 12px;
             font-size: 0.8rem;
         }
+
+        .toast {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background: #333;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            z-index: 100;
+            animation: fadeOut 3s ease-in-out forwards;
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
     </style>
 </head>
 <body>
@@ -459,11 +501,16 @@
 <script>
     const VALID_USER = "admin";
     const VALID_PASS = "123456RA";
+    
+    // CẤU HÌNH GOOGLE SHEETS - THAY URL NÀY BẰNG URL CỦA BẠN
+    const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbw48yqt3ZMSToaES3D-ajn1u1rJDNgUrGNs3PcVyt_j62jD-UtAv-4wMAQDn5DPM5d5/exec";
+    
     function checkLogin() {
         const user = document.getElementById('login-username').value;
         const pass = document.getElementById('login-password').value;
         if (user === VALID_USER && pass === VALID_PASS) {
             localStorage.setItem('dpc_radial_logged_in', 'true');
+            localStorage.setItem('dpc_radial_user', user);
             document.getElementById('login-overlay').style.display = 'none';
             if (typeof initializeApp === 'function') initializeApp();
         } else {
@@ -475,7 +522,7 @@
     }
 </script>
 
-<button class="btn-logout" onclick="localStorage.removeItem('dpc_radial_logged_in'); location.reload();">🚪 Đăng xuất</button>
+<button class="btn-logout" onclick="localStorage.removeItem('dpc_radial_logged_in'); localStorage.removeItem('dpc_radial_user'); location.reload();">🚪 Đăng xuất</button>
 
 <div class="dashboard">
     <div class="header">
@@ -510,7 +557,7 @@
                 <button class="btn-history" onclick="saveCurrentHistory()">💾 Lưu thay đổi</button>
                 <button class="btn-history btn-excel" onclick="exportToExcel()">📊 Xuất Excel</button>
                 <button class="btn-history" onclick="showHistoryModal()">📜 Xem lịch sử</button>
-                <button class="btn-history btn-clear-history" onclick="clearHistory()">🗑️ Xóa lịch sử</button>
+                <button class="btn-history btn-sync" onclick="syncHistoryFromCloud()">🔄 Đồng bộ</button>
             </div>
         </div>
 
@@ -531,14 +578,17 @@
     </div>
 </div>
 
-<!-- Modal lịch sử -->
 <div id="historyModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
-            <h3>📋 LỊCH SỬ THAY ĐỔI MÃ ĐƠN</h3>
+            <h3>📋 LỊCH SỬ THAY ĐỔI MÃ ĐƠN (ĐỒNG BỘ TOÀN HỆ THỐNG)</h3>
             <span class="close-modal" onclick="closeHistoryModal()">&times;</span>
         </div>
         <input type="text" id="historyFilter" class="filter-input" placeholder="🔍 Lọc theo BTP, mã đơn hoặc người dùng..." onkeyup="filterHistory()">
+        <div style="margin-bottom: 10px;">
+            <button class="btn-history btn-excel" onclick="exportHistoryToExcel()" style="margin-right: 10px;">📊 Xuất lịch sử Excel</button>
+            <button class="btn-history btn-sync" onclick="syncHistoryFromCloud()">🔄 Làm mới từ Cloud</button>
+        </div>
         <div style="overflow-x: auto;">
             <table class="history-table" id="historyTable">
                 <thead>
@@ -549,13 +599,13 @@
                         <th>Mã đơn cũ</th>
                         <th>Mã đơn mới</th>
                         <th>Người thực hiện</th>
+                        <th>Thiết bị</th>
                     </tr>
                 </thead>
-                <tbody id="historyBody"></tbody>
+                <tbody id="historyBody">
+                    <tr><td colspan="7" style="text-align:center">🔄 Đang tải dữ liệu...</td></tr>
+                </tbody>
             </table>
-        </div>
-        <div style="margin-top: 15px; text-align: center;">
-            <button class="btn-history" onclick="exportHistoryToExcel()">📊 Xuất lịch sử ra Excel</button>
         </div>
     </div>
 </div>
@@ -571,44 +621,96 @@
     var btpview = "";
     var timeold = (typeof timeold !== 'undefined') ? timeold : "Chưa xác định";
     var currentMaDon = "";
+    var cloudHistory = [];
 
-    // Khởi tạo lịch sử từ localStorage
-    var historyData = [];
+    function showToast(message, isError = false) {
+        var toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.style.background = isError ? '#dc3545' : '#28a745';
+        toast.innerHTML = message;
+        document.body.appendChild(toast);
+        setTimeout(function() {
+            if (toast.parentNode) toast.parentNode.removeChild(toast);
+        }, 3000);
+    }
 
-    function loadHistory() {
-        var saved = localStorage.getItem('dpc_radial_history');
-        if (saved) {
-            try {
-                historyData = JSON.parse(saved);
-            } catch(e) {
-                historyData = [];
+    async function saveToCloud(btp, oldCode, newCode, user) {
+        try {
+            var deviceInfo = navigator.userAgent.split(' ').slice(-2).join(' ') || 'Unknown';
+            var response = await fetch(GOOGLE_SHEET_API_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    btp: btp,
+                    oldCode: oldCode,
+                    newCode: newCode,
+                    user: user,
+                    deviceInfo: deviceInfo,
+                    action: 'save'
+                })
+            });
+            return true;
+        } catch(e) {
+            console.warn('Save to cloud failed:', e);
+            return false;
+        }
+    }
+
+    async function loadFromCloud() {
+        try {
+            var response = await fetch(GOOGLE_SHEET_API_URL + '?action=get');
+            if (response.ok) {
+                cloudHistory = await response.json();
+                return true;
             }
-        }
-        if (!historyData || historyData.length === 0) {
-            historyData = [];
+            return false;
+        } catch(e) {
+            console.warn('Load from cloud failed:', e);
+            return false;
         }
     }
 
-    function saveHistoryToLocal() {
-        localStorage.setItem('dpc_radial_history', JSON.stringify(historyData));
+    async function syncHistoryFromCloud() {
+        showToast('🔄 Đang đồng bộ dữ liệu từ Cloud...');
+        var success = await loadFromCloud();
+        if (success && cloudHistory && cloudHistory.length > 0) {
+            showToast('✅ Đã đồng bộ ' + cloudHistory.length + ' bản ghi từ Cloud');
+            if (document.getElementById('historyModal').style.display === 'block') {
+                renderHistoryTable();
+            }
+        } else if (success) {
+            showToast('ℹ️ Chưa có dữ liệu lịch sử trên Cloud');
+        } else {
+            showToast('⚠️ Không thể kết nối Cloud, kiểm tra lại URL Google Sheet', true);
+        }
     }
 
-    function addHistoryRecord(btp, oldCode, newCode, user) {
+    async function addHistoryRecord(btp, oldCode, newCode, user) {
         var now = new Date();
         var timeStr = now.toLocaleString('vi-VN', { hour12: false });
-        historyData.unshift({
-            id: Date.now(),
+        
+        var record = {
             time: timeStr,
             btp: btp,
             oldCode: oldCode,
             newCode: newCode,
-            user: user || 'admin'
-        });
-        // Giữ lại tối đa 500 bản ghi
-        if (historyData.length > 500) {
-            historyData = historyData.slice(0, 500);
+            user: user || localStorage.getItem('dpc_radial_user') || 'admin'
+        };
+        
+        cloudHistory.unshift(record);
+        if (cloudHistory.length > 1000) cloudHistory = cloudHistory.slice(0, 1000);
+        
+        var saved = await saveToCloud(btp, oldCode, record.newCode, record.user);
+        if (saved) {
+            showToast('✅ Đã lưu lịch sử lên Cloud (đồng bộ mọi thiết bị)');
+        } else {
+            showToast('⚠️ Lưu lịch sử thành công nhưng chưa đồng bộ Cloud', true);
         }
-        saveHistoryToLocal();
+        
+        renderHistoryTable();
     }
 
     function saveCurrentHistory() {
@@ -617,9 +719,8 @@
             return;
         }
         
-        // Lấy mã đơn hiện tại từ thông tin hiển thị
-        var currentMaDonElement = document.querySelector('#info-content .info-item strong');
-        var newMaDon = currentMaDonElement ? currentMaDonElement.innerText : '';
+        var newMaDonElement = document.querySelector('#info-content .info-item strong');
+        var newMaDon = newMaDonElement ? newMaDonElement.innerText : '';
         
         if (!newMaDon) {
             alert('❌ Không tìm thấy mã đơn hiện tại!');
@@ -627,14 +728,13 @@
         }
         
         if (currentMaDon && currentMaDon !== newMaDon) {
-            addHistoryRecord(btpview, currentMaDon, newMaDon, 'admin');
-            alert(`✅ Đã lưu lịch sử thay đổi!\nBTP: ${btpview}\nMã cũ: ${currentMaDon}\nMã mới: ${newMaDon}`);
+            addHistoryRecord(btpview, currentMaDon, newMaDon, null);
             currentMaDon = newMaDon;
         } else if (!currentMaDon) {
             currentMaDon = newMaDon;
-            alert('ℹ️ Đã ghi nhận mã đơn hiện tại làm mốc');
+            showToast('ℹ️ Đã ghi nhận mã đơn hiện tại làm mốc');
         } else {
-            alert('ℹ️ Mã đơn chưa thay đổi, không cần lưu lịch sử');
+            showToast('ℹ️ Mã đơn chưa thay đổi, không cần lưu lịch sử');
         }
     }
 
@@ -642,6 +742,7 @@
         var modal = document.getElementById('historyModal');
         modal.style.display = 'block';
         renderHistoryTable();
+        syncHistoryFromCloud();
     }
 
     function closeHistoryModal() {
@@ -650,10 +751,10 @@
 
     function renderHistoryTable() {
         var filter = document.getElementById('historyFilter') ? document.getElementById('historyFilter').value.toLowerCase() : '';
-        var filtered = historyData;
+        var filtered = cloudHistory;
         
         if (filter) {
-            filtered = historyData.filter(function(item) {
+            filtered = cloudHistory.filter(function(item) {
                 return (item.btp && item.btp.toLowerCase().includes(filter)) ||
                        (item.oldCode && item.oldCode.toLowerCase().includes(filter)) ||
                        (item.newCode && item.newCode.toLowerCase().includes(filter)) ||
@@ -664,8 +765,8 @@
         var tbody = document.getElementById('historyBody');
         tbody.innerHTML = '';
         
-        if (filtered.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center">📭 Chưa có lịch sử thay đổi nào</td></tr>';
+        if (!filtered || filtered.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center">📭 Chưa có lịch sử thay đổi nào</td></tr>';
             return;
         }
         
@@ -678,20 +779,12 @@
             row.insertCell(3).innerHTML = '<span style="color:#dc3545">' + (item.oldCode || '') + '</span>';
             row.insertCell(4).innerHTML = '<span style="color:#28a745">' + (item.newCode || '') + '</span>';
             row.insertCell(5).innerHTML = item.user || '';
+            row.insertCell(6).innerHTML = item.deviceInfo || '-';
         }
     }
 
     function filterHistory() {
         renderHistoryTable();
-    }
-
-    function clearHistory() {
-        if (confirm('⚠️ Bạn có chắc chắn muốn xóa TOÀN BỘ lịch sử thay đổi?')) {
-            historyData = [];
-            saveHistoryToLocal();
-            renderHistoryTable();
-            alert('✅ Đã xóa toàn bộ lịch sử');
-        }
     }
 
     function exportToExcel() {
@@ -700,39 +793,29 @@
             return;
         }
         
-        // Lấy dữ liệu hiện tại từ bảng
         var table = document.querySelector('#cont .data-table');
         if (!table) {
             alert('❌ Không có dữ liệu để xuất!');
             return;
         }
         
-        var currentMaDonElement = document.querySelector('#info-content .info-item strong');
-        var maDonHienTai = currentMaDonElement ? currentMaDonElement.innerText : '';
+        var maDonHienTai = document.querySelector('#info-content .info-item strong');
+        var maDonText = maDonHienTai ? maDonHienTai.innerText : '';
         
         var htmlContent = `
         <html>
-        <head>
-            <meta charset="UTF-8">
-            <title>DPC_RADIAL_${btpview}_${new Date().toLocaleString('vi-VN')}</title>
-            <style>
-                th { background: #4CAF50; color: white; padding: 8px; }
-                td { padding: 6px; border: 1px solid #ddd; }
-                table { border-collapse: collapse; width: 100%; }
-            </style>
+        <head><meta charset="UTF-8"><title>DPC_RADIAL_${btpview}</title>
+        <style>th{background:#4CAF50;color:#fff;padding:8px}td{padding:6px;border:1px solid #ddd}table{border-collapse:collapse;width:100%}</style>
         </head>
         <body>
             <h2>📊 BÁO CÁO THÔNG SỐ DPC RADIAL</h2>
             <p><strong>BTP:</strong> ${btpview}</p>
-            <p><strong>MÃ ĐƠN:</strong> ${maDonHienTai}</p>
+            <p><strong>MÃ ĐƠN:</strong> ${maDonText}</p>
             <p><strong>THỜI GIAN XUẤT:</strong> ${new Date().toLocaleString('vi-VN')}</p>
-            <hr/>
-        `;
-        
-        // Clone table để tránh ảnh hưởng
-        var cloneTable = table.cloneNode(true);
-        htmlContent += cloneTable.outerHTML;
-        htmlContent += `<hr/><p><em>Hệ thống DPC RADIAL - Dữ liệu thông số sản xuất</em></p></body></html>`;
+            <hr/>${table.cloneNode(true).outerHTML}
+            <hr/><p><em>Hệ thống DPC RADIAL - Dữ liệu thông số sản xuất</em></p>
+        </body>
+        </html>`;
         
         var blob = new Blob([htmlContent], { type: 'application/vnd.ms-excel' });
         var link = document.createElement('a');
@@ -743,80 +826,44 @@
         link.click();
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
-        
-        alert('✅ Đã xuất file Excel!');
+        showToast('✅ Đã xuất file Excel!');
     }
 
     function exportHistoryToExcel() {
-        if (historyData.length === 0) {
+        if (!cloudHistory || cloudHistory.length === 0) {
             alert('❌ Không có lịch sử để xuất!');
             return;
         }
         
         var htmlContent = `
         <html>
-        <head>
-            <meta charset="UTF-8">
-            <title>Lich_su_thay_doi_ma_don_DPC_RADIAL</title>
-            <style>
-                th { background: #007bff; color: white; padding: 8px; }
-                td { padding: 6px; border: 1px solid #ddd; }
-                table { border-collapse: collapse; width: 100%; }
-            </style>
+        <head><meta charset="UTF-8"><title>Lich_su_thay_doi_ma_don</title>
+        <style>th{background:#007bff;color:#fff;padding:8px}td{padding:6px;border:1px solid #ddd}table{border-collapse:collapse;width:100%}</style>
         </head>
         <body>
             <h2>📋 LỊCH SỬ THAY ĐỔI MÃ ĐƠN DPC RADIAL</h2>
             <p><strong>THỜI GIAN XUẤT:</strong> ${new Date().toLocaleString('vi-VN')}</p>
-            <p><strong>TỔNG SỐ BẢN GHI:</strong> ${historyData.length}</p>
+            <p><strong>TỔNG SỐ BẢN GHI:</strong> ${cloudHistory.length}</p>
             <hr/>
-            <table>
-                <thead>
-                    <tr>
-                        <th>STT</th>
-                        <th>Thời gian</th>
-                        <th>BTP</th>
-                        <th>Mã đơn cũ</th>
-                        <th>Mã đơn mới</th>
-                        <th>Người thực hiện</th>
-                    </tr>
-                </thead>
-                <tbody>
-        `;
+            <table><thead><tr><th>STT</th><th>Thời gian</th><th>BTP</th><th>Mã đơn cũ</th><th>Mã đơn mới</th><th>Người thực hiện</th></tr></thead><tbody>`;
         
-        for (var i = 0; i < historyData.length; i++) {
-            var item = historyData[i];
-            htmlContent += `
-                <tr>
-                    <td>${i + 1}</td>
-                    <td>${item.time || ''}</td>
-                    <td>${item.btp || ''}</td>
-                    <td>${item.oldCode || ''}</td>
-                    <td>${item.newCode || ''}</td>
-                    <td>${item.user || ''}</td>
-                </tr>
-            `;
+        for (var i = 0; i < cloudHistory.length; i++) {
+            var item = cloudHistory[i];
+            htmlContent += `<tr><td>${i+1}</td><td>${item.time || ''}</td><td>${item.btp || ''}</td><td>${item.oldCode || ''}</td><td>${item.newCode || ''}</td><td>${item.user || ''}</td></tr>`;
         }
         
-        htmlContent += `
-                </tbody>
-            </table>
-            <hr/>
-            <p><em>Hệ thống DPC RADIAL - Lịch sử thay đổi mã đơn</em></p>
-        </body>
-        </html>
-        `;
+        htmlContent += `</tbody></table><hr/><p><em>Hệ thống DPC RADIAL - Lịch sử thay đổi mã đơn (Đồng bộ Cloud)</em></p></body></html>`;
         
         var blob = new Blob([htmlContent], { type: 'application/vnd.ms-excel' });
         var link = document.createElement('a');
         var url = URL.createObjectURL(blob);
         link.href = url;
-        link.download = `Lich_su_doi_ma_don_DPC_RADIAL_${new Date().getTime()}.xls`;
+        link.download = `Lich_su_doi_ma_don_${new Date().getTime()}.xls`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
-        
-        alert('✅ Đã xuất lịch sử ra Excel!');
+        showToast('✅ Đã xuất lịch sử ra Excel!');
     }
 
     function caldata(val, ch, tole, rou) {
@@ -858,52 +905,53 @@
         }
     }
 
+    // Các hàm printgd1, printgdc giữ nguyên như cũ
     function printgd1(stt, index, indexs, indexc, key, val, btpw) {
         var data;
         if(key == "HD10 GĐ1 (kg)" || key == "HD23 GĐ1 (g)" || key == "HD11" || key == "HD12" || key == "HD13" || key == "HD14" || key == "HD10 GĐ2 (kg)"){
             if(stt < parseInt(index[0], 10)){
                 for (var n = 0; n < indexs.length; n++) {
                     if(indexs[n] == stt){
-                        data = '<tr style="background:#e8f5e9"><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>0</td><td>800</td></tr>';
+                        data = '<tr style="background:#e8f5e9"><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>0NonNull<td>800NonNull</tr>';
                     }
                 }
                 for (var n = 0; n < indexc.length; n++) {
                     if(indexc[n] == stt){
-                        data = '<tr style="background:#fff3e0"><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>0</td><td>950</td></tr>';
+                        data = '<tr style="background:#fff3e0"><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>0NonNull<td>950NonNull</tr>';
                     }
                 }
-                if(!data) data = '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
+                if(!data) data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>—NonNull<td>—NonNull</tr>';
             }
             else if(stt >= parseInt(index[0], 10) && stt < parseInt(index[1], 10)){
                 if(btpw == "C12" || btpw == "C21"){
-                    data = '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
+                    data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>—NonNull<td>—NonNull</tr>';
                 }
                 else{
-                    data = '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 50, 2) +'</td><td>'+ caldata(val, 1, 50, 2) +'</td></tr>';
+                    data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>'+ caldata(val, 0, 50, 2) +'NonNull<td>'+ caldata(val, 1, 50, 2) +'NonNull</tr>';
                 }
             }
             else if(stt >= parseInt(index[1], 10) && stt < parseInt(index[2], 10)){
                 if(key == "HD23 GĐ1 (g)"){
-                    data = '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>0</td><td>580</td></tr>';
+                    data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>0NonNull<td>580NonNull</tr>';
                 }
                 else{
                     if(btpw == "C41" || btpw == "C42"){
-                        data = '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
+                        data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>—NonNull<td>—NonNull</tr>';
                     }
                     else if(btpw == "Y41" || btpw == "Y42"){
-                        data = '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 50, 2) +'</td><td>'+ caldata(val, 1, 50, 2) +'</td></tr>';
+                        data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>'+ caldata(val, 0, 50, 2) +'NonNull<td>'+ caldata(val, 1, 50, 2) +'NonNull</tr>';
                     }
                     else {
-                        data = '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 40, 2) +'</td><td>'+ caldata(val, 1, 40, 2) +'</td></tr>';
+                        data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>'+ caldata(val, 0, 40, 2) +'NonNull<td>'+ caldata(val, 1, 40, 2) +'NonNull</tr>';
                     }
                 }
             }
             else if(stt >= parseInt(index[2], 10)){
                 if(key == "HD23 GĐ1 (g)"){
-                    data = '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>0</td><td>580</td></tr>';
+                    data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>0NonNull<td>580NonNull</tr>';
                 }
                 else {
-                    data = '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
+                    data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>—NonNull<td>—NonNull</tr>';
                 }
             }
         } 
@@ -914,18 +962,18 @@
             if(key == "KL CAO SU GĐ3 (kg)") rowStyle = 'style="background:#c1e0e6"';
             
             if(key == "THỜI GIAN GĐ1" || key == "THỜI GIAN GĐ2" || key == "THỜI GIAN GĐ3"){
-                data = '<tr '+ rowStyle +'><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 10, 0) +'</td><td>'+ caldata(val, 1, 10, 0) +'</td></tr>';
+                data = '<tr '+ rowStyle +'><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>'+ caldata(val, 0, 10, 0) +'NonNull<td>'+ caldata(val, 1, 10, 0) +'NonNull</tr>';
             }
             else if(key == "TỐC ĐỘ GĐ1" || key == "TỐC ĐỘ GĐ2" || key == "TỐC ĐỘ GĐ3"){
                 if(val.toString().length <= 2){
-                    data = '<tr '+ rowStyle +'><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 10, 0) +'</td><td>'+ caldata(val, 1, 10, 0) +'</td></tr>';
+                    data = '<tr '+ rowStyle +'><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>'+ caldata(val, 0, 10, 0) +'NonNull<td>'+ caldata(val, 1, 10, 0) +'NonNull</tr>';
                 }
                 else {
-                    data = '<tr '+ rowStyle +'><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>-10%</td><td>+10%</td></tr>';
+                    data = '<tr '+ rowStyle +'><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>-10%NonNull<td>+10%NonNull</tr>';
                 }
             }
             else{
-                data = '<tr '+ rowStyle +'><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
+                data = '<tr '+ rowStyle +'><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>—NonNull<td>—NonNull</tr>';
             }
         }
         return data;
@@ -935,28 +983,28 @@
         var data;
         if (stt < parseInt(index[1], 10)){
             if(key == "PT01 (g)"){
-                data = '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>0</td><td>600</td></tr>';
+                data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>0NonNull<td>600NonNull</tr>';
             }
             else{
-                data = '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
+                data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>—NonNull<td>—NonNull</tr>';
             }
         }
         else if (stt >= parseInt(index[1], 10) && stt < parseInt(index[3], 10)){
             if(key == "PT01 (g)"){
-                data = '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 50, 0) +'</td><td>'+ caldata(val, 1, 50, 0) +'</td></tr>';
+                data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>'+ caldata(val, 0, 50, 0) +'NonNull<td>'+ caldata(val, 1, 50, 0) +'NonNull</tr>';
             }
             else if(key.substr(0, 2) == "XT" && key.substr(2, 2) >= 10 && key.substr(2, 2) < 40){
-                data = '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 50, 2) +'</td><td>'+ caldata(val, 1, 50, 2) +'</td></tr>';
+                data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>'+ caldata(val, 0, 50, 2) +'NonNull<td>'+ caldata(val, 1, 50, 2) +'NonNull</tr>';
             }
             else if(key.substr(0, 2) == "XT" && key.substr(2, 2) >= 40 && key.substr(2, 2) < 70){
-                data = '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 20, 2) +'</td><td>'+ caldata(val, 1, 20, 2) +'</td></tr>';
+                data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>'+ caldata(val, 0, 20, 2) +'NonNull<td>'+ caldata(val, 1, 20, 2) +'NonNull</tr>';
             }
             else if(key == "THỜI GIAN"){
-                data = '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 10, 0) +'</td><td>'+ caldata(val, 1, 10, 0) +'</td></tr>';
+                data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>'+ caldata(val, 0, 10, 0) +'NonNull<td>'+ caldata(val, 1, 10, 0) +'NonNull</tr>';
             }
             else if(key == "TỐC ĐỘ"){
                 if(val.toString().length <= 2){
-                    data = '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 10, 0) +'</td><td>'+ caldata(val, 1, 10, 0) +'NonNull';
+                    data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>'+ caldata(val, 0, 10, 0) +'NonNull<td>'+ caldata(val, 1, 10, 0) +'NonNull</tr>';
                 }
                 else{
                     data = '<tr><td style="font-weight:500">' + key + 'NonNull<td>' + val + 'NonNull<td>-10%NonNull<td>+10%NonNull</tr>';
@@ -990,27 +1038,20 @@
 
     window.showdata = function(str) {
         if (!obj) return;
-        
         if (!str || str === "") {
             resetToInitialState();
             return;
         }
         
         btpview = str;
-
         var tc = 0;
         stac = 0; stoc = obj.gdc.length;
         for (var i = 0; i < obj.gdc.length; i++) {
-            if (obj.gdc[i].BTP == str) {
-                stac = i;
-                break;
-            }
+            if (obj.gdc[i].BTP == str) { stac = i; break; }
         }
         for (var i = stac + 1; i < obj.gdc.length; i++) {
             if (obj.gdc[i].BTP != str && obj.gdc[i].BTP != undefined && tc === 0) {
-                stoc = i;
-                tc = 1;
-                break;
+                stoc = i; tc = 1; break;
             }
         }
         if (tc === 0) stoc = obj.gdc.length;
@@ -1083,11 +1124,7 @@
                 break;
             }
         }
-        document.getElementById("cont").innerHTML = `<table class="data-table">
-            <thead><tr><th>Thông số GĐ1 / CĐ</th><th>Giá trị chuẩn</th><th>Min (HC -)</th><th>Max (HC +)</th></tr></thead>
-            <tbody>${dataall}</tbody>
-           </table>`;
-        
+        document.getElementById("cont").innerHTML = `<table class="data-table"><thead><tr><th>Thông số GĐ1 / CĐ</th><th>Giá trị chuẩn</th><th>Min (HC -)</th><th>Max (HC +)</th></tr></thead><tbody>${dataall}</tbody></table>`;
         var dcc = document.getElementById("dcc");
         if (dcc) dcc.value = "";
     };
@@ -1111,11 +1148,7 @@
                 break;
             }
         }
-        document.getElementById("cont").innerHTML = `<table class="data-table">
-            <thead><tr><th>Thông số GĐC</th><th>Giá trị chuẩn</th><th>Min (HC -)</th><th>Max (HC +)</th></tr></thead>
-            <tbody>${dataall}</tbody>
-           </table>`;
-        
+        document.getElementById("cont").innerHTML = `<table class="data-table"><thead><tr><th>Thông số GĐC</th><th>Giá trị chuẩn</th><th>Min (HC -)</th><th>Max (HC +)</th></tr></thead><tbody>${dataall}</tbody></table>`;
         var dc1 = document.getElementById("dc1");
         if (dc1) dc1.value = "";
     };
@@ -1125,7 +1158,6 @@
             try {
                 obj = JSON.parse(DATA);
                 timeold = window.timeold;
-                loadHistory();
                 
                 nhomc = [];
                 var oldgroupc = '';
@@ -1143,23 +1175,11 @@
                 nhomd = [];
                 var s = 0, c = 0;
                 for (var i = 0; i < obj.gd1.length; i++) {
-                    if (obj.gd1[i].GROUP == 'S'){
-                        nhomds[s] = i;
-                        s++;
-                    }
-                    if (obj.gd1[i].GROUP == 'C'){
-                        nhomdc[c] = i; 
-                        c++;
-                    }
-                    if (obj.gd1[i].GROUP == 3){
-                        nhomd[0] = i; 
-                    }
-                    if (obj.gd1[i].GROUP == 4){
-                        nhomd[1] = i; 
-                    }
-                    if (obj.gd1[i].GROUP == 6){
-                        nhomd[2] = i; 
-                    }
+                    if (obj.gd1[i].GROUP == 'S'){ nhomds[s] = i; s++; }
+                    if (obj.gd1[i].GROUP == 'C'){ nhomdc[c] = i; c++; }
+                    if (obj.gd1[i].GROUP == 3){ nhomd[0] = i; }
+                    if (obj.gd1[i].GROUP == 4){ nhomd[1] = i; }
+                    if (obj.gd1[i].GROUP == 6){ nhomd[2] = i; }
                 }
                 
                 var printbtp = '<option value="">-- Chọn BTP --</option>';
@@ -1170,19 +1190,16 @@
                 }
                 document.getElementById("btp").innerHTML = '<select id="BTP" class="modern-select" onchange="showdata(this.value)">' + printbtp + '</select>';
                 document.getElementById("sch").innerHTML = '<input type="text" id="myseach" class="search-input" placeholder="🔎 Nhập mã BTP ..." autocomplete="off">';
-                document.getElementById("update").innerHTML = `<span>📅 Dữ liệu cập nhật: ${timeold} | 🔔 Mọi thắc mắc liên hệ: 0793600220</span>`;
+                document.getElementById("update").innerHTML = `<span>📅 Dữ liệu cập nhật: ${timeold} | ☁️ Lịch sử được đồng bộ Cloud | 🔔 Liên hệ: 0793600220</span>`;
 
                 var searchInput = document.getElementById("myseach");
-                if (searchInput) {
-                    searchInput.addEventListener("keyup", function() { seach(); });
-                }
+                if (searchInput) { searchInput.addEventListener("keyup", function() { seach(); }); }
                 
                 resetToInitialState();
-            } catch(e) { 
-                console.warn(e); 
-            }
+                syncHistoryFromCloud();
+            } catch(e) { console.warn(e); }
         } else {
-            document.getElementById("btp").innerHTML = '<div class="message-placeholder">⚠️ Không tải được dữ liệu. Vui lòng kiểm tra file data/dataradial.js và kết nối mạng.</div>';
+            document.getElementById("btp").innerHTML = '<div class="message-placeholder">⚠️ Không tải được dữ liệu. Vui lòng kiểm tra file data/dataradial.js</div>';
         }
     }
 
@@ -1205,12 +1222,9 @@
         else location.href = 'DPC'+ factory +'.html';
     }
 
-    // Đóng modal khi click ra ngoài
     window.onclick = function(event) {
         var modal = document.getElementById('historyModal');
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
+        if (event.target == modal) modal.style.display = "none";
     }
 
     if (localStorage.getItem('dpc_radial_logged_in') === 'true') {
