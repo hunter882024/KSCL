@@ -2,325 +2,81 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <meta name="description" content="Hệ thống quản lý đơn pha chế BIAS - DPC chuyên nghiệp">
     <title>DPC BIAS | Quản lý pha chế</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-            background: #f0f4f8;
-            padding: 20px 16px 60px 16px;
-            color: #1a2c3e;
-        }
-
-        .dashboard {
-            max-width: 1400px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 32px;
-            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #0b2b3b 0%, #1a4a6f 100%);
-            padding: 1.5rem 2rem;
-            color: white;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .title-section h1 {
-            font-size: 1.7rem;
-            font-weight: 600;
-            letter-spacing: -0.3px;
-        }
-
-        .title-section p {
-            font-size: 0.85rem;
-            opacity: 0.85;
-            margin-top: 6px;
-        }
-
-        .nav-selector {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(4px);
-            border-radius: 60px;
-            padding: 4px 12px;
-        }
-
-        .nav-selector select {
-            background: transparent;
-            border: none;
-            color: white;
-            font-weight: 500;
-            font-size: 1rem;
-            padding: 8px 16px;
-            cursor: pointer;
-            outline: none;
-            width: auto;
-        }
-
-        .nav-selector select option {
-            background: #1e4663;
-            color: white;
-        }
-
-        .content-panel {
-            padding: 24px 28px;
-        }
-
-        .btp-search-area {
-            background: #f9fafc;
-            border-radius: 28px;
-            padding: 20px 24px;
-            margin-bottom: 28px;
-            border: 1px solid #e2edf2;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            align-items: flex-end;
-        }
-
-        .btp-box {
-            flex: 2;
-            min-width: 200px;
-        }
-
-        .search-box {
-            flex: 1.5;
-            min-width: 200px;
-        }
-
-        .label-modern {
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #4a6f8f;
-            margin-bottom: 6px;
-            display: block;
-        }
-
-        select, .search-input {
-            width: 100%;
-            padding: 12px 16px;
-            font-size: 0.95rem;
-            border: 1px solid #cbdde6;
-            border-radius: 20px;
-            background: white;
-            transition: 0.2s;
-            font-family: inherit;
-            cursor: pointer;
-        }
-
-        select:focus, .search-input:focus {
-            outline: none;
-            border-color: #1e90ff;
-            box-shadow: 0 0 0 3px rgba(30,144,255,0.2);
-        }
-
-        .search-input {
-            cursor: text;
-        }
-
-        .info-card {
-            background: #eef3fc;
-            border-left: 6px solid #1e90ff;
-            border-radius: 20px;
-            padding: 14px 20px;
-            margin-bottom: 28px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            align-items: center;
-        }
-
-        .info-item {
-            background: white;
-            border-radius: 40px;
-            padding: 8px 18px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-
-        .info-item span:first-child {
-            font-weight: 600;
-            color: #2c5a7a;
-        }
-
-        .dc-selectors {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 24px;
-            margin: 20px 0 24px 0;
-        }
-
-        .dc-card {
-            flex: 1;
-            background: #ffffff;
-            border: 1px solid #e2edf2;
-            border-radius: 24px;
-            padding: 12px 20px;
-        }
-
-        .dc-card label {
-            font-weight: 600;
-            color: #0f3b5c;
-            display: block;
-            margin-bottom: 8px;
-            font-size: 0.85rem;
-        }
-
-        .data-table-wrapper {
-            overflow-x: auto;
-            border-radius: 24px;
-            border: 1px solid #e9eef3;
-            background: white;
-            margin-top: 12px;
-        }
-
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.85rem;
-            min-width: 600px;
-        }
-
-        .data-table th {
-            background: #eef2f7;
-            padding: 14px 12px;
-            text-align: left;
-            font-weight: 600;
-            color: #1f506e;
-            border-bottom: 1px solid #d4e0e9;
-        }
-
-        .data-table td {
-            padding: 12px 12px;
-            border-bottom: 1px solid #ecf3f8;
-            vertical-align: top;
-        }
-
-        .data-table tr:hover td {
-            background-color: #f8fbfe;
-        }
-
-        .update-footer {
-            margin-top: 32px;
-            text-align: center;
-            font-size: 0.75rem;
-            color: #6c8eaa;
-            border-top: 1px solid #e2edf2;
-            padding-top: 20px;
-        }
-
-        .btn-logout {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #dc3545;
-            color: white;
-            border: none;
-            border-radius: 40px;
-            padding: 10px 20px;
-            font-weight: 600;
-            font-size: 0.8rem;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            z-index: 99;
-        }
-
-        .btn-logout:hover {
-            background: #b91d2e;
-            transform: scale(1.02);
-        }
-
-        .message-placeholder {
-            text-align: center;
-            padding: 40px;
-            color: #5a6e7c;
-            font-style: italic;
-        }
-
-        @media (max-width: 680px) {
-            .content-panel {
-                padding: 16px;
-            }
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-        }
-
-        #login-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(10, 25, 40, 0.92);
-            backdrop-filter: blur(10px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-        }
-
-        .login-card {
-            background: white;
-            border-radius: 40px;
-            width: 90%;
-            max-width: 380px;
-            padding: 2rem 1.8rem;
-            text-align: center;
-            box-shadow: 0 25px 40px rgba(0,0,0,0.3);
-        }
-
-        .login-card h3 {
-            font-size: 1.6rem;
-            margin-bottom: 1.2rem;
-            color: #0b2b3b;
-        }
-
-        .login-card input {
-            width: 100%;
-            padding: 14px 16px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 60px;
-            font-size: 1rem;
-        }
-
-        .login-card button {
-            width: 100%;
-            background: #1e90ff;
-            border: none;
-            padding: 12px;
-            border-radius: 60px;
-            color: white;
-            font-weight: bold;
-            font-size: 1rem;
-            margin-top: 12px;
-            cursor: pointer;
-        }
-
-        .error-msg {
-            color: #d9534f;
-            margin-top: 12px;
-            font-size: 0.8rem;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Roboto, sans-serif; background: #f0f4f8; padding: 20px 16px 60px 16px; color: #1a2c3e; }
+        .dashboard { max-width: 1400px; margin: 0 auto; background: white; border-radius: 32px; box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1); overflow: hidden; }
+        .header { background: linear-gradient(135deg, #0b2b3b 0%, #1a4a6f 100%); padding: 1.5rem 2rem; color: white; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; }
+        .title-section h1 { font-size: 1.7rem; font-weight: 600; }
+        .title-section p { font-size: 0.85rem; opacity: 0.85; margin-top: 6px; }
+        .nav-selector { background: rgba(255,255,255,0.15); backdrop-filter: blur(4px); border-radius: 60px; padding: 4px 12px; }
+        .nav-selector select { background: transparent; border: none; color: white; font-weight: 500; font-size: 1rem; padding: 8px 16px; cursor: pointer; outline: none; }
+        .content-panel { padding: 24px 28px; }
+        .btp-search-area { background: #f9fafc; border-radius: 28px; padding: 20px 24px; margin-bottom: 28px; border: 1px solid #e2edf2; display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-end; }
+        .btp-box { flex: 2; min-width: 200px; }
+        .search-box { flex: 1.5; min-width: 200px; }
+        .label-modern { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #4a6f8f; margin-bottom: 6px; display: block; }
+        select, .search-input { width: 100%; padding: 12px 16px; font-size: 0.95rem; border: 1px solid #cbdde6; border-radius: 20px; background: white; transition: 0.2s; font-family: inherit; cursor: pointer; }
+        .search-input { cursor: text; }
+        .info-card { background: #eef3fc; border-left: 6px solid #1e90ff; border-radius: 20px; padding: 14px 20px; margin-bottom: 28px; display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: space-between; }
+        .info-item { background: white; border-radius: 40px; padding: 8px 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .info-item span:first-child { font-weight: 600; color: #2c5a7a; }
+        .history-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn-history { background: #1e90ff; color: white; border: none; border-radius: 40px; padding: 8px 20px; font-weight: 500; font-size: 0.8rem; cursor: pointer; transition: 0.2s; }
+        .btn-history:hover { background: #0c6bcf; transform: scale(1.02); }
+        .btn-save-all { background: #ff8c00; }
+        .btn-save-all:hover { background: #e07800; }
+        .btn-export { background: #28a745; }
+        .btn-export:hover { background: #1e7e34; }
+        .btn-clear { background: #dc3545; }
+        .btn-clear:hover { background: #b91d2e; }
+        .btn-backup { background: #17a2b8; }
+        .btn-backup:hover { background: #138496; }
+        .btn-restore { background: #6c757d; }
+        .btn-restore:hover { background: #5a6268; }
+        .dc-selectors { display: flex; flex-wrap: wrap; gap: 24px; margin: 20px 0 24px 0; }
+        .dc-card { flex: 1; background: #ffffff; border: 1px solid #e2edf2; border-radius: 24px; padding: 12px 20px; }
+        .dc-card label { font-weight: 600; color: #0f3b5c; display: block; margin-bottom: 8px; font-size: 0.85rem; }
+        .data-table-wrapper { overflow-x: auto; border-radius: 24px; border: 1px solid #e9eef3; background: white; margin-top: 12px; }
+        .data-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; min-width: 600px; }
+        .data-table th { background: #eef2f7; padding: 14px 12px; text-align: left; font-weight: 600; color: #1f506e; border-bottom: 1px solid #d4e0e9; }
+        .data-table td { padding: 12px 12px; border-bottom: 1px solid #ecf3f8; vertical-align: top; }
+        .update-footer { margin-top: 32px; text-align: center; font-size: 0.75rem; color: #6c8eaa; border-top: 1px solid #e2edf2; padding-top: 20px; }
+        .btn-logout { position: fixed; bottom: 20px; right: 20px; background: #dc3545; color: white; border: none; border-radius: 40px; padding: 10px 20px; font-weight: 600; font-size: 0.8rem; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 99; }
+        .message-placeholder { text-align: center; padding: 40px; color: #5a6e7c; font-style: italic; }
+        
+        .modal { display: none; position: fixed; z-index: 2100; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); backdrop-filter: blur(5px); }
+        .modal-content { background-color: white; margin: 5% auto; padding: 20px; border-radius: 24px; width: 90%; max-width: 900px; max-height: 80vh; overflow-y: auto; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #e2edf2; }
+        .modal-header h3 { color: #0b2b3b; }
+        .close-modal { font-size: 28px; font-weight: bold; cursor: pointer; color: #aaa; }
+        .history-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        .history-table th, .history-table td { padding: 10px 8px; text-align: left; border-bottom: 1px solid #e2edf2; }
+        .history-table th { background: #eef2f7; position: sticky; top: 0; }
+        .filter-input { padding: 8px 12px; border: 1px solid #cbdde6; border-radius: 20px; width: 200px; margin-bottom: 15px; }
+        
+        .modal-action-buttons { display: flex; gap: 12px; justify-content: center; margin-top: 20px; padding-top: 15px; border-top: 1px solid #e2edf2; flex-wrap: wrap; }
+        
+        .password-prompt-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; z-index: 3000; }
+        .password-prompt-card { background: white; border-radius: 32px; padding: 28px 24px; width: 340px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        .password-prompt-card h4 { margin-bottom: 18px; color: #1a2c3e; }
+        .password-prompt-card input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 60px; margin-bottom: 20px; font-size: 1rem; }
+        .password-prompt-card button { background: #1e90ff; border: none; padding: 10px 20px; border-radius: 40px; color: white; font-weight: bold; cursor: pointer; margin: 0 6px; }
+        .password-prompt-card button.cancel { background: #6c757d; }
+        
+        .file-input-hidden { display: none; }
+        
+        #login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10,25,40,0.92); backdrop-filter: blur(10px); display: flex; justify-content: center; align-items: center; z-index: 2000; }
+        .login-card { background: white; border-radius: 40px; width: 90%; max-width: 380px; padding: 2rem 1.8rem; text-align: center; }
+        .login-card h3 { font-size: 1.6rem; margin-bottom: 1.2rem; color: #0b2b3b; }
+        .login-card input { width: 100%; padding: 14px 16px; margin: 10px 0; border: 1px solid #ccc; border-radius: 60px; font-size: 1rem; }
+        .login-card button { width: 100%; background: #1e90ff; border: none; padding: 12px; border-radius: 60px; color: white; font-weight: bold; font-size: 1rem; margin-top: 12px; cursor: pointer; }
+        .error-msg { color: #d9534f; margin-top: 12px; font-size: 0.8rem; }
+        .toast-notification { position: fixed; bottom: 80px; right: 20px; background: #323232; color: white; padding: 10px 20px; border-radius: 8px; z-index: 1000; font-size: 0.8rem; animation: fadeInOut 3s ease-in-out; }
+        @keyframes fadeInOut { 0% { opacity: 0; transform: translateY(20px); } 15% { opacity: 1; transform: translateY(0); } 85% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(20px); } }
+        @media (max-width: 680px) { .content-panel { padding: 16px; } .header { flex-direction: column; align-items: flex-start; } .info-card { flex-direction: column; align-items: stretch; } .modal-action-buttons { flex-direction: column; } }
     </style>
 </head>
 <body>
@@ -338,11 +94,13 @@
 <script>
     const VALID_USER = "admin";
     const VALID_PASS = "123456BI";
+    
     function checkLogin() {
         const user = document.getElementById('login-username').value;
         const pass = document.getElementById('login-password').value;
         if (user === VALID_USER && pass === VALID_PASS) {
             localStorage.setItem('dpc_bias_logged_in', 'true');
+            localStorage.setItem('dpc_bias_user', user);
             document.getElementById('login-overlay').style.display = 'none';
             if (typeof initializeApp === 'function') initializeApp();
         } else {
@@ -352,21 +110,29 @@
     if (localStorage.getItem('dpc_bias_logged_in') === 'true') {
         document.getElementById('login-overlay').style.display = 'none';
     }
+    
+    function showToast(message, isError) {
+        var toast = document.createElement('div');
+        toast.className = 'toast-notification';
+        toast.style.background = isError ? '#d32f2f' : '#323232';
+        toast.innerHTML = message;
+        document.body.appendChild(toast);
+        setTimeout(function() { if(toast) toast.remove(); }, 3000);
+    }
 </script>
 
-<button class="btn-logout" onclick="localStorage.removeItem('dpc_bias_logged_in'); location.reload();">🚪 Đăng xuất</button>
+<button class="btn-logout" onclick="localStorage.removeItem('dpc_bias_logged_in'); localStorage.removeItem('dpc_bias_user'); location.reload();">🚪 Đăng xuất</button>
 
 <div class="dashboard">
     <div class="header">
         <div class="title-section">
             <h1>📦 BIAS · KSCL</h1>
-            
         </div>
         <div class="nav-selector">
             <select id="edit" onchange="redirect(this.value)">
                 <option value="dpc">🏭 DPC BIAS</option>
                 <option value="view">📊 Xem hiệu chỉnh</option>
-                <option value="code">🛠️ Mã code cao su</option>
+                <option value="code">🛠️ Mã nguồn</option>
             </select>
         </div>
     </div>
@@ -383,8 +149,13 @@
             </div>
         </div>
 
-        <!-- Chỉ hiển thị MÃ ĐƠN -->
-        <div id="info" class="info-card" style="display: none;"></div>
+        <div id="info" class="info-card" style="display: none;">
+            <div id="info-content"></div>
+            <div class="history-buttons">
+                <button class="btn-history btn-save-all" onclick="saveAllBTPHistory()">📦 Lưu tất cả BTP</button>
+                <button class="btn-history" onclick="showHistoryModal()">📜 Xem lịch sử</button>
+            </div>
+        </div>
 
         <div class="dc-selectors" id="selector-area" style="display: none;">
             <div class="dc-card">
@@ -398,19 +169,298 @@
         </div>
 
         <div id="cont" class="data-table-wrapper" style="display: none;"></div>
-
         <div id="update" class="update-footer"></div>
     </div>
 </div>
 
+<div id="historyModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>📋 LỊCH SỬ THAY ĐỔI MÃ ĐƠN</h3>
+            <span class="close-modal" onclick="closeHistoryModal()">&times;</span>
+        </div>
+        <input type="text" id="historyFilter" class="filter-input" placeholder="🔍 Lọc theo BTP, mã đơn..." onkeyup="filterHistory()">
+        <div style="overflow-x: auto;">
+            <table class="history-table" id="historyTable">
+                <thead><tr><th>STT</th><th>Thời gian</th><th>BTP</th><th>Mã đơn cũ</th><th>Mã đơn mới</th><th>Người thực hiện</th></tr></thead>
+                <tbody id="historyBody"></tbody>
+            </table>
+        </div>
+        <div class="modal-action-buttons">
+            <button class="btn-history btn-export" onclick="promptPasswordForExport()">📊 Xuất Excel</button>
+            <button class="btn-history btn-clear" onclick="promptPasswordForClear()">🗑️ Xóa lịch sử</button>
+            <button class="btn-history btn-backup" onclick="promptPasswordForBackup()">💾 Backup dữ liệu</button>
+            <button class="btn-history btn-restore" onclick="promptPasswordForRestore()">🔄 Restore dữ liệu</button>
+        </div>
+    </div>
+</div>
+
+<input type="file" id="restoreFileInput" accept=".json" style="display: none;" onchange="handleRestoreFile(this)">
+
 <script src="data/databias.js"></script>
 <script>
+    const SECURITY_PASSWORD = "123";
+    
+    function showPasswordPrompt(callback, actionName) {
+        let existing = document.querySelector('.password-prompt-overlay');
+        if(existing) existing.remove();
+        
+        const overlay = document.createElement('div');
+        overlay.className = 'password-prompt-overlay';
+        overlay.innerHTML = `
+            <div class="password-prompt-card">
+                <h4>🔐 Xác thực hành động</h4>
+                <p style="margin-bottom: 12px; font-size:0.85rem; color:#555;">${actionName} yêu cầu nhập mật khẩu bảo mật</p>
+                <input type="password" id="securityPassInput" placeholder="Mật khẩu bảo vệ" autocomplete="off">
+                <div>
+                    <button id="confirmPassBtn">Xác nhận</button>
+                    <button id="cancelPassBtn" class="cancel">Hủy</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+        
+        const inputField = overlay.querySelector('#securityPassInput');
+        const confirmBtn = overlay.querySelector('#confirmPassBtn');
+        const cancelBtn = overlay.querySelector('#cancelPassBtn');
+        
+        const cleanUp = () => { if(overlay) overlay.remove(); };
+        
+        const verify = () => {
+            const entered = inputField.value;
+            if(entered === SECURITY_PASSWORD) {
+                cleanUp();
+                if(callback) callback(true);
+            } else {
+                showToast('❌ Mật khẩu không chính xác!', true);
+                inputField.value = '';
+                inputField.focus();
+            }
+        };
+        
+        confirmBtn.onclick = verify;
+        cancelBtn.onclick = () => { cleanUp(); if(callback) callback(false); };
+        inputField.onkeypress = (e) => { if(e.key === 'Enter') verify(); };
+        inputField.focus();
+    }
+    
+    function promptPasswordForExport() {
+        showPasswordPrompt((success) => { if(success) exportAllHistoryToExcel(); else showToast('⚠️ Hủy xuất Excel', false); }, 'Xuất file Excel');
+    }
+    
+    function promptPasswordForClear() {
+        showPasswordPrompt((success) => { if(success) clearAllHistoryWithConfirm(); else showToast('⚠️ Hủy xóa lịch sử', false); }, 'Xóa lịch sử');
+    }
+    
+    function promptPasswordForBackup() {
+        showPasswordPrompt((success) => { if(success) backupHistoryData(); else showToast('⚠️ Hủy backup', false); }, 'Backup dữ liệu');
+    }
+    
+    function promptPasswordForRestore() {
+        showPasswordPrompt((success) => { if(success) document.getElementById('restoreFileInput').click(); else showToast('⚠️ Hủy restore', false); }, 'Restore dữ liệu');
+    }
+    
+    function backupHistoryData() {
+        var historyDataRaw = localStorage.getItem('dpc_bias_history');
+        var btpMapRaw = localStorage.getItem('dpc_bias_btp_map');
+        var backup = {
+            version: '1.0',
+            timestamp: new Date().toISOString(),
+            exportDate: new Date().toLocaleString('vi-VN'),
+            history: historyDataRaw ? JSON.parse(historyDataRaw) : [],
+            btpMap: btpMapRaw ? JSON.parse(btpMapRaw) : {}
+        };
+        var blob = new Blob([JSON.stringify(backup, null, 2)], {type: 'application/json'});
+        var link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        var date = new Date();
+        var dateStr = date.getFullYear() + '' + (date.getMonth()+1).toString().padStart(2,'0') + '' + date.getDate().toString().padStart(2,'0');
+        link.download = 'dpc_bias_backup_' + dateStr + '.json';
+        link.click();
+        URL.revokeObjectURL(link.href);
+        showToast(`✅ Đã backup ${backup.history.length} bản ghi`, false);
+    }
+    
+    function handleRestoreFile(input) {
+        if (!input.files || input.files.length === 0) return;
+        var file = input.files[0];
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                var backup = JSON.parse(e.target.result);
+                if (backup.history === undefined || backup.btpMap === undefined) throw new Error();
+                if (confirm(`⚠️ Khôi phục sẽ thay thế toàn bộ dữ liệu hiện tại!\nSố bản ghi: ${backup.history.length}\nTiếp tục?`)) {
+                    localStorage.setItem('dpc_bias_history', JSON.stringify(backup.history));
+                    localStorage.setItem('dpc_bias_btp_map', JSON.stringify(backup.btpMap));
+                    loadDataFromLocal();
+                    renderHistoryTable();
+                    showToast(`✅ Đã khôi phục ${backup.history.length} bản ghi`, false);
+                    if (btpview && btpCurrentMaDon[btpview]) {
+                        var infoDiv = document.querySelector('#info-content .info-item strong');
+                        if (infoDiv) infoDiv.innerText = btpCurrentMaDon[btpview];
+                    }
+                }
+            } catch(err) {
+                showToast('❌ File backup không hợp lệ!', true);
+            }
+            input.value = '';
+        };
+        reader.readAsText(file);
+    }
+    
     var obj = null;
     var stac = 0, stoc = 0, stad = 0, stod = 0;
     var nhomd = [0, 0];
     var nhomc = 0;
     var btpview = "";
     var timeold = (typeof timeold !== 'undefined') ? timeold : "Chưa xác định";
+    var currentUser = localStorage.getItem('dpc_bias_user') || 'admin';
+    var historyData = [];
+    var btpCurrentMaDon = {};
+
+    function saveDataToLocal() {
+        localStorage.setItem('dpc_bias_history', JSON.stringify(historyData));
+        localStorage.setItem('dpc_bias_btp_map', JSON.stringify(btpCurrentMaDon));
+    }
+
+    function loadDataFromLocal() {
+        var saved = localStorage.getItem('dpc_bias_history');
+        if (saved) { try { historyData = JSON.parse(saved); } catch(e) { historyData = []; } }
+        var savedMap = localStorage.getItem('dpc_bias_btp_map');
+        if (savedMap) { try { btpCurrentMaDon = JSON.parse(savedMap); } catch(e) { btpCurrentMaDon = {}; } }
+    }
+
+    function addHistoryRecord(btp, oldCode, newCode, user) {
+        if (oldCode === newCode) return false;
+        var now = new Date();
+        var timeStr = now.toLocaleString('vi-VN', { hour12: false });
+        var record = { id: Date.now(), time: timeStr, btp: btp, oldCode: oldCode, newCode: newCode, user: user || currentUser };
+        historyData.unshift(record);
+        if (historyData.length > 500) historyData = historyData.slice(0, 500);
+        saveDataToLocal();
+        renderHistoryTable();
+        return true;
+    }
+
+    function saveAllBTPHistory() {
+        if (!obj) { showToast('❌ Dữ liệu chưa sẵn sàng!', true); return; }
+        showToast('⏳ Đang quét BTP...', false);
+        var allBTPs = [];
+        for (var i = 0; i < obj.gd1.length; i++) {
+            var btp = obj.gd1[i].BTP;
+            if (btp && btp !== "END" && btp !== "") {
+                if (!allBTPs.includes(btp)) allBTPs.push(btp);
+            }
+        }
+        var savedCount = 0, initCount = 0;
+        for (var b = 0; b < allBTPs.length; b++) {
+            var currentBTP = allBTPs[b];
+            var currentMaDonValue = "";
+            for (var i = 0; i < obj.gd1.length; i++) {
+                if (obj.gd1[i].BTP === currentBTP && obj.gd1[i]["MÃ ĐƠN"]) {
+                    currentMaDonValue = obj.gd1[i]["MÃ ĐƠN"];
+                    break;
+                }
+            }
+            if (!currentMaDonValue) continue;
+            var oldMaDon = btpCurrentMaDon[currentBTP] || '';
+            if (!oldMaDon) {
+                btpCurrentMaDon[currentBTP] = currentMaDonValue;
+                initCount++;
+            } else if (oldMaDon !== currentMaDonValue) {
+                if (addHistoryRecord(currentBTP, oldMaDon, currentMaDonValue, currentUser)) {
+                    savedCount++;
+                    btpCurrentMaDon[currentBTP] = currentMaDonValue;
+                }
+            }
+        }
+        saveDataToLocal();
+        var msg = "";
+        if (initCount > 0) msg += `📌 Ghi nhận ${initCount} BTP mới. `;
+        if (savedCount > 0) msg += `✅ Lưu ${savedCount} BTP thay đổi!`;
+        if (!initCount && !savedCount) msg = `ℹ️ Không có BTP nào thay đổi`;
+        showToast(msg, false);
+        if (btpview && btpCurrentMaDon[btpview]) {
+            var infoDiv = document.querySelector('#info-content .info-item strong');
+            if (infoDiv) infoDiv.innerText = btpCurrentMaDon[btpview];
+        }
+    }
+
+    function exportAllHistoryToExcel() {
+        if (historyData.length === 0) { alert('❌ Không có lịch sử để xuất!'); return; }
+        var rows = '';
+        for (var i = 0; i < historyData.length; i++) {
+            var item = historyData[i];
+            rows += '<tr>' +
+                '<td>' + (i+1) + '</td>' +
+                '<td>' + (item.time || '') + '</td>' +
+                '<td>' + (item.btp || '') + '</td>' +
+                '<td>' + (item.oldCode || '') + '</td>' +
+                '<td>' + (item.newCode || '') + '</td>' +
+                '<td>' + (item.user || '') + '</td>' +
+                '</tr>';
+        }
+        var html = '<html><head><meta charset="UTF-8"><title>Lich_su_DPC_BIAS</title>';
+        html += '<style>th{background:#007bff;color:white;padding:8px;}td{padding:6px;border:1px solid #ddd;}table{border-collapse:collapse;}</style>';
+        html += '</head><body><h2>📋 LỊCH SỬ THAY ĐỔI MÃ ĐƠN DPC BIAS</h2>';
+        html += '<p><strong>THỜI GIAN XUẤT:</strong> ' + new Date().toLocaleString('vi-VN') + '</p>';
+        html += '<p><strong>TỔNG SỐ BẢN GHI:</strong> ' + historyData.length + '</p><hr/>';
+        html += '<table border="1"><thead><tr><th>STT</th><th>Thời gian</th><th>BTP</th><th>Mã đơn cũ</th><th>Mã đơn mới</th><th>Người thực hiện</th></tr></thead><tbody>' + rows + '</tbody></table>';
+        html += '</body></html>';
+        var blob = new Blob([html], { type: 'application/vnd.ms-excel' });
+        var link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'Lich_su_DPC_BIAS_' + new Date().getTime() + '.xls';
+        link.click();
+        URL.revokeObjectURL(link.href);
+        showToast('✅ Đã xuất file Excel!', false);
+    }
+
+    function showHistoryModal() {
+        document.getElementById('historyModal').style.display = 'block';
+        renderHistoryTable();
+    }
+
+    function closeHistoryModal() {
+        document.getElementById('historyModal').style.display = 'none';
+    }
+
+    function renderHistoryTable() {
+        var filter = document.getElementById('historyFilter') ? document.getElementById('historyFilter').value.toLowerCase() : '';
+        var filtered = historyData.filter(function(item) {
+            return (item.btp && item.btp.toLowerCase().includes(filter)) ||
+                   (item.oldCode && item.oldCode.toLowerCase().includes(filter)) ||
+                   (item.newCode && item.newCode.toLowerCase().includes(filter));
+        });
+        var tbody = document.getElementById('historyBody');
+        tbody.innerHTML = '';
+        if (filtered.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center">📭 Chưa có lịch sử</td></tr>';
+            return;
+        }
+        for (var i = 0; i < filtered.length; i++) {
+            var item = filtered[i];
+            var row = tbody.insertRow();
+            row.insertCell(0).innerHTML = (i+1).toString();
+            row.insertCell(1).innerHTML = item.time || '';
+            row.insertCell(2).innerHTML = item.btp || '';
+            row.insertCell(3).innerHTML = '<span style="color:#dc3545">' + (item.oldCode || '') + '</span>';
+            row.insertCell(4).innerHTML = '<span style="color:#28a745">' + (item.newCode || '') + '</span>';
+            row.insertCell(5).innerHTML = item.user || '';
+        }
+    }
+
+    function filterHistory() { renderHistoryTable(); }
+    
+    function clearAllHistoryWithConfirm() {
+        if (confirm('⚠️ Bạn có chắc muốn xóa TOÀN BỘ lịch sử?')) {
+            historyData = [];
+            btpCurrentMaDon = {};
+            saveDataToLocal();
+            renderHistoryTable();
+            showToast('✅ Đã xóa lịch sử!', false);
+        }
+    }
 
     function caldata(val, ch, tole, rou) {
         var value = parseFloat(val);
@@ -450,120 +500,122 @@
         }
     }
 
+    function getUnit(key) {
+        if (key.includes("KL") || key.includes("KHỐI LƯỢNG") || key.includes("CAO SU") || key.includes("HÓA CHẤT") || key.includes("MÊ SU")) return " (kg)";
+        if (key.includes("NHIỆT ĐỘ")) return " (độ C)";
+        if (key.includes("THỜI GIAN")) return " (phút)";
+        if (key.includes("TỐC ĐỘ")) return " (vòng/phút)";
+        if (key === "PT01" || (key.substr(0, 2) === "XT")) return " (g)";
+        if (key === "HD10" || key === "HD11" || key === "HD12" || key === "HD13" || key === "HD14" || key === "HD10 GĐ2") return " (kg)";
+        return "";
+    }
+
     function printgd1(stt, index, key, val, btpw) {
         var data;
         var isHD = (key === "HD10" || key === "HD11" || key === "HD12" || key === "HD13" || key === "HD14" || key === "HD10 GĐ2");
         var rowStyle = "";
-        
         if (key === "KL GĐ1 CHƯA  DẦU" || key === "KL GĐ2 CHƯA  DẦU") rowStyle = 'style="color:#d9534f; font-weight:500"';
         if (key === "KL CAO SU GĐ2") rowStyle = 'style="background:#f7e5cd"';
         if (key === "KL CAO SU GĐ3") rowStyle = 'style="background:#c1e0e6"';
+        var unit = getUnit(key);
 
         if (isHD) {
             if (stt < parseInt(index[0], 10)) {
                 if (btpw !== "C12" && btpw !== "C21") {
-                    data = '<tr '+ rowStyle +'><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 50, 2) +'</td><td>'+ caldata(val, 1, 50, 2) +'</td></tr>';
+                    data = '<tr '+ rowStyle +'><td style="font-weight:500">' + key + unit + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 50, 2) +'</td><td>'+ caldata(val, 1, 50, 2) +'</td></tr>';
                 } else {
-                    data = '<tr '+ rowStyle +'><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
+                    data = '<tr '+ rowStyle +'><td style="font-weight:500">' + key + unit + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
                 }
             } 
             else if (stt >= parseInt(index[0], 10) && stt < parseInt(index[1], 10)) {
                 if (btpw === "Y41" || btpw === "Y42") {
-                    data = '<tr '+ rowStyle +'><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 50, 2) +'</td><td>'+ caldata(val, 1, 50, 2) +'</td></tr>';
+                    data = '<tr '+ rowStyle +'><td style="font-weight:500">' + key + unit + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 50, 2) +'</td><td>'+ caldata(val, 1, 50, 2) +'</td></tr>';
                 } else if (btpw !== "C41" && btpw !== "C42") {
-                    data = '<tr '+ rowStyle +'><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 40, 2) +'</td><td>'+ caldata(val, 1, 40, 2) +'</td></tr>';
+                    data = '<tr '+ rowStyle +'><td style="font-weight:500">' + key + unit + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 40, 2) +'</td><td>'+ caldata(val, 1, 40, 2) +'</td></tr>';
                 } else {
-                    data = '<tr '+ rowStyle +'><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
+                    data = '<tr '+ rowStyle +'><td style="font-weight:500">' + key + unit + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
                 }
             } 
             else {
-                data = '<tr '+ rowStyle +'><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
+                data = '<tr '+ rowStyle +'><td style="font-weight:500">' + key + unit + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
             }
         } 
-        else if (key.includes("THỜI GIAN GĐ") || key.includes("TỐC ĐỘ GĐ")) {
+        else if (key.includes("THỜI GIAN GĐ")) {
+            data = '<tr '+ rowStyle +'><td style="font-weight:500">' + key + unit + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 10, 0) +'</td><td>'+ caldata(val, 1, 10, 0) +'</td></tr>';
+        }
+        else if (key.includes("TỐC ĐỘ GĐ")) {
             if (val.toString().length <= 2) {
-                data = '<tr '+ rowStyle +'><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 10, 0) +'</td><td>'+ caldata(val, 1, 10, 0) +'</td></tr>';
+                data = '<tr '+ rowStyle +'><td style="font-weight:500">' + key + unit + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 10, 0) +'</td><td>'+ caldata(val, 1, 10, 0) +'</td></tr>';
             } else {
-                data = '<tr '+ rowStyle +'><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>-10%</td><td>+10%</td></tr>';
+                data = '<tr '+ rowStyle +'><td style="font-weight:500">' + key + unit + '</td><td>' + val + '</td><td>-10%</td><td>+10%</td></tr>';
             }
-        } 
+        }
         else {
-            data = '<tr '+ rowStyle +'><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
+            data = '<tr '+ rowStyle +'><td style="font-weight:500">' + key + unit + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
         }
         return data;
     }
 
     function printgdc(stt, index, key, val) {
         var data;
-        var isGroup6 = (stt >= index);
-        
+        var unit = getUnit(key);
         if (key === "PT01" || (key.substr(0, 2) === "XT" && key.substr(2, 2) >= 10 && key.substr(2, 2) < 40)) {
-            data = '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 50, 2) +'</td><td>'+ caldata(val, 1, 50, 2) +'</td></tr>';
+            data = '<tr><td style="font-weight:500">' + key + unit + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 50, 2) +'</td><td>'+ caldata(val, 1, 50, 2) +'</td></tr>';
         }
         else if (key.substr(0, 2) === "XT" && key.substr(2, 2) >= 40 && key.substr(2, 2) < 70) {
-            data = '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 20, 2) +'</td><td>'+ caldata(val, 1, 20, 2) +'</td></tr>';
+            data = '<tr><td style="font-weight:500">' + key + unit + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 20, 2) +'</td><td>'+ caldata(val, 1, 20, 2) +'</td></tr>';
         }
         else if (key === "THỜI GIAN") {
-            data = '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 10, 0) +'</td><td>'+ caldata(val, 1, 10, 0) +'</td></tr>';
+            data = '<tr><td style="font-weight:500">' + key + unit + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 10, 0) +'</td><td>'+ caldata(val, 1, 10, 0) +'</td></tr>';
         }
         else if (key === "TỐC ĐỘ") {
             if (val.toString().length <= 2) {
-                data = '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 10, 0) +'</td><td>'+ caldata(val, 1, 10, 0) +'</td></tr>';
+                data = '<tr><td style="font-weight:500">' + key + unit + '</td><td>' + val + '</td><td>'+ caldata(val, 0, 10, 0) +'</td><td>'+ caldata(val, 1, 10, 0) +'</td></tr>';
             } else {
-                data = '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>-10%</td><td>+10%</td></tr>';
+                data = '<tr><td style="font-weight:500">' + key + unit + '</td><td>' + val + '</td><td>-10%</td><td>+10%</td></tr>';
             }
         }
         else {
-            data = '<tr><td style="font-weight:500">' + key + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
+            data = '<tr><td style="font-weight:500">' + key + unit + '</td><td>' + val + '</td><td>—</td><td>—</td></tr>';
         }
         return data;
     }
 
     window.showdata = function(str) {
         if (!obj) return;
-        
-        if (!str || str === "") {
-            resetToInitialState();
-            return;
-        }
-        
+        if (!str || str === "") { resetToInitialState(); return; }
         btpview = str;
 
         var tc = 0;
         stac = 0; stoc = obj.gdc.length;
         for (var i = 0; i < obj.gdc.length; i++) {
-            if (obj.gdc[i].BTP == str) {
-                stac = i;
-                break;
-            }
+            if (obj.gdc[i].BTP == str) { stac = i; break; }
         }
         for (var i = stac + 1; i < obj.gdc.length; i++) {
-            if (obj.gdc[i].BTP != str && obj.gdc[i].BTP != undefined && tc === 0) {
-                stoc = i;
-                tc = 1;
-                break;
-            }
+            if (obj.gdc[i].BTP != str && obj.gdc[i].BTP != undefined && tc === 0) { stoc = i; tc = 1; break; }
         }
         if (tc === 0) stoc = obj.gdc.length;
 
-        // Hiển thị MÃ ĐƠN
         var infoHtml = '<div class="info-grid">';
+        var currentMaDonValue = "";
         for (var i = stac; i < stoc; i++) {
             var keys = Object.keys(obj.gdc[i]);
             var vals = Object.values(obj.gdc[i]);
             for (var j = 0; j < keys.length; j++) {
                 if (keys[j] === "MÃ ĐƠN") {
-                    infoHtml += `<div class="info-item"><span>${keys[j]}:</span> <strong>${vals[j]}</strong></div>`;
+                    currentMaDonValue = vals[j];
+                    infoHtml += '<div class="info-item"><span>' + keys[j] + ':</span> <strong>' + vals[j] + '</strong></div>';
                 }
             }
             break;
         }
         infoHtml += '</div>';
-        if (infoHtml !== '<div class="info-grid"></div>') {
-            document.getElementById("info").style.display = "block";
-            document.getElementById("info").innerHTML = infoHtml;
-        } else {
-            document.getElementById("info").style.display = "none";
+        document.getElementById("info").style.display = "block";
+        document.getElementById("info-content").innerHTML = infoHtml;
+        
+        if (!btpCurrentMaDon[btpview] && currentMaDonValue) {
+            btpCurrentMaDon[btpview] = currentMaDonValue;
+            saveDataToLocal();
         }
 
         var printdcgdc = '<select id="dcc" class="modern-select" onchange="showdcgdc(this.value)"><option value="">-- Chọn dây chuyền GĐC --</option>';
@@ -580,9 +632,7 @@
             if (obj.gd1[i].BTP == str) { stad = i; break; }
         }
         for (var i = stad + 1; i < obj.gd1.length; i++) {
-            if (obj.gd1[i].BTP != str && obj.gd1[i].BTP != undefined) {
-                stod = i; td = 1; break;
-            }
+            if (obj.gd1[i].BTP != str && obj.gd1[i].BTP != undefined) { stod = i; td = 1; break; }
         }
         if (td === 0) stod = obj.gd1.length;
 
@@ -601,58 +651,42 @@
 
     window.showdcgd1 = function(str) {
         if (!obj || !btpview) return;
-        if (!str) {
-            document.getElementById("cont").innerHTML = '<div class="message-placeholder">✅ Vui lòng chọn dây chuyền để xem chi tiết</div>';
-            return;
-        }
+        if (!str) { document.getElementById("cont").innerHTML = '<div class="message-placeholder">✅ Vui lòng chọn dây chuyền để xem chi tiết</div>'; return; }
         var dataall = "";
         for (var i = stad; i < stod; i++) {
             if(obj.gd1[i]["DÂY CHUYỀN"] == str){
                 var keys = Object.keys(obj.gd1[i]);
                 var vals = Object.values(obj.gd1[i]);
                 for (var j = 0; j < keys.length; j++) {
-                    if(keys[j] != "GROUP" && keys[j] != "BTP" && keys[j] != "MÃ ĐƠN"){
+                    if(keys[j] != "GROUP" && keys[j] != "BTP" && keys[j] != "MÃ ĐƠN" && keys[j] != "DÂY CHUYỀN"){
                         dataall += printgd1(i, nhomd, keys[j], vals[j], btpview);
                     }
                 }
                 break;
             }
         }
-        document.getElementById("cont").innerHTML = `<table class="data-table">
-            <thead><tr><th>Thông số GĐ1 / CĐ</th><th>Giá trị chuẩn</th><th>Min (HC -)</th><th>Max (HC +)</th></tr></thead>
-            <tbody>${dataall}</tbody>
-         </table>`;
-        
-        var dcc = document.getElementById("dcc");
-        if (dcc) dcc.value = "";
+        document.getElementById("cont").innerHTML = '<table class="data-table"><thead><tr><th>Thông số GĐ1 / CĐ</th><th>Giá trị chuẩn</th><th>Min (HC -)</th><th>Max (HC +)</th></tr></thead><tbody>' + dataall + '</tbody></table>';
+        var dcc = document.getElementById("dcc"); if (dcc) dcc.value = "";
     };
 
     window.showdcgdc = function(str) {
         if (!obj || !btpview) return;
-        if (!str) {
-            document.getElementById("cont").innerHTML = '<div class="message-placeholder">✅ Vui lòng chọn dây chuyền để xem chi tiết hiệu chỉnh</div>';
-            return;
-        }
+        if (!str) { document.getElementById("cont").innerHTML = '<div class="message-placeholder">✅ Vui lòng chọn dây chuyền để xem chi tiết</div>'; return; }
         var dataall = "";
         for (var i = stac; i < stoc; i++) {
             if(obj.gdc[i]["DÂY CHUYỀN"] == str){
                 var keys = Object.keys(obj.gdc[i]);
                 var vals = Object.values(obj.gdc[i]);
                 for (var j = 0; j < keys.length; j++) {
-                    if(keys[j] != "GROUP" && keys[j] != "BTP" && keys[j] != "MÃ ĐƠN"){
+                    if(keys[j] != "GROUP" && keys[j] != "BTP" && keys[j] != "MÃ ĐƠN" && keys[j] != "DÂY CHUYỀN"){
                         dataall += printgdc(i, nhomc, keys[j], vals[j]);
                     }
                 }
                 break;
             }
         }
-        document.getElementById("cont").innerHTML = `<table class="data-table">
-            <thead><tr><th>Thông số GĐC</th><th>Giá trị chuẩn</th><th>Min (HC -)</th><th>Max (HC +)</th></tr></thead>
-            <tbody>${dataall}</tbody>
-         </table>`;
-        
-        var dc1 = document.getElementById("dc1");
-        if (dc1) dc1.value = "";
+        document.getElementById("cont").innerHTML = '<table class="data-table"><thead><tr><th>Thông số GĐC</th><th>Giá trị chuẩn</th><th>Min (HC -)</th><th>Max (HC +)</th></tr></thead><tbody>' + dataall + '</tbody></table>';
+        var dc1 = document.getElementById("dc1"); if (dc1) dc1.value = "";
     };
 
     function initializeApp() {
@@ -660,6 +694,7 @@
             try {
                 obj = JSON.parse(DATA);
                 timeold = window.timeold;
+                loadDataFromLocal();
                 
                 for (var i = 0; i < obj.gdc.length; i++) {
                     if (obj.gdc[i].GROUP == 6) nhomc = i;
@@ -679,19 +714,15 @@
                 }
                 document.getElementById("btp").innerHTML = '<select id="BTP" class="modern-select" onchange="showdata(this.value)">' + printbtp + '</select>';
                 document.getElementById("sch").innerHTML = '<input type="text" id="myseach" class="search-input" placeholder="🔎 Nhập mã BTP ..." autocomplete="off">';
-                document.getElementById("update").innerHTML = `<span>📅 Dữ liệu cập nhật: ${timeold} | 🔔 Nếu dữ liệu không trùng khớp thực tế - liên hệ: 0793600220</span>`;
-
-                var searchInput = document.getElementById("myseach");
-                if (searchInput) {
-                    searchInput.addEventListener("keyup", function() { seach(); });
-                }
+                document.getElementById("update").innerHTML = '<span>📅 Dữ liệu cập nhật: ' + timeold + ' 🔔 Dữ liệu không đúng thực tế liên hệ Tel: 0793600220</span>';
                 
+                var searchInput = document.getElementById("myseach");
+                if (searchInput) { searchInput.addEventListener("keyup", function() { seach(); }); }
                 resetToInitialState();
-            } catch(e) { 
-                console.warn(e); 
-            }
+                renderHistoryTable();
+            } catch(e) { console.warn(e); document.getElementById("btp").innerHTML = '<div class="message-placeholder">⚠️ Lỗi dữ liệu: ' + e.message + '</div>'; }
         } else {
-            document.getElementById("btp").innerHTML = '<div class="message-placeholder">⚠️ Không tải được dữ liệu. Vui lòng kiểm tra file data/databias.js và kết nối mạng.</div>';
+            document.getElementById("btp").innerHTML = '<div class="message-placeholder">⚠️ Không tải được dữ liệu. Vui lòng kiểm tra file data/databias.js</div>';
         }
     }
 
@@ -700,28 +731,18 @@
         var types = "HD23";
         var factory = "BIAS";
         var cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)correction\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-        if (cookieValue == ''){
-            let setcookie = JSON.stringify({'type': types, 'factory': factory});
-            document.cookie = "correction=" + setcookie + "; max-age=" + timecookie + "; path=/";
-        } else {
-            var cookieObj = JSON.parse(cookieValue);
-            types = cookieObj.type;
-            let setcookie = JSON.stringify({'type': types, 'factory': factory});
-            document.cookie = "correction=" + setcookie + "; max-age=" + timecookie + "; path=/";
-        }
+        if (cookieValue == ''){ var setcookie = JSON.stringify({'type': types, 'factory': factory}); document.cookie = "correction=" + setcookie + "; max-age=" + timecookie + "; path=/"; }
+        else { var cookieObj = JSON.parse(cookieValue); types = cookieObj.type; var setcookie = JSON.stringify({'type': types, 'factory': factory}); document.cookie = "correction=" + setcookie + "; max-age=" + timecookie + "; path=/"; }
         if (address == "view" ) location.href = '../hieuchinh/view.html';
         else if (address == "code" ) location.href = '../congcu/macode.html';
         else location.href = 'DPC'+ factory +'.html';
     }
 
-    if (localStorage.getItem('dpc_bias_logged_in') === 'true') {
-        initializeApp();
-    } else {
-        window.initializeApp = initializeApp;
-    }
-    if (localStorage.getItem('dpc_bias_logged_in') === 'true' && typeof initializeApp === 'function') {
-        initializeApp();
-    }
+    window.onclick = function(event) { var modal = document.getElementById('historyModal'); if (event.target == modal) modal.style.display = "none"; }
+
+    if (localStorage.getItem('dpc_bias_logged_in') === 'true') { initializeApp(); } 
+    else { window.initializeApp = initializeApp; }
 </script>
 </body>
 </html>
+```
